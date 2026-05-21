@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, ShieldAlert, Award, FileText, CheckCircle2, AlertTriangle, Send, ChevronRight, Play } from 'lucide-react';
+import { Search, ShieldAlert, Award, FileText, CheckCircle2, AlertTriangle, Send, ChevronRight, Users } from 'lucide-react';
 import { useAppData } from '../hooks/useAppData';
 import { navigate } from '../hooks/useRoute';
 
@@ -138,7 +138,7 @@ export default function AdminDashboard({ onToast }) {
               type="text"
               required
               value={drillMsg}
-              onChange={e => setForm ? setDrillMsg(e.target.value) : setDrillMsg(e.target.value)}
+              onChange={e => setDrillMsg(e.target.value)}
               placeholder="e.g. FIRE DRILL — Evacuate via East exit doors immediately"
               className="w-full rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-3 text-sm text-white placeholder-slate-600 focus:border-red-500 focus:outline-none transition-colors"
             />
