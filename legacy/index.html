@@ -1,0 +1,2546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DPRES — Disaster Preparedness System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Poppins:wght@600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    /* ═══════════════════════════════════
+   VIBRANT RED DESIGN SYSTEM
+   ═══════════════════════════════════ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      /* Backgrounds: Pure whites and crisp cool grays for contrast */
+      --bg-deep: #f8fafc;
+      --bg-base: #ffffff;
+      --bg-surface: #ffffff;
+      --bg-elevated: #fff1f2;
+      --bg-hover: #ffe4e6;
+
+      /* Primary Reds (Vibrant Crimson) */
+      --red-600: #e11d48;
+      --red-500: #f43f5e;
+      --red-400: #fb7185;
+      --red-glow: rgba(225, 29, 72, 0.15);
+
+      /* Module Specific Accents */
+      --orange-500: #f97316;
+      --orange-400: #fb923c;
+      --yellow-400: #fbbf24;
+      --green-400: #34d399;
+      --green-500: #10b981;
+      --purple-500: #8b5cf6;
+      --blue-500: #3b82f6;
+
+      /* Text: High Contrast Slate */
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+
+      /* Borders */
+      --border: #e2e8f0;
+      --border-accent: rgba(225, 29, 72, 0.35);
+
+      --font-display: 'Poppins', sans-serif;
+      --font-ui: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius: 16px;
+      --shadow-sm: 0 1px 2px 0 rgba(225, 29, 72, 0.05);
+      --shadow-md: 0 10px 25px -5px rgba(225, 29, 72, 0.1), 0 8px 10px -6px rgba(225, 29, 72, 0.05);
+    }
+
+    html {
+      font-size: 16px
+    }
+
+    body {
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: var(--font-ui);
+      font-weight: 500;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--red-400)
+    }
+
+    input,
+    select,
+    textarea {
+      font-family: var(--font-ui);
+      background: var(--bg-base);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      border-radius: 10px;
+      padding: .8rem 1.2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      outline: none;
+      transition: all .2s;
+      width: 100%
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--red-400);
+      box-shadow: 0 0 0 3px var(--red-glow);
+      background: var(--bg-surface)
+    }
+
+    button {
+      cursor: pointer;
+      font-family: var(--font-ui)
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none
+    }
+
+    table {
+      border-collapse: collapse
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      padding: .3rem .8rem;
+      border-radius: 20px;
+      text-transform: uppercase
+    }
+
+    .badge-red {
+      background: rgba(225, 29, 72, .1);
+      color: var(--red-600);
+      border: 1px solid rgba(225, 29, 72, .2)
+    }
+
+    .badge-green {
+      background: rgba(16, 185, 129, .1);
+      color: var(--green-500);
+      border: 1px solid rgba(16, 185, 129, .2)
+    }
+
+    .badge-orange {
+      background: rgba(249, 115, 22, .1);
+      color: var(--orange-500);
+      border: 1px solid rgba(249, 115, 22, .2)
+    }
+
+    .badge-yellow {
+      background: rgba(251, 191, 36, .1);
+      color: var(--yellow-400);
+      border: 1px solid rgba(251, 191, 36, .2)
+    }
+
+    .badge-purple {
+      background: rgba(139, 92, 246, .1);
+      color: var(--purple-500);
+      border: 1px solid rgba(139, 92, 246, .2)
+    }
+
+    .badge-muted {
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      border: 1px solid var(--border)
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(15px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.97)
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1)
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .5
+      }
+    }
+
+    @keyframes progressBar {
+      from {
+        width: 0
+      }
+    }
+
+    .fade-in {
+      animation: slideIn .5s cubic-bezier(0.16, 1, 0.3, 1) both
+    }
+
+    .pop-in {
+      animation: popIn .5s cubic-bezier(0.16, 1, 0.3, 1) both
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: .75rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: .95rem;
+      letter-spacing: .02em;
+      transition: all .2s;
+      cursor: pointer
+    }
+
+    .btn-primary {
+      background: var(--red-600);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(225, 29, 72, .25)
+    }
+
+    .btn-primary:hover {
+      background: var(--red-500);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(225, 29, 72, .35)
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--red-600);
+      border: 1px solid var(--border)
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--red-600);
+      color: var(--red-600);
+      background: var(--bg-elevated)
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      box-shadow: var(--shadow-sm)
+    }
+
+    .card-hover {
+      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1)
+    }
+
+    .card-hover:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md)
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      font-weight: 600;
+      color: var(--red-600);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: .5rem
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2rem, 3vw, 2.5rem);
+      color: var(--text-primary);
+      letter-spacing: -.02em;
+      line-height: 1.1
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    .data-table th {
+      padding: 1rem;
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      color: var(--text-secondary);
+      letter-spacing: .05em;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap
+    }
+
+    .data-table td {
+      padding: 1.2rem 1rem;
+      border-bottom: 1px solid var(--bg-elevated);
+      vertical-align: middle;
+      font-size: .95rem;
+      color: var(--text-primary)
+    }
+
+    .data-table tr:hover td {
+      background: var(--bg-elevated)
+    }
+
+    .progress-track {
+      height: 8px;
+      background: var(--bg-elevated);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      animation: progressBar 1s cubic-bezier(0.16, 1, 0.3, 1)
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .6);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 1rem;
+      animation: slideIn .2s ease
+    }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 50px -12px rgba(225, 29, 72, .15)
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .8rem 1rem;
+      border-radius: 10px;
+      color: var(--text-secondary);
+      transition: all .2s;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer
+    }
+
+    .nav-link:hover {
+      color: var(--red-600);
+      background: var(--bg-elevated)
+    }
+
+    .nav-link.active {
+      color: var(--red-600);
+      background: var(--bg-elevated);
+      font-weight: 700;
+      border-left: 3px solid var(--red-600);
+    }
+
+    .quiz-option {
+      width: 100%;
+      text-align: left;
+      padding: 1.4rem;
+      border-radius: 14px;
+      border: 2px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-family: var(--font-ui);
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm)
+    }
+
+    .quiz-option:hover:not(:disabled) {
+      border-color: var(--red-400);
+      background: var(--bg-elevated);
+      transform: translateY(-2px)
+    }
+
+    .quiz-option.correct {
+      border-color: var(--green-500);
+      background: rgba(16, 185, 129, .05);
+      color: var(--green-500)
+    }
+
+    .quiz-option.wrong {
+      border-color: var(--red-500);
+      background: rgba(225, 29, 72, .05);
+      color: var(--red-500)
+    }
+
+    .quiz-option.selected {
+      border-color: var(--red-600);
+      background: rgba(225, 29, 72, .05)
+    }
+
+    .alert-bar {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 999;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--red-600);
+      border-radius: 12px;
+      padding: 1rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .95rem;
+      font-weight: 600;
+      animation: slideIn .3s ease;
+      box-shadow: var(--shadow-md);
+      max-width: 400px;
+      color: var(--text-primary)
+    }
+
+    /* Chatbot Styles */
+    .chatbot-toggle {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 60px;
+      height: 60px;
+      border-radius: 30px;
+      background: var(--red-600);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(225, 29, 72, .3);
+      cursor: pointer;
+      z-index: 900;
+      transition: all .3s;
+    }
+
+    .chatbot-toggle:hover {
+      transform: scale(1.05) translateY(-2px);
+    }
+
+    .chatbot-window {
+      position: fixed;
+      bottom: 6rem;
+      right: 2rem;
+      width: 350px;
+      height: 500px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(225, 29, 72, .15);
+      display: flex;
+      flex-direction: column;
+      z-index: 900;
+      overflow: hidden;
+      animation: slideIn .3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .chatbot-header {
+      padding: 1.2rem;
+      background: var(--red-600);
+      color: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 700;
+      font-family: var(--font-display);
+    }
+
+    .chatbot-msgs {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .chatbot-msg {
+      max-width: 85%;
+      padding: .8rem 1.2rem;
+      border-radius: 14px;
+      font-size: .95rem;
+      line-height: 1.5;
+    }
+
+    .chatbot-msg.user {
+      align-self: flex-end;
+      background: var(--red-600);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chatbot-msg.ai {
+      align-self: flex-start;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border-bottom-left-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .chatbot-input {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: .5rem;
+      background: var(--bg-surface);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const { useState, useEffect, useRef, useCallback, createContext, useContext } = React;
+
+    // Setup Firebase Storage
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+    function useGemini() {
+      const generate = async (prompt, sysInstruct = "You are a helpful assistant.") => {
+        const apiKey = "";
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+        const payload = {
+          contents: [{ parts: [{ text: prompt }] }],
+          systemInstruction: { parts: [{ text: sysInstruct }] }
+        };
+        const attempt = async (retries = 5, delay = 1000) => {
+          try {
+            const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            if (!res.ok) throw new Error('API Error');
+            const data = await res.json();
+            return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          } catch (e) {
+            if (retries > 0) {
+              await new Promise(r => setTimeout(r, delay));
+              return attempt(retries - 1, delay * 2);
+            }
+            throw e;
+          }
+        };
+        return attempt();
+      };
+      return { generate };
+    }
+
+    const QUIZ_DATA = {
+      fire: {
+        title: 'Fire Safety', color: '#ef4444', emoji: '🔥',
+        questions: [
+          { id: 1, q: 'What does R.A.C.E stand for in fire emergencies?', options: ['Run, Alert, Call, Evacuate', 'Rescue, Alert, Contain, Extinguish/Evacuate', 'React, Alarm, Contain, Escape', 'Report, Assess, Call, Exit'], answer: 1 },
+          { id: 2, q: 'When a fire alarm sounds, you should first:', options: ['Gather belongings then exit', 'Use elevator to evacuate faster', 'Feel door handle for heat before opening', 'Call friends to warn them'], answer: 2 },
+          { id: 3, q: 'Which fire extinguisher type is safe for electrical fires?', options: ['Water', 'Foam', 'CO₂ or dry powder', 'Wet chemical'], answer: 2 }
+        ]
+      },
+      flood: {
+        title: 'Flood Protocol', color: '#dc2626', emoji: '🌊',
+        questions: [
+          { id: 1, q: 'During a flood warning, your first action should be:', options: ['Go to basement for shelter', 'Move to higher ground immediately', 'Attempt to drive through floodwater', 'Wade through water to reach others'], answer: 1 },
+          { id: 2, q: 'How deep can moving floodwater be to sweep a person off their feet?', options: ['6 inches (15 cm)', '12 inches (30 cm)', '24 inches (60 cm)', '36 inches (90 cm)'], answer: 0 }
+        ]
+      },
+      medical: {
+        title: 'Medical Emergency', color: '#f87171', emoji: '⚕️',
+        questions: [
+          { id: 1, q: 'What is the first step when responding to an unconscious person?', options: ['Start CPR immediately', 'Check the scene for safety', 'Call their emergency contact', 'Offer them water'], answer: 1 },
+          { id: 2, q: 'What is the universal ratio for CPR compressions to breaths?', options: ['15 compressions, 2 breaths', '30 compressions, 2 breaths', '50 compressions, 5 breaths', 'Continuous compressions only'], answer: 1 },
+          { id: 3, q: 'If someone is choking and cannot cough or breathe, you should:', options: ['Perform the Heimlich maneuver (abdominal thrusts)', 'Slap their back gently', 'Wait to see if they clear it', 'Give them a drink of water'], answer: 0 }
+        ]
+      },
+      threat: {
+        title: 'Active Threat', color: '#991b1b', emoji: '🛡️',
+        questions: [
+          { id: 1, q: 'The national protocol for active threat situations is:', options: ['Hide, Fight, Flee', 'Run, Hide, Fight', 'Alert, Shelter, Evacuate', 'Freeze, Report, Comply'], answer: 1 },
+          { id: 2, q: 'When hiding from a threat, you should:', options: ['Turn on lights to see clearly', 'Unlock doors for police access', 'Silence phones and block doors', 'Group in hallways for faster escape'], answer: 2 }
+        ]
+      },
+    };
+
+    const AuthCtx = createContext(null);
+
+    function AuthProvider({ children }) {
+      const [fbUser, setFbUser] = useState(null);
+      const [user, setUser] = useState(null);
+      const [ready, setReady] = useState(false);
+
+      useEffect(() => {
+        const initAuth = async () => {
+          try {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+              await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+              await signInAnonymously(auth);
+            }
+          } catch (err) {
+            console.error("Auth Init Failed:", err);
+          }
+        };
+        initAuth();
+
+        const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+          setFbUser(authUser);
+          if (!authUser) { setUser(null); setReady(true); }
+        });
+        return () => unsubscribe();
+      }, []);
+
+      useEffect(() => {
+        if (!fbUser) return;
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', fbUser.uid);
+        const unsub = onSnapshot(docRef, (docSnap) => {
+          if (docSnap.exists()) setUser(docSnap.data());
+          else setUser(null);
+          setReady(true);
+        }, (err) => { setReady(true); });
+        return () => unsub();
+      }, [fbUser]);
+
+      const login = async (email, password, isSignup = false, name = '', role = 'student') => {
+        let currentUser = auth.currentUser;
+        if (!currentUser) {
+          await signInAnonymously(auth);
+          currentUser = auth.currentUser;
+        }
+
+        return new Promise(async (resolve, reject) => {
+          let profileData = {};
+
+          if (isSignup) {
+            profileData = { id: currentUser.uid, name, rollNo: 'NEW' + Math.floor(Math.random() * 1000), dept: 'Computer Science', email, role: role, completedModules: [], status: 'Active', bloodGroup: '', medicalNotes: '' };
+          } else {
+            if (email === 'admin@campus.edu' && password === 'Password@123') {
+              profileData = { id: currentUser.uid, name: 'Director Console', email, role: 'admin' };
+            } else if (email === 'staff@campus.edu' && password === 'Password@123') {
+              profileData = { id: currentUser.uid, name: 'Prof. Jane Doe', email, role: 'staff', dept: 'Faculty' };
+            } else if (email === 'student@campus.edu' && password === 'Password@123') {
+              profileData = { id: currentUser.uid, name: 'Alex Smith', rollNo: 'CS21000', dept: 'Computer Science', email, role: 'student', completedModules: ['fire', 'flood'], status: 'Active', bloodGroup: 'O+', medicalNotes: 'None' };
+            } else {
+              return reject(new Error('Invalid credentials. Check default accounts.'));
+            }
+          }
+
+          try {
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', currentUser.uid), profileData);
+            setUser(profileData);
+            resolve(profileData);
+          } catch (e) {
+            reject(new Error('Failed to create cloud profile.'));
+          }
+        });
+      };
+
+      const logout = async () => {
+        await signOut(auth);
+        setUser(null);
+        window.location.hash = '#/login';
+        window.location.reload();
+      };
+
+      const updateUser = async (patch) => {
+        if (!fbUser) return;
+        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', fbUser.uid), patch);
+      };
+
+      return (
+        <AuthCtx.Provider value={{ fbUser, user, login, logout, ready, updateUser }}>
+          {children}
+        </AuthCtx.Provider>
+      );
+    }
+    const useAuth = () => useContext(AuthCtx);
+
+    function navigate(hash) { window.location.hash = hash; }
+    function useRoute() {
+      const [hash, setHash] = useState(window.location.hash || '#/login');
+      useEffect(() => {
+        const h = () => setHash(window.location.hash || '#/login');
+        window.addEventListener('hashchange', h);
+        return () => window.removeEventListener('hashchange', h);
+      }, []);
+      return hash;
+    }
+
+    function Toast({ msg, type = 'info', onClose }) {
+      useEffect(() => { const t = setTimeout(onClose, 3500); return () => clearTimeout(t); }, []);
+      const colors = { info: 'var(--red-600)', success: 'var(--green-500)', error: 'var(--red-500)', warn: 'var(--yellow-400)' };
+      return (
+        <div className="alert-bar" style={{ borderLeftColor: colors[type] }}>
+          <span style={{ color: colors[type], fontSize: '1.2rem' }}>{type === 'error' ? '✖' : type === 'success' ? '✔' : type === 'warn' ? '⚠' : 'ℹ'}</span>
+          <span style={{ flex: 1 }}>{msg}</span>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '1.2rem', lineHeight: 1 }}>×</button>
+        </div>
+      );
+    }
+
+    const Icon = ({ name, size = 18, color = 'currentColor', style = {} }) => {
+      const paths = {
+        dashboard: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
+        users: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
+        bell: 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9',
+        map: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7',
+        shield: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+        logout: 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1',
+        alert: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',
+        plus: 'M12 4v16m8-8H4',
+        edit: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
+        trash: 'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16',
+        search: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
+        check: 'M5 13l4 4L19 7',
+        x: 'M6 18L18 6M6 6l12 12',
+        eye: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z',
+        eyeoff: 'M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21',
+        chevron: 'M9 5l7 7-7 7',
+        star: 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z',
+        fire: 'M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z',
+        menu: 'M4 6h16M4 12h16M4 18h16',
+        clock: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+        send: 'M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z'
+      };
+      return (
+        <svg width={size} height={size} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" style={{ flexShrink: 0, ...style }}>
+          {(paths[name] || paths.dashboard).split(' M').map((d, i) => (<path key={i} d={(i === 0 ? '' : ' M') + d} />))}
+        </svg>
+      );
+    };
+
+    const LogoHexagon = ({ size = 48 }) => (
+      <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 4L92.5 28.5V77.5L50 102L7.5 77.5V28.5L50 4Z" fill="url(#grad1)" stroke="#e11d48" strokeWidth="2" />
+        <path d="M50 12L85 32V73L50 93L15 73V32L50 12Z" fill="none" stroke="rgba(225, 29, 72, 0.2)" strokeWidth="2" />
+        <rect x="42" y="30" width="16" height="40" rx="3" fill="#ffffff" />
+        <rect x="30" y="42" width="40" height="16" rx="3" fill="#ffffff" />
+        <defs>
+          <linearGradient id="grad1" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#f43f5e" />
+            <stop offset="1" stopColor="#be123c" />
+          </linearGradient>
+        </defs>
+      </svg>
+    );
+
+    function Login({ onToast }) {
+      const { login } = useAuth();
+      const [view, setView] = useState('signin');
+      const [form, setForm] = useState({ name: '', email: '', password: '' });
+      const [show, setShow] = useState(false);
+      const [busy, setBusy] = useState(false);
+      const [err, setErr] = useState('');
+      const [selectedRole, setSelectedRole] = useState('student');
+
+      const submit = async (e) => {
+        e.preventDefault();
+        if (view === 'forgot') {
+          if (!form.email) { setErr('Please enter your email address.'); return; }
+          setBusy(true); setErr('');
+          setTimeout(() => {
+            onToast(`Password reset link sent to ${form.email}`, 'success');
+            setView('signin');
+            setBusy(false);
+          }, 1000);
+          return;
+        }
+
+        if (!form.email || !form.password || (view === 'signup' && !form.name)) { setErr('Please fill required fields.'); return; }
+        setBusy(true); setErr('');
+        try {
+          const u = await login(form.email, form.password, view === 'signup', form.name, selectedRole);
+          navigate(u.role === 'admin' ? '#/admin' : '#/portal');
+        } catch (ex) {
+          setErr(ex.message || 'Login failed.');
+        } finally { setBusy(false); }
+      };
+
+      const getPlaceholderEmail = () => {
+        if (selectedRole === 'admin') return 'admin@campus.edu';
+        if (selectedRole === 'staff') return 'staff@campus.edu';
+        return 'student@campus.edu';
+      };
+      const getPlaceholderPass = () => {
+        return 'Password@123';
+      };
+
+      return (
+        <div style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1fr 1fr', background: 'var(--bg-base)' }}>
+          <div style={{ background: 'var(--bg-surface)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '4rem', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '3rem' }}>
+              <LogoHexagon size={56} />
+              <div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.4rem', letterSpacing: '-.02em', color: 'var(--red-600)', lineHeight: 1 }}>DPRES</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.15em', fontWeight: 600 }}>DISASTER SYSTEM</div>
+              </div>
+            </div>
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)', color: 'var(--text-primary)', lineHeight: 1.1, letterSpacing: '-.02em', marginBottom: '1rem' }}>
+              MINIMAL & CLOUD SYNCED<br /><span style={{ color: 'var(--red-600)' }}>SAFETY PROTOCOL</span>
+            </h1>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: 1.6, maxWidth: 400 }}>
+              Welcome to the live multi-user environment. Drills, grades, and registrations are securely synchronized in real-time across the campus network.
+            </p>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+            <div style={{ width: '100%', maxWidth: 420 }} className="fade-in">
+              <div className="section-label" style={{ marginBottom: '.5rem' }}>▶ SECURE ACCESS</div>
+              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2.6rem', color: 'var(--text-primary)', letterSpacing: '-.02em', marginBottom: '2rem' }}>
+                {view === 'forgot' ? 'Reset Password' : view === 'signup' ? 'Create Account' : 'Sign In'}
+              </h2>
+
+              <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '1.4rem' }}>
+                {view === 'forgot' && (
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '.95rem', marginBottom: '.5rem', lineHeight: 1.5 }}>
+                    Enter your registered email address and we'll send you a secure link to reset your password.
+                  </p>
+                )}
+
+                {view === 'signin' && (
+                  <div style={{ display: 'flex', background: 'var(--bg-elevated)', padding: '6px', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                    {['admin', 'student', 'staff'].map(role => (
+                      <button
+                        key={role}
+                        type="button"
+                        onClick={() => { setSelectedRole(role); setForm({ ...form, email: '', password: '' }); setErr(''); }}
+                        style={{ flex: 1, padding: '.6rem', border: 'none', borderRadius: '8px', background: selectedRole === role ? 'var(--red-600)' : 'transparent', color: selectedRole === role ? '#fff' : 'var(--text-secondary)', fontWeight: 600, fontSize: '.9rem', textTransform: 'capitalize', transition: 'all 0.2s', cursor: 'pointer', boxShadow: selectedRole === role ? '0 2px 8px rgba(220,38,38,0.2)' : 'none' }}>
+                        {role}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {view === 'signup' && (
+                  <div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 700 }}>FULL NAME</div>
+                    <input type="text" placeholder="e.g. Priya Sharma" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+                  </div>
+                )}
+
+                <div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 700 }}>EMAIL ADDRESS</div>
+                  <input type="email" placeholder={view === 'signin' ? getPlaceholderEmail() : 'name@campus.edu'} value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
+                </div>
+
+                {view !== 'forgot' && (
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '.4rem' }}>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', fontWeight: 700 }}>PASSWORD</div>
+                      {view === 'signin' && (
+                        <button type="button" onClick={() => setView('forgot')} style={{ background: 'none', border: 'none', fontSize: '.8rem', color: 'var(--red-600)', fontWeight: 600, cursor: 'pointer', padding: 0 }}>
+                          Forgot?
+                        </button>
+                      )}
+                    </div>
+                    <div style={{ position: 'relative' }}>
+                      <input type={show ? 'text' : 'password'} placeholder={view === 'signin' ? getPlaceholderPass() : '••••••••'} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} style={{ paddingRight: '3rem' }} />
+                      <button type="button" onClick={() => setShow(!show)} style={{ position: 'absolute', right: '.8rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)' }}>
+                        <Icon name={show ? 'eyeoff' : 'eye'} size={18} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {err && (
+                  <div style={{ background: 'rgba(239,68,68,.05)', border: '1px solid rgba(239,68,68,.2)', borderRadius: 10, padding: '.8rem 1rem', fontSize: '.9rem', color: 'var(--red-600)', fontWeight: 600 }}>
+                    ⚠ {err}
+                  </div>
+                )}
+
+                <button type="submit" disabled={busy} className="btn btn-primary" style={{ padding: '1rem', fontSize: '1.05rem', marginTop: '.5rem' }}>
+                  {busy ? '⟳ AUTHENTICATING...' : view === 'forgot' ? 'SEND RESET LINK →' : view === 'signup' ? 'SIGN UP →' : <>🔒 SIGN IN</>}
+                </button>
+
+                <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '.95rem', color: 'var(--text-secondary)' }}>
+                  {view === 'forgot' ? (
+                    <button type="button" onClick={() => setView('signin')} style={{ background: 'none', border: 'none', color: 'var(--red-600)', fontWeight: 700, cursor: 'pointer' }}>
+                      ← Back to Sign In
+                    </button>
+                  ) : null}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function Sidebar({ role }) {
+      const { user, logout } = useAuth();
+      const hash = useRoute();
+      const [isOpen, setIsOpen] = useState(true);
+
+      const links = role === 'admin'
+        ? [{ hash: '#/admin', icon: 'dashboard', label: 'Dashboard' }, { hash: '#/admin/students', icon: 'users', label: 'Students DB' }, { hash: '#/admin/drills', icon: 'bell', label: 'Drill Manager' }, { hash: '#/portal/map', icon: 'map', label: 'Demo Campus Map' }]
+        : [
+          { hash: '#/portal', icon: 'dashboard', label: 'Overview' },
+          { hash: '#/portal/simulator', icon: 'shield', label: 'AI Simulator ✨' },
+          { hash: '#/portal/map', icon: 'map', label: 'Evacuation Map' },
+          { hash: '#/portal/leaderboard', icon: 'star', label: 'Leaderboard' },
+          { hash: '#/portal/contacts', icon: 'alert', label: 'Emergency Contacts' },
+          { hash: '#/portal/settings', icon: 'edit', label: 'Profile Settings' }
+        ];
+
+      const getRoleBadge = () => {
+        if (role === 'admin') return <span className="badge badge-red"><span style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor' }} /> ADMIN</span>;
+        if (role === 'staff') return <span className="badge badge-purple"><span style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor' }} /> STAFF</span>;
+        return <span className="badge badge-red"><span style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor' }} /> STUDENT</span>;
+      };
+
+      return (
+        <aside style={{
+          width: isOpen ? 260 : 80,
+          background: 'var(--bg-surface)', borderRight: '1px solid var(--border)',
+          display: 'flex', flexDirection: 'column', position: 'sticky', top: 0, height: '100vh', flexShrink: 0,
+          transition: 'width 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          overflowX: 'hidden'
+        }}>
+          <div style={{ padding: isOpen ? '1.5rem 1.2rem' : '1.5rem 0', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: isOpen ? 'flex-start' : 'center', gap: '.8rem', transition: 'padding 0.3s' }}>
+            {isOpen && <LogoHexagon size={32} />}
+            {isOpen && (
+              <div style={{ flex: 1, whiteSpace: 'nowrap' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: 'var(--red-600)', letterSpacing: '-.02em', lineHeight: 1 }}>DPRES</div>
+              </div>
+            )}
+            <button onClick={() => setIsOpen(!isOpen)} style={{ background: 'var(--bg-elevated)', border: 'none', borderRadius: '8px', color: 'var(--red-600)', cursor: 'pointer', padding: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: isOpen ? 'auto' : 0 }} title={isOpen ? "Collapse" : "Expand"}>
+              <Icon name="menu" size={18} />
+            </button>
+          </div>
+
+          <div style={{ padding: isOpen ? '1.2rem' : '1.2rem 0', borderBottom: '1px solid var(--border)', display: 'flex', flexDirection: 'column', alignItems: isOpen ? 'flex-start' : 'center' }}>
+            {isOpen ? (
+              <div style={{ marginBottom: '.6rem' }}>{getRoleBadge()}</div>
+            ) : (
+              <div style={{ width: 14, height: 14, borderRadius: '50%', background: role === 'admin' ? 'var(--red-600)' : role === 'staff' ? 'var(--purple-500)' : 'var(--red-500)', marginBottom: '.6rem' }} />
+            )}
+
+            {isOpen && (
+              <div style={{ whiteSpace: 'nowrap', width: '100%' }}>
+                <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.name}</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.7rem', color: 'var(--text-muted)' }}>{user?.email}</div>
+              </div>
+            )}
+          </div>
+
+          <nav style={{ flex: 1, padding: isOpen ? '1rem .8rem' : '1rem .4rem', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            {links.map(l => {
+              const active = hash === l.hash || (l.hash !== '#/admin' && l.hash !== '#/portal' && hash.startsWith(l.hash));
+              return (
+                <a key={l.hash} href={l.hash} className={`nav-link${active ? ' active' : ''}`} style={{ padding: isOpen ? '.7rem 1rem' : '.8rem', justifyContent: isOpen ? 'flex-start' : 'center' }} title={!isOpen ? l.label : undefined}>
+                  <Icon name={l.icon} size={20} color={active ? 'var(--red-600)' : 'var(--text-secondary)'} />
+                  {isOpen && <span style={{ flex: 1, whiteSpace: 'nowrap' }}>{l.label}</span>}
+                  {isOpen && active && <Icon name="chevron" size={14} color="var(--red-600)" />}
+                </a>
+              );
+            })}
+          </nav>
+
+          {isOpen ? (
+            <div style={{ margin: '0 .8rem 1rem', padding: '1rem', background: 'var(--bg-elevated)', borderRadius: '12px', whiteSpace: 'nowrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '.4rem', marginBottom: '.3rem' }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--red-500)', animation: 'pulse 2s infinite' }}></div>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '.6rem', fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '.05em' }}>CLOUD SYNCED</span>
+              </div>
+              <div style={{ fontSize: '.85rem', fontWeight: 600, color: 'var(--red-600)' }}>Live Connected</div>
+            </div>
+          ) : (
+            <div style={{ margin: '0 auto 1rem', padding: '.8rem', display: 'flex', justifyContent: 'center', cursor: 'help' }} title="Cloud Connected">
+              <div style={{ width: 14, height: 14, borderRadius: '50%', background: 'rgba(220,38,38,.1)', border: '1px solid rgba(220,38,38,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--red-500)', animation: 'pulse 2s infinite' }}></div>
+              </div>
+            </div>
+          )}
+
+          <div style={{ padding: isOpen ? '.8rem' : '.8rem 0', borderTop: '1px solid var(--border)' }}>
+            <button onClick={logout} className="nav-link" style={{ width: '100%', border: 'none', background: 'none', padding: isOpen ? '.7rem 1rem' : '.8rem', justifyContent: isOpen ? 'flex-start' : 'center' }} title={!isOpen ? "Sign Out" : undefined}>
+              <Icon name="logout" size={20} />{isOpen && <span style={{ whiteSpace: 'nowrap' }}>Sign Out</span>}
+            </button>
+          </div>
+        </aside>
+      );
+    }
+
+    function BarChart({ data, height = 160 }) {
+      const max = 100;
+      return (
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-around', height, paddingTop: 12 }}>
+          {data.map((d, i) => (
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, height: '100%', justifyContent: 'flex-end' }}>
+              <div style={{ fontFamily: 'var(--font-ui)', fontSize: '.85rem', color: d.color, fontWeight: 700 }}>{d.value}%</div>
+              <div style={{ width: 8, background: 'var(--bg-hover)', borderRadius: 4, height: '100%', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
+                <div style={{ width: '100%', background: d.color, borderRadius: 4, height: `${(d.value / max) * 100}%`, transition: 'height 1s cubic-bezier(0.16, 1, 0.3, 1)' }} />
+              </div>
+              <div style={{ fontFamily: 'var(--font-ui)', fontSize: '.8rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{d.label}</div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function DashboardMap() {
+      const buildings = [
+        { id: 'a', l: 'Block A', x: 90, y: 60, w: 180, h: 120 },
+        { id: 'b', l: 'Block B', x: 290, y: 90, w: 160, h: 100 },
+        { id: 'c', l: 'Block C', x: 120, y: 230, w: 150, h: 140 },
+        { id: 'l', l: 'Library', x: 310, y: 250, w: 180, h: 110 },
+        { id: 'k', l: 'Canteen', x: 520, y: 270, w: 140, h: 120 },
+      ];
+      return (
+        <div className="card pop-in" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', minHeight: 380 }}>
+          <div style={{ padding: '1.2rem 1.5rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-surface)', zIndex: 2 }}>
+            <div className="section-label" style={{ margin: 0 }}>▶ LIVE CAMPUS STATUS</div>
+            <a href="#/portal/map" style={{ fontFamily: 'var(--font-ui)', fontSize: '.85rem', fontWeight: 700, color: 'var(--red-600)' }}>OPEN MAP ↗</a>
+          </div>
+          <div style={{ background: 'var(--bg-elevated)', flex: 1, position: 'relative', minHeight: 300 }}>
+            <svg viewBox="0 0 800 450" style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <pattern id="g-dash" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(220,38,38,.05)" strokeWidth="1" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#g-dash)" />
+
+              <path d="M 40 210 Q 280 200 760 230" fill="none" stroke="rgba(220,38,38,.08)" strokeWidth="24" strokeLinecap="round" />
+              <path d="M 270 40 Q 290 200 280 410" fill="none" stroke="rgba(220,38,38,.08)" strokeWidth="24" strokeLinecap="round" />
+              <path d="M 500 220 Q 520 150 540 80" fill="none" stroke="rgba(220,38,38,.08)" strokeWidth="20" strokeLinecap="round" />
+
+              {buildings.map(b => (
+                <g key={b.id}>
+                  <rect x={b.x} y={b.y} width={b.w} height={b.h} rx="12" fill="#ffffff" stroke="var(--border)" strokeWidth="2" />
+                  <text x={b.x + b.w / 2} y={b.y + b.h / 2 + 5} textAnchor="middle" fill="var(--red-600)" fontSize="16" fontWeight="bold" fontFamily="var(--font-display)">{b.l}</text>
+                </g>
+              ))}
+
+              <circle cx="180" cy="120" r="6" fill="var(--green-500)" style={{ animation: 'pulse 1.5s infinite' }} />
+              <circle cx="370" cy="140" r="6" fill="var(--green-500)" style={{ animation: 'pulse 1.5s infinite', animationDelay: '0.3s' }} />
+              <circle cx="200" cy="300" r="6" fill="var(--red-500)" style={{ animation: 'pulse 1.5s infinite', animationDelay: '0.6s' }} />
+            </svg>
+          </div>
+        </div>
+      );
+    }
+
+    function AdminDashboard({ onToast }) {
+      const { fbUser } = useAuth();
+      const [drillMsg, setDrillMsg] = useState('');
+      const [drillType, setDrillType] = useState('general');
+      const [broadcasting, setBroadcasting] = useState(false);
+      const [searchQuery, setSearchQuery] = useState('');
+
+      const [users, setUsers] = useState([]);
+      const [drills, setDrills] = useState([]);
+
+      useEffect(() => {
+        if (!fbUser) return;
+        const uUnsub = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'users'), (snap) => {
+          const arr = [];
+          snap.forEach(d => { if (d.data().role === 'student') arr.push({ ...d.data(), id: d.id }); });
+          setUsers(arr);
+        }, err => console.error(err));
+
+        const dUnsub = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'drills'), (snap) => {
+          const arr = []; snap.forEach(d => arr.push({ ...d.data(), id: d.id }));
+          arr.sort((a, b) => b.timestamp - a.timestamp);
+          setDrills(arr);
+        }, err => console.error(err));
+
+        return () => { uUnsub(); dUnsub(); };
+      }, [fbUser]);
+
+      const modCounts = { fire: 0, flood: 0, quake: 0, threat: 0, medical: 0 };
+      let trainedCount = 0;
+      users.forEach(u => {
+        const completed = u.completedModules || [];
+        completed.forEach(m => { if (modCounts[m] !== undefined) modCounts[m]++; });
+        if (completed.length >= 4) trainedCount++;
+      });
+
+      const maxU = users.length || 1;
+      const stats = { total: users.length, trained: trainedCount, pending: users.length - trainedCount, drillCount: drills.length };
+
+      const chartData = [
+        { label: 'Fire', value: Math.round((modCounts.fire / maxU) * 100), color: 'var(--red-600)' },
+        { label: 'Flood', value: Math.round((modCounts.flood / maxU) * 100), color: 'var(--red-400)' },
+        { label: 'Medical', value: Math.round((modCounts.medical / maxU) * 100), color: 'var(--red-500)' },
+        { label: 'Threat', value: Math.round((modCounts.threat / maxU) * 100), color: 'var(--text-secondary)' },
+      ];
+
+      const broadcast = async () => {
+        if (!drillMsg.trim() || !fbUser) return;
+        setBroadcasting(true);
+        try {
+          await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'drills'), {
+            title: drillMsg,
+            type: drillType,
+            timestamp: Date.now(),
+            status: 'Active'
+          });
+          onToast('Drill alert broadcast to all connected devices!', 'success');
+          setDrillMsg('');
+        } catch (err) {
+          onToast('Error broadcasting drill.', 'error');
+        } finally {
+          setBroadcasting(false);
+        }
+      };
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} className="fade-in">
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+            <div>
+              <div className="section-label">▶ OVERVIEW</div>
+              <h1 className="section-title">COMMAND CENTER</h1>
+            </div>
+
+            <div style={{ position: 'relative', flex: '1', maxWidth: '340px', minWidth: '240px' }}>
+              <Icon name="search" size={18} color="var(--red-600)" style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', zIndex: 1 }} />
+              <input
+                type="text"
+                placeholder="Search student or roll no..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    onToast(searchQuery.trim() ? `Searching registry for "${searchQuery}"...` : 'Opening Student Registry...', 'info');
+                    setTimeout(() => navigate('#/admin/students'), 500);
+                  }
+                }}
+                style={{ paddingLeft: '3rem', borderRadius: '30px', borderColor: 'var(--border)' }}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1.2rem' }}>
+            {[
+              { label: 'TOTAL STUDENTS', val: stats.total, sub: 'Live database count', c: 'var(--red-600)' },
+              { label: 'FULLY TRAINED', val: stats.trained, sub: 'Core modules completed', c: 'var(--red-500)' },
+              { label: 'DRILLS DONE', val: stats.drillCount, sub: 'This academic year', c: 'var(--red-600)' },
+              { label: 'PENDING', val: stats.pending, sub: 'Incomplete training', c: 'var(--orange-500)' },
+            ].map(s => (
+              <div key={s.label} className="card card-hover">
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 600 }}>{s.label}</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.8rem', color: s.c, lineHeight: 1 }}>{s.val}</div>
+                <div style={{ fontSize: '.85rem', color: 'var(--text-secondary)', marginTop: '.4rem' }}>{s.sub}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="card" style={{ borderLeft: '4px solid var(--red-600)' }}>
+            <div className="section-label" style={{ marginBottom: '1rem' }}>▶ BROADCAST DRILL ALERT</div>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+              <div style={{ flex: 1, minWidth: 260 }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 600 }}>ALERT MESSAGE</div>
+                <input value={drillMsg} onChange={e => setDrillMsg(e.target.value)} placeholder="e.g. FIRE DRILL — Evacuate via East Exit immediately" />
+              </div>
+              <div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 600 }}>DRILL TYPE</div>
+                <select value={drillType} onChange={e => setDrillType(e.target.value)} style={{ minWidth: 160 }}>
+                  <option value="general">General</option>
+                  <option value="fire">Fire</option>
+                  <option value="flood">Flood</option>
+                  <option value="medical">Medical</option>
+                  <option value="threat">Active Threat</option>
+                </select>
+              </div>
+              <button onClick={broadcast} disabled={broadcasting || !drillMsg.trim()} className="btn btn-primary" style={{ padding: '.8rem 1.6rem' }}>
+                <Icon name="bell" size={18} color="#fff" /> {broadcasting ? 'SENDING...' : 'BROADCAST'}
+              </button>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'stretch' }}>
+            <div style={{ flex: '1.5 1 450px', minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+              <DashboardMap />
+            </div>
+            <div style={{ flex: '1 1 300px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div className="card pop-in" style={{ animationDelay: '0.1s' }}>
+                <div className="section-label" style={{ marginBottom: '.8rem' }}>▶ MODULE COMPLETION</div>
+                <BarChart data={chartData} height={160} />
+              </div>
+              <div className="card pop-in" style={{ flex: 1, display: 'flex', flexDirection: 'column', animationDelay: '0.2s' }}>
+                <div className="section-label" style={{ marginBottom: '1.2rem' }}>▶ RECENT DRILL ACTIVITY</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', flex: 1 }}>
+                  {drills.length === 0 ? <div style={{ color: 'var(--text-muted)', fontSize: '.9rem' }}>No drills recorded yet.</div> : null}
+                  {drills.slice(0, 3).map((d) => (
+                    <div key={d.id} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', paddingBottom: '1rem', borderBottom: '1px solid var(--bg-hover)' }}>
+                      <div style={{ width: 10, height: 10, borderRadius: '50%', background: d.status === 'Completed' ? 'var(--green-500)' : 'var(--orange-500)', marginTop: 4 }} />
+                      <div>
+                        <div style={{ fontSize: '.95rem', color: 'var(--text-primary)', fontWeight: 600, lineHeight: 1.3, marginBottom: '.2rem' }}>{d.title}</div>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.7rem', color: 'var(--text-muted)' }}>{new Date(d.timestamp).toLocaleString()}</div>
+                      </div>
+                    </div>
+                  ))}
+                  <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
+                    <a href="#/admin/drills" style={{ fontSize: '.85rem', fontWeight: 700, color: 'var(--red-600)' }}>VIEW ALL LOGS ↗</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function StudentDatabase({ onToast }) {
+      const { fbUser } = useAuth();
+      const [students, setStudents] = useState([]);
+
+      const [showAdd, setShowAdd] = useState(false);
+      const [form, setForm] = useState({ name: '', rollNo: '', dept: 'Computer Science', status: 'Active' });
+
+      const MODS = ['fire', 'flood', 'medical', 'threat'];
+      const MOD_COLORS = { fire: 'var(--red-600)', flood: 'var(--red-400)', medical: 'var(--red-500)', threat: 'var(--text-secondary)' };
+
+      useEffect(() => {
+        if (!fbUser) return;
+        const unsub = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'users'), (snap) => {
+          const arr = [];
+          snap.forEach(d => { if (d.data().role === 'student') arr.push({ ...d.data(), id: d.id }); });
+          setStudents(arr);
+        }, err => console.error(err));
+        return () => unsub();
+      }, [fbUser]);
+
+      const handleAdd = async () => {
+        if (!form.name || !form.rollNo) {
+          onToast('Please fill all required fields.', 'error');
+          return;
+        }
+        const newId = crypto.randomUUID();
+        try {
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', newId), {
+            ...form, id: newId, role: 'student', completedModules: [], bloodGroup: '', medicalNotes: ''
+          });
+          setShowAdd(false);
+          setForm({ name: '', rollNo: '', dept: 'Computer Science', status: 'Active' });
+          onToast('Student added to live registry!', 'success');
+        } catch (err) {
+          onToast('Failed to add student to database', 'error');
+        }
+      };
+
+      const handleDelete = async (id) => {
+        if (window.confirm('Are you sure you want to remove this student?')) {
+          try {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id));
+            onToast('Student removed from database', 'success');
+          } catch (err) {
+            onToast('Error deleting student', 'error');
+          }
+        }
+      };
+
+      return (
+        <div className="fade-in">
+          <div className="section-label">▶ LIVE DATABASE</div>
+          <h1 className="section-title" style={{ marginBottom: '1.5rem' }}>STUDENT REGISTRY</h1>
+          <div className="card" style={{ padding: 0, overflowX: 'auto' }}>
+            <table className="data-table">
+              <thead><tr><th>NAME</th><th>ROLL NO</th><th>DEPARTMENT</th><th>MEDICAL INFO</th><th>TRAINING PROGRESS</th><th>STATUS</th><th></th></tr></thead>
+              <tbody>
+                {students.length === 0 ? <tr><td colSpan="7" style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No students in database.</td></tr> : null}
+                {students.map(s => (
+                  <tr key={s.id}>
+                    <td style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{s.name}</td>
+                    <td style={{ fontFamily: 'var(--font-mono)', fontSize: '.8rem' }}>{s.rollNo}</td>
+                    <td>{s.dept}</td>
+                    <td>
+                      {s.bloodGroup ? <span className="badge badge-red">{s.bloodGroup}</span> : <span style={{ color: 'var(--text-muted)', fontSize: '.8rem' }}>N/A</span>}
+                    </td>
+                    <td style={{ minWidth: 140 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '.8rem' }}>
+                        <div style={{ display: 'flex', gap: 4 }}>
+                          {MODS.map(m => (
+                            <div key={m} title={m} style={{
+                              width: 20, height: 6, borderRadius: 2,
+                              background: (s.completedModules || []).includes(m) ? MOD_COLORS[m] : 'var(--bg-hover)'
+                            }} />
+                          ))}
+                        </div>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '.7rem', color: 'var(--text-muted)' }}>{(s.completedModules || []).length}/4</span>
+                      </div>
+                    </td>
+                    <td><span className={`badge ${s.status === 'Active' ? 'badge-green' : 'badge-muted'}`}>{s.status}</span></td>
+                    <td>
+                      <button onClick={() => handleDelete(s.id)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }} title="Delete user">
+                        <Icon name="trash" size={16} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-start' }}>
+            <button onClick={() => setShowAdd(true)} className="btn btn-primary" style={{ padding: '.8rem 1.6rem' }}>
+              <Icon name="plus" size={18} color="#fff" /> ADD NEW STUDENT
+            </button>
+          </div>
+
+          {showAdd && (
+            <div className="modal-overlay" onClick={() => setShowAdd(false)}>
+              <div className="modal-box" onClick={e => e.stopPropagation()}>
+                <div className="section-label">▶ NEW ENTRY</div>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2.2rem', marginBottom: '1.5rem', color: 'var(--text-primary)' }}>ADD STUDENT</h2>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 600 }}>FULL NAME</div>
+                    <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="e.g. Priya Sharma" />
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 600 }}>ROLL NUMBER</div>
+                    <input value={form.rollNo} onChange={e => setForm({ ...form, rollNo: e.target.value })} placeholder="e.g. CS22045" />
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 600 }}>DEPARTMENT</div>
+                      <select value={form.dept} onChange={e => setForm({ ...form, dept: e.target.value })}>
+                        <option>Computer Science</option>
+                        <option>Electronics</option>
+                        <option>Mechanical</option>
+                        <option>Civil Eng.</option>
+                      </select>
+                    </div>
+                    <div>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 600 }}>STATUS</div>
+                      <select value={form.status} onChange={e => setForm({ ...form, status: e.target.value })}>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+                    <button onClick={() => setShowAdd(false)} className="btn btn-ghost">CANCEL</button>
+                    <button onClick={handleAdd} className="btn btn-primary"><Icon name="check" size={16} color="#fff" /> SAVE</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function DrillManager({ onToast }) {
+      const { fbUser } = useAuth();
+      const [drills, setDrills] = useState([]);
+      const [form, setForm] = useState({ title: '', type: 'Fire' });
+      const [generating, setGenerating] = useState(false);
+      const [generatingReportId, setGeneratingReportId] = useState(null);
+      const [reports, setReports] = useState({});
+      const { generate } = useGemini();
+
+      useEffect(() => {
+        if (!fbUser) return;
+        const unsub = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'drills'), (snap) => {
+          const arr = []; snap.forEach(d => arr.push({ ...d.data(), id: d.id }));
+          arr.sort((a, b) => b.timestamp - a.timestamp);
+          setDrills(arr);
+        }, err => console.error(err));
+        return () => unsub();
+      }, [fbUser]);
+
+      const scheduleDrill = async () => {
+        if (!form.title) { onToast('Enter a title', 'warn'); return; }
+        try {
+          await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'drills'), {
+            title: form.title, type: form.type, timestamp: Date.now(), status: 'Completed'
+          });
+          onToast('Drill added to cloud history!', 'success');
+          setForm({ title: '', type: 'Fire' });
+        } catch (e) {
+          onToast('Failed to schedule', 'error');
+        }
+      };
+
+      const deleteDrill = async (id) => {
+        try {
+          await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'drills', id));
+          onToast('Drill deleted', 'info');
+        } catch (e) { }
+      };
+
+      const handleAiGenerate = async () => {
+        setGenerating(true);
+        try {
+          const prompt = `Generate a realistic 1-sentence emergency drill alert title for a university campus for a ${form.type} emergency. Keep it under 60 characters. Do not use quotes or prefixes.`;
+          const result = await generate(prompt, "You are a campus safety officer writing drill alerts.");
+          setForm(prev => ({ ...prev, title: result.trim().replace(/^"|"$/g, '') }));
+          onToast('Scenario generated!', 'success');
+        } catch (e) {
+          onToast('AI Generation failed.', 'error');
+        } finally {
+          setGenerating(false);
+        }
+      };
+
+      const handleGenerateReport = async (drill) => {
+        setGeneratingReportId(drill.id);
+        try {
+          const prompt = `Write a short, professional post-drill summary report (2-3 sentences) for a completed "${drill.type}" emergency drill titled "${drill.title}". Invent 1 realistic area for improvement.`;
+          const result = await generate(prompt, "You are a campus safety administrative AI.");
+          setReports(prev => ({ ...prev, [drill.id]: result }));
+          onToast('Report generated!', 'success');
+        } catch (e) {
+          onToast('AI Generation failed.', 'error');
+        } finally {
+          setGeneratingReportId(null);
+        }
+      };
+
+      return (
+        <div className="fade-in">
+          <div className="section-label">▶ CLOUD MANAGEMENT</div>
+          <h1 className="section-title" style={{ marginBottom: '1.5rem' }}>DRILL MANAGER</h1>
+          <div className="card" style={{ marginBottom: '2rem', borderLeft: '4px solid var(--red-600)' }}>
+            <div className="section-label" style={{ marginBottom: '1rem' }}>RECORD NEW DRILL</div>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+              <div style={{ flex: 1, minWidth: 200 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 600 }}>DRILL TITLE</div>
+                  <button onClick={handleAiGenerate} disabled={generating} style={{ background: 'none', border: 'none', fontSize: '.7rem', color: 'var(--red-600)', fontWeight: 700, cursor: 'pointer' }}>
+                    {generating ? '✨ GENERATING...' : '✨ AUTO-GENERATE'}
+                  </button>
+                </div>
+                <input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} placeholder="e.g. Full Campus Evacuation" />
+              </div>
+              <div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 600 }}>TYPE</div>
+                <select value={form.type} onChange={e => setForm({ ...form, type: e.target.value })} style={{ minWidth: 150 }}>
+                  <option>Fire</option><option>Flood</option><option>Medical</option><option>Threat</option>
+                </select>
+              </div>
+              <button className="btn btn-primary" onClick={scheduleDrill} style={{ padding: '.8rem 1.4rem' }}>
+                <Icon name="bell" size={16} color="#fff" /> SCHEDULE
+              </button>
+            </div>
+          </div>
+
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.8rem', fontWeight: 600 }}>CLOUD DRILL HISTORY</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {drills.length === 0 ? <div style={{ color: 'var(--text-muted)' }}>No history yet.</div> : null}
+            {drills.map(d => (
+              <div key={d.id} className="card card-hover" style={{ display: 'flex', flexDirection: 'column', padding: '1.2rem', gap: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: '.2rem', color: 'var(--text-primary)' }}>{d.title}</div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.8rem', color: 'var(--text-muted)' }}>{new Date(d.timestamp).toLocaleString()} • {d.type}</div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    {d.status === 'Completed' && (
+                      <button onClick={() => handleGenerateReport(d)} disabled={generatingReportId === d.id} style={{ background: 'none', border: 'none', fontSize: '.75rem', color: 'var(--red-600)', fontWeight: 700, cursor: 'pointer' }}>
+                        {generatingReportId === d.id ? '✨ GENERATING...' : '✨ AI REPORT'}
+                      </button>
+                    )}
+                    <span className={`badge ${d.status === 'Completed' ? 'badge-green' : 'badge-orange'}`}>
+                      {d.status === 'Completed' ? '✔ COMPLETED' : '⚠ ACTIVE'}
+                    </span>
+                    <button onClick={() => deleteDrill(d.id)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><Icon name="trash" size={18} /></button>
+                  </div>
+                </div>
+                {reports[d.id] && (
+                  <div className="fade-in" style={{ padding: '1rem', background: 'var(--bg-elevated)', borderRadius: '8px', borderLeft: '3px solid var(--red-600)', fontSize: '.9rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--red-600)', fontWeight: 700, marginBottom: '.4rem', letterSpacing: '.05em' }}>✨ AI POST-DRILL SUMMARY</div>
+                    {reports[d.id]}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function StudentPortal() {
+      const { user } = useAuth();
+      const modules = [
+        { key: 'fire', label: 'Fire Safety', color: '#ef4444', emoji: '🔥', desc: 'Evacuation drills, extinguisher usage, R.A.C.E protocol' },
+        { key: 'flood', label: 'Flood Protocol', color: '#dc2626', emoji: '🌊', desc: 'Flood response, safe zones, water contamination risks' },
+        { key: 'medical', label: 'Medical Emergency', color: '#f87171', emoji: '⚕️', desc: 'First aid, CPR basics, and immediate response protocols' },
+        { key: 'threat', label: 'Active Threat', color: '#991b1b', emoji: '🛡️', desc: 'Run Hide Fight protocol, lockdown procedures, reporting' },
+      ];
+      const done = user?.completedModules || [];
+      const pct = Math.round((done.length / 4) * 100);
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} className="fade-in">
+          <div>
+            <div className="section-label" style={{ marginBottom: '.2rem' }}>▶ STUDENT PORTAL</div>
+            <h1 className="section-title" style={{ fontSize: 'clamp(1.6rem,2.5vw,2.2rem)' }}>WELCOME, <span style={{ color: 'var(--red-600)' }}>{(user?.name || 'STUDENT').toUpperCase()}</span></h1>
+          </div>
+
+          <div className="card pop-in" style={{ borderTop: '4px solid var(--red-600)', padding: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '.8rem' }}>
+              <div>
+                <div className="section-label" style={{ marginBottom: '.2rem' }}>YOUR TRAINING PROGRESS</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2rem', color: 'var(--text-primary)', lineHeight: 1 }}>{done.length}<span style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '1.2rem' }}>/4 MODULES</span></div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '2.8rem', color: pct >= 100 ? 'var(--green-500)' : pct > 50 ? 'var(--red-500)' : 'var(--text-primary)', lineHeight: 1 }}>{Math.min(pct, 100)}%</div>
+              </div>
+            </div>
+            <div className="progress-track" style={{ height: 10 }}>
+              <div className="progress-fill" style={{ width: `${Math.min(pct, 100)}%`, background: pct >= 100 ? 'var(--green-500)' : pct > 50 ? 'var(--red-500)' : 'var(--red-600)' }} />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+            <div className="card card-hover pop-in" style={{ cursor: 'pointer', position: 'relative', overflow: 'hidden', borderRadius: '16px', padding: '1.2rem', background: 'linear-gradient(135deg, rgba(220,38,38,0.05), transparent)', border: '1px solid rgba(220,38,38,0.2)' }} onClick={() => navigate('#/portal/simulator')}>
+              <div style={{ position: 'absolute', top: '-1.5rem', right: '-1.5rem', fontSize: '4rem', opacity: .1, userSelect: 'none' }}>✨</div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '.8rem' }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: 'var(--red-600)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>✨</div>
+                <span className="badge badge-red" style={{ fontSize: '0.6rem' }}>AI POWERED</span>
+              </div>
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.2rem', letterSpacing: '.02em', color: 'var(--red-600)', marginBottom: '.4rem' }}>AI SIMULATOR</div>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '.85rem', lineHeight: 1.4, marginBottom: '.8rem' }}>Test your reflexes in dynamically generated emergency scenarios.</p>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', fontWeight: 700, color: 'var(--red-600)', letterSpacing: '.08em' }}>START SIMULATION →</div>
+            </div>
+            {modules.map((m, i) => {
+              const completed = done.includes(m.key);
+              return (
+                <div key={m.key} className="card card-hover pop-in" style={{ animationDelay: `${i * 0.1}s`, cursor: 'pointer', position: 'relative', overflow: 'hidden', borderRadius: '16px', padding: '1.2rem' }} onClick={() => navigate(`#/portal/quiz/${m.key}`)}>
+                  <div style={{ position: 'absolute', top: '-1.5rem', right: '-1.5rem', fontSize: '4rem', opacity: .03, userSelect: 'none', filter: 'grayscale(100%)' }}>{m.emoji}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '.8rem' }}>
+                    <div style={{ width: 36, height: 36, borderRadius: 10, background: `${m.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>{m.emoji}</div>
+                    {completed ? <span className="badge badge-green" style={{ fontSize: '0.6rem' }}>✔ DONE</span> : <span className="badge badge-muted" style={{ fontSize: '0.6rem' }}>PENDING</span>}
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.2rem', letterSpacing: '.02em', color: m.color, marginBottom: '.4rem' }}>{m.label.toUpperCase()}</div>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '.85rem', lineHeight: 1.4, marginBottom: '.8rem' }}>{m.desc}</p>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', fontWeight: 700, color: m.color, letterSpacing: '.08em' }}>{completed ? 'REVIEW MODULE →' : 'START MODULE →'}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    function AISimulator() {
+      const { generate } = useGemini();
+      const [scenario, setScenario] = useState('');
+      const [userAction, setUserAction] = useState('');
+      const [feedback, setFeedback] = useState('');
+      const [status, setStatus] = useState('idle');
+
+      const loadScenario = async () => {
+        setStatus('loading_scenario');
+        setFeedback('');
+        setUserAction('');
+        try {
+          const res = await generate("Generate a brief, 2-sentence emergency scenario for a university student on campus (e.g., lab fire, active threat, medical issue). Address the student directly ('You are...'). Ask the student what their immediate next step is.", "You are a safety training simulator.");
+          setScenario(res);
+          setStatus('playing');
+        } catch (e) {
+          setScenario("Failed to load scenario. Please check your connection and try again.");
+          setStatus('idle');
+        }
+      };
+
+      const evaluate = async () => {
+        if (!userAction.trim()) return;
+        setStatus('loading_feedback');
+        try {
+          const prompt = `Scenario: ${scenario}\nStudent's action: ${userAction}\nEvaluate the student's action. Is it safe? What is correct and what could be improved? Be concise (3-4 sentences). Give a final safety rating out of 10.`;
+          const res = await generate(prompt, "You are a campus safety expert evaluating a student's emergency response.");
+          setFeedback(res);
+          setStatus('review');
+        } catch (e) {
+          setFeedback("Error evaluating response. Please try again.");
+          setStatus('playing');
+        }
+      };
+
+      return (
+        <div className="fade-in" style={{ maxWidth: 700, margin: '0 auto' }}>
+          <div className="section-label" style={{ color: 'var(--red-600)' }}>▶ AI POWERED TRAINING</div>
+          <h1 className="section-title" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <span style={{ color: 'var(--red-600)' }}>✨ AI SIMULATOR</span>
+          </h1>
+
+          <div className="card" style={{ borderTop: '4px solid var(--red-600)', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            {status === 'idle' && (
+              <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🤖</div>
+                <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)', marginBottom: '.5rem' }}>Test Your Crisis Reflexes</h3>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', maxWidth: 400, margin: '0 auto 2rem' }}>
+                  Our Gemini-powered AI will generate a unique, realistic emergency scenario on campus. Describe your exact response and receive instant expert feedback.
+                </p>
+                <button onClick={loadScenario} className="btn btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>
+                  ✨ GENERATE SCENARIO
+                </button>
+              </div>
+            )}
+
+            {status === 'loading_scenario' && (
+              <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--red-600)', fontWeight: 600 }}>
+                <div style={{ animation: 'pulse 1s infinite', fontSize: '2rem', marginBottom: '1rem' }}>✨</div>
+                Generating dynamic scenario...
+              </div>
+            )}
+
+            {(status === 'playing' || status === 'loading_feedback' || status === 'review') && (
+              <div className="fade-in">
+                <div style={{ background: 'rgba(220,38,38,0.05)', border: '1px solid rgba(220,38,38,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '1.5rem' }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--red-600)', fontWeight: 700, letterSpacing: '.1em', marginBottom: '.5rem' }}>SCENARIO</div>
+                  <p style={{ fontSize: '1.1rem', color: 'var(--text-primary)', lineHeight: 1.6, fontWeight: 500 }}>{scenario}</p>
+                </div>
+
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', fontWeight: 700, letterSpacing: '.1em', marginBottom: '.5rem' }}>YOUR ACTION</div>
+                  <textarea
+                    rows={4}
+                    disabled={status !== 'playing'}
+                    value={userAction}
+                    onChange={e => setUserAction(e.target.value)}
+                    placeholder="Describe exactly what you would do next..."
+                    style={{ resize: 'none' }}
+                  />
+                </div>
+
+                {status === 'playing' && (
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <button onClick={evaluate} disabled={!userAction.trim()} className="btn btn-primary" style={{ background: 'var(--red-600)' }}>
+                      EVALUATE RESPONSE →
+                    </button>
+                  </div>
+                )}
+
+                {status === 'loading_feedback' && (
+                  <div style={{ textAlign: 'center', padding: '1rem', color: 'var(--text-secondary)', fontWeight: 600, animation: 'pulse 1s infinite' }}>
+                    Evaluating your response...
+                  </div>
+                )}
+
+                {status === 'review' && (
+                  <div className="fade-in" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', padding: '1.5rem', borderRadius: '12px' }}>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-primary)', fontWeight: 700, letterSpacing: '.1em', marginBottom: '.5rem' }}>EXPERT FEEDBACK</div>
+                    <p style={{ fontSize: '1rem', color: 'var(--text-primary)', lineHeight: 1.6, marginBottom: '1.5rem' }}>{feedback}</p>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <button onClick={loadScenario} className="btn btn-ghost" style={{ color: 'var(--red-600)', borderColor: 'var(--red-600)' }}>
+                        ✨ TRY ANOTHER SCENARIO
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    function Quiz() {
+      const { fbUser, user, updateUser } = useAuth();
+      const hash = window.location.hash;
+      const topic = hash.split('/').pop();
+      const data = QUIZ_DATA[topic] || QUIZ_DATA.fire;
+      const [qIdx, setQIdx] = useState(0);
+      const [selected, setSel] = useState(null);
+      const q = data.questions[qIdx];
+
+      const handleNext = async () => {
+        if (qIdx < data.questions.length - 1) {
+          setQIdx(qIdx + 1); setSel(null);
+        } else {
+          if (user && fbUser && !(user.completedModules || []).includes(topic)) {
+            const newCompleted = [...(user.completedModules || []), topic];
+            await updateUser({ completedModules: newCompleted });
+          }
+          window.location.hash = '#/portal';
+        }
+      };
+
+      return (
+        <div className="fade-in" style={{ maxWidth: 640, margin: '0 auto' }}>
+          <div className="section-label">▶ QUIZ MODULE</div>
+          <h1 className="section-title" style={{ color: data.color, marginBottom: '1.5rem' }}>{data.emoji} {data.title.toUpperCase()} TEST</h1>
+
+          <div className="progress-track" style={{ height: 8, marginBottom: '1.5rem' }}>
+            <div className="progress-fill" style={{ width: `${((qIdx + 1) / data.questions.length) * 100}%`, background: data.color }} />
+          </div>
+
+          <div className="card">
+            <div style={{ fontFamily: 'var(--font-mono)', color: data.color, marginBottom: '.5rem', fontWeight: 700 }}>QUESTION {qIdx + 1} OF {data.questions.length}</div>
+            <h3 style={{ marginBottom: '1.5rem', fontSize: '1.2rem', lineHeight: 1.4, color: 'var(--text-primary)' }}>{q.q}</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '.8rem' }}>
+              {q.options.map((opt, i) => (
+                <button key={i} className={`quiz-option ${selected === i ? 'selected' : ''}`} onClick={() => setSel(i)}>
+                  {opt}
+                </button>
+              ))}
+            </div>
+            <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <a href="#/portal" style={{ fontFamily: 'var(--font-ui)', fontWeight: 600, color: 'var(--text-muted)' }}>← CANCEL</a>
+              <button className="btn btn-primary" disabled={selected === null} style={{ background: data.color }} onClick={handleNext}>
+                {qIdx < data.questions.length - 1 ? 'NEXT QUESTION →' : 'FINISH MODULE →'}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function EvacuationMap() {
+      const [view, setView] = useState('campus');
+      const [activeBuilding, setActiveBuilding] = useState(null);
+      const [activeFloor, setActiveFloor] = useState(0);
+      const [hoveredBuilding, setHoveredBuilding] = useState(null);
+      const [selectedRoomIndex, setSelectedRoomIndex] = useState(null);
+
+      const { generate } = useGemini();
+      const [roomAiQuery, setRoomAiQuery] = useState('');
+      const [roomAiResponse, setRoomAiResponse] = useState('');
+      const [roomAiLoading, setRoomAiLoading] = useState(false);
+
+      const buildings = [
+        { id: 'a', label: 'Block A', sub: 'Academic Wing', x: 180, y: 80, w: 180, h: 120, floors: 4 },
+        { id: 'b', label: 'Block B', sub: 'Science Labs', x: 400, y: 80, w: 160, h: 100, floors: 4 },
+        { id: 'c', label: 'Block C', sub: 'Administration', x: 120, y: 230, w: 150, h: 140, floors: 4 },
+        { id: 'l', label: 'Library', sub: 'Resource Center', x: 310, y: 250, w: 180, h: 110, floors: 4 },
+        { id: 'k', label: 'Canteen', sub: 'Food Court', x: 520, y: 270, w: 140, h: 120, floors: 2 },
+      ];
+
+      const handleBuildingClick = (b) => {
+        setActiveBuilding(b.id);
+        setActiveFloor(0);
+        setSelectedRoomIndex(null);
+        setView('building');
+      };
+
+      const handleRoomSelect = (idx) => {
+        setSelectedRoomIndex(idx);
+        setRoomAiQuery('');
+        setRoomAiResponse('');
+      };
+
+      const askRoomAI = async (roomName, riskProfile) => {
+        if (!roomAiQuery.trim()) return;
+        setRoomAiLoading(true);
+        try {
+          const prompt = `I am a student in the ${roomName}. The known hazards are: ${riskProfile.hazards.join(', ')}. I want to: "${roomAiQuery}". Is this safe? Give a concise 2-sentence evaluation.`;
+          const res = await generate(prompt, "You are a strict, concise campus safety AI.");
+          setRoomAiResponse(res);
+        } catch (e) {
+          setRoomAiResponse("Error assessing safety. Assume it is unsafe.");
+        } finally {
+          setRoomAiLoading(false);
+        }
+      };
+
+      const getFloorDetails = (bId, floor) => {
+        const items = [];
+        items.push({ type: 'exit', x: 40, y: 250, label: floor === 0 ? 'EXIT' : 'STAIRS' });
+        items.push({ type: 'exit', x: 760, y: 250, label: floor === 0 ? 'EXIT' : 'STAIRS' });
+        items.push({ type: 'ext', x: 400, y: 180, label: 'FIRE EXT' });
+        if (floor > 0) items.push({ type: 'ext', x: 200, y: 320, label: 'FIRE EXT' });
+        items.push({ type: 'firstaid', x: 600, y: 180, label: 'FIRST AID' });
+
+        if (bId === 'b') {
+          if (floor === 1) items.push({ type: 'hazard', x: 180, y: 80, label: 'CHEMICAL LAB', desc: 'Flammable Storage' });
+          if (floor === 2) items.push({ type: 'hazard', x: 550, y: 360, label: 'BIO LAB', desc: 'Biohazard Materials' });
+        }
+        if (bId === 'a' && floor === 3) {
+          items.push({ type: 'hazard', x: 400, y: 80, label: 'SERVER ROOM', desc: 'High Voltage / Halon System' });
+        }
+        if (bId === 'k' && floor === 0) {
+          items.push({ type: 'hazard', x: 250, y: 360, label: 'KITCHEN', desc: 'Gas Lines & Oils' });
+        }
+        if (bId === 'c' && floor === 0) {
+          items.push({ type: 'hazard', x: 150, y: 80, label: 'MAIN ELEC PANEL', desc: 'High Voltage' });
+        }
+
+        return items;
+      };
+
+      const getRoomLabels = (bId, floor) => {
+        const f = floor === 0 ? '1' : floor === 1 ? '2' : floor === 2 ? '3' : '4';
+        if (bId === 'a') {
+          const topMid = floor === 3 ? 'SERVER ROOM' : `LECTURE HALL ${f}A`;
+          return [`CLASS ${f}01`, topMid, `CLASS ${f}02`, `CLASS ${f}03`, `STAFF ${f}01`, `CLASS ${f}04`];
+        }
+        if (bId === 'b') {
+          const topLeft = floor === 1 ? 'CHEMICAL LAB' : `PHYSICS LAB ${f}`;
+          const botRight = floor === 2 ? 'BIO LAB' : `COMPUTER LAB ${f}B`;
+          return [topLeft, `MAIN LAB ${f}`, `PREP ROOM ${f}`, `WORKSHOP ${f}`, `STORAGE ${f}`, botRight];
+        }
+        if (bId === 'c') {
+          const topLeft = floor === 0 ? 'ELEC ROOM' : `ADMIN ${f}01`;
+          return floor === 0
+            ? [topLeft, 'MAIN OFFICE', 'ACCOUNTS', 'ADMISSIONS', 'PANTRY', 'MEETING ROOM']
+            : [topLeft, `CONFERENCE ${f}`, `ADMIN ${f}02`, 'HR DEPT', 'RECORDS', 'IT SUPPORT'];
+        }
+        if (bId === 'l') {
+          return floor === 0
+            ? ['CIRCULATION', 'MAIN READING', 'NEW ARRIVALS', 'PERIODICALS', 'OFFICE', 'REFERENCE']
+            : [`QUIET ZONE ${f}`, `STACKS ${f}A`, `STACKS ${f}B`, 'DIGITAL LAB', 'STUDY ROOMS', 'ARCHIVES'];
+        }
+        if (bId === 'k') {
+          const botLeft = floor === 0 ? 'KITCHEN' : 'PREP KITCHEN';
+          return floor === 0
+            ? ['WASHING', 'MAIN DINING', 'SNACK COUNTER', botLeft, 'STORE', 'STAFF DINING']
+            : ['TERRACE DINING', 'EVENT HALL', 'BALCONY SEATING', botLeft, 'STORAGE', 'RESTROOMS'];
+        }
+        return ['ROOM 1', 'ROOM 2', 'ROOM 3', 'ROOM 4', 'ROOM 5', 'ROOM 6'];
+      };
+
+      const getRoomHazardDetails = (label) => {
+        const lbl = label.toUpperCase();
+
+        if (lbl.includes('LAB') || lbl.includes('WORKSHOP') || lbl.includes('PREP')) {
+          return {
+            status: 'HIGH HAZARD', color: 'var(--red-500)', bg: 'rgba(239,68,68,0.08)',
+            hazards: ['Toxic chemical agents & acids', 'Bunsen burners & live gas valves', 'Biological hazardous materials'],
+            eq: ['Chemical Spill Kit inside', 'Emergency Eye Wash Station', 'Class D / CO2 Fire Extinguisher']
+          };
+        } else if (lbl.includes('SERVER') || lbl.includes('IT') || lbl.includes('ELEC') || lbl.includes('PANEL')) {
+          return {
+            status: 'CRITICAL RISK', color: 'var(--red-500)', bg: 'rgba(239,68,68,0.08)',
+            hazards: ['Extreme High Voltage (480V+)', 'Severe overheating & electrical fire risk', 'Arc flash danger'],
+            eq: ['Clean Agent (Halon) Extinguisher', 'Main Emergency Power Cutoff (EPO)', 'DO NOT USE WATER!']
+          };
+        } else if (lbl.includes('KITCHEN') || lbl.includes('PANTRY') || lbl.includes('DINING')) {
+          return {
+            status: 'MEDIUM RISK', color: 'var(--orange-500)', bg: 'rgba(249,115,22,0.08)',
+            hazards: ['Open stove flames & hot surfaces', 'Boiling cooking oils', 'Pressurized commercial gas lines'],
+            eq: ['Class K (Wet Chemical) Extinguisher', 'Heavy Duty Fire Blanket', 'Gas Shutoff Valve']
+          };
+        } else if (lbl.includes('ADMIN') || lbl.includes('OFFICE') || lbl.includes('STAFF') || lbl.includes('RECORDS')) {
+          return {
+            status: 'LOW RISK', color: 'var(--blue-500)', bg: 'rgba(59,130,246,0.08)',
+            hazards: ['Daisy-chained power strips', 'Combustible paper archives', 'Trip hazards in tight cubicles'],
+            eq: ['Standard ABC Fire Extinguisher', 'First Aid Kit at Reception']
+          };
+        } else {
+          return {
+            status: 'SAFE ZONE', color: 'var(--green-500)', bg: 'rgba(16,185,129,0.08)',
+            hazards: ['Standard classroom environment', 'Minimal physical hazards present', 'Maintain clear path to exit doors'],
+            eq: ['Follow corridor signs to main exit', 'Fire alarm pull station in hallway', 'Evacuation map posted near door']
+          };
+        }
+      };
+
+      const renderFloorPlan = () => {
+        const bldg = buildings.find(b => b.id === activeBuilding);
+        if (!bldg) { setView('campus'); return null; }
+
+        const details = getFloorDetails(activeBuilding, activeFloor);
+        const labels = getRoomLabels(activeBuilding, activeFloor);
+        const roomLayouts = [
+          { x: 24, y: 24, w: 180, h: 172, label: labels[0] },
+          { x: 208, y: 24, w: 380, h: 172, label: labels[1] },
+          { x: 592, y: 24, w: 184, h: 172, label: labels[2] },
+          { x: 24, y: 304, w: 280, h: 172, label: labels[3] },
+          { x: 308, y: 304, w: 180, h: 172, label: labels[4] },
+          { x: 492, y: 304, w: 284, h: 172, label: labels[5] },
+        ];
+
+        return (
+          <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 500 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', background: 'var(--bg-surface)', padding: '1rem', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <button onClick={() => setView('campus')} className="btn btn-ghost" style={{ padding: '.5rem', borderRadius: '8px' }}>
+                  <Icon name="chevron" size={20} style={{ transform: 'rotate(90deg)' }} /> BACK
+                </button>
+                <div>
+                  <div className="section-label" style={{ margin: 0 }}>▶ FLOOR PLAN VIEW</div>
+                  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--text-primary)', lineHeight: 1.1 }}>
+                    {bldg.label.toUpperCase()} <span style={{ color: 'var(--text-muted)' }}>— {activeFloor === 0 ? 'GROUND' : `${activeFloor}${activeFloor === 1 ? 'ST' : activeFloor === 2 ? 'ND' : 'RD'}`} FLOOR</span>
+                  </h2>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: '10px', padding: '4px' }}>
+                {Array.from({ length: bldg.floors }, (_, i) => bldg.floors - 1 - i).map(f => (
+                  <button
+                    key={f}
+                    onClick={() => { setActiveFloor(f); setSelectedRoomIndex(null); }}
+                    style={{
+                      padding: '.6rem 1.2rem',
+                      background: activeFloor === f ? 'var(--bg-surface)' : 'transparent',
+                      color: activeFloor === f ? 'var(--text-primary)' : 'var(--text-secondary)',
+                      border: 'none',
+                      borderRadius: '6px',
+                      fontFamily: 'var(--font-mono)',
+                      fontWeight: 700,
+                      fontSize: '.9rem',
+                      cursor: 'pointer',
+                      boxShadow: activeFloor === f ? 'var(--shadow-sm)' : 'none',
+                      transition: 'all 0.2s'
+                    }}>
+                    {f === 0 ? 'G' : `F${f}`}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ flex: 1, background: 'var(--bg-surface)', borderRadius: '16px', border: '1px solid var(--border)', padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+              <svg viewBox="0 0 800 500" style={{ width: '100%', height: '100%', maxHeight: '600px' }}>
+                <defs>
+                  <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,0,0,.03)" strokeWidth="1" />
+                  </pattern>
+                  <pattern id="hatchOrange" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+                    <rect width="10" height="10" fill="rgba(249,115,22,0.1)" />
+                    <path d="M0,0 l0,10" stroke="rgba(249,115,22,0.5)" strokeWidth="2" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#gridPattern)" />
+
+                <rect x="20" y="20" width="760" height="460" rx="8" fill="var(--bg-elevated)" stroke="var(--border)" strokeWidth="4" />
+
+                <rect x="20" y="200" width="760" height="100" fill="var(--bg-surface)" />
+                <text x="400" y="255" textAnchor="middle" fill="var(--text-muted)" fontSize="18" fontWeight="bold" letterSpacing="8" opacity="0.3">MAIN CORRIDOR</text>
+
+                {roomLayouts.map((r, i) => {
+                  const isSelected = selectedRoomIndex === i;
+                  return (
+                    <g key={`room-${i}`}
+                      onClick={() => handleRoomSelect(isSelected ? null : i)}
+                      style={{ cursor: 'pointer', transition: 'all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)', transformOrigin: `${r.x + r.w / 2}px ${r.y + r.h / 2}px`, transform: isSelected ? 'scale(1.025)' : 'scale(1)' }}>
+                      <rect x={r.x} y={r.y} width={r.w} height={r.h} rx="4"
+                        fill={isSelected ? 'var(--bg-elevated)' : 'var(--bg-surface)'}
+                        stroke={isSelected ? 'var(--text-primary)' : 'var(--border)'}
+                        strokeWidth={isSelected ? 2 : 1.5}
+                        style={{ transition: 'all 0.25s' }} />
+                      <text x={r.x + r.w / 2} y={r.y + r.h / 2 + 5} textAnchor="middle"
+                        fill={isSelected ? 'var(--text-primary)' : 'var(--text-secondary)'}
+                        fontSize={isSelected ? "14" : "13"} fontWeight="800" fontFamily="var(--font-ui)" letterSpacing="0.05em" opacity={isSelected ? "1" : "0.7"}
+                        style={{ transition: 'all 0.25s' }}>
+                        {r.label}
+                      </text>
+                    </g>
+                  );
+                })}
+
+                {details.map((item, i) => {
+                  if (item.type === 'exit') {
+                    return (
+                      <g key={i} transform={`translate(${item.x}, ${item.y})`}>
+                        <rect x="-30" y="-15" width="60" height="30" rx="4" fill="rgba(16,185,129,0.1)" stroke="var(--green-500)" strokeWidth="2" />
+                        <text x="0" y="4" textAnchor="middle" fill="var(--green-500)" fontSize="12" fontWeight="bold" fontFamily="var(--font-mono)">{item.label}</text>
+                      </g>
+                    );
+                  }
+                  if (item.type === 'ext') {
+                    return (
+                      <g key={i} transform={`translate(${item.x}, ${item.y})`}>
+                        <circle cx="0" cy="0" r="14" fill="rgba(239,68,68,0.1)" stroke="var(--red-500)" strokeWidth="2" />
+                        <text x="0" y="4" textAnchor="middle" fill="var(--red-500)" fontSize="10" fontWeight="bold">FE</text>
+                      </g>
+                    );
+                  }
+                  if (item.type === 'firstaid') {
+                    return (
+                      <g key={i} transform={`translate(${item.x}, ${item.y})`}>
+                        <rect x="-12" y="-12" width="24" height="24" rx="4" fill="rgba(16,185,129,0.1)" stroke="var(--green-500)" strokeWidth="2" />
+                        <text x="0" y="5" textAnchor="middle" fill="var(--green-500)" fontSize="14" fontWeight="bold">+</text>
+                      </g>
+                    );
+                  }
+                  if (item.type === 'hazard') {
+                    return (
+                      <g key={i} transform={`translate(${item.x}, ${item.y})`} style={{ animation: 'pulse 2s infinite' }}>
+                        <rect x="-70" y="-40" width="140" height="80" rx="8" fill="url(#hatchOrange)" stroke="var(--orange-500)" strokeWidth="2" strokeDasharray="4 4" />
+                        <rect x="-60" y="-12" width="120" height="24" rx="4" fill="var(--orange-500)" />
+                        <text x="0" y="4" textAnchor="middle" fill="#fff" fontSize="11" fontWeight="bold" fontFamily="var(--font-mono)">⚠ {item.label}</text>
+                        <text x="0" y="24" textAnchor="middle" fill="var(--orange-500)" fontSize="10" fontWeight="bold">{item.desc}</text>
+                      </g>
+                    );
+                  }
+                  return null;
+                })}
+              </svg>
+
+              {selectedRoomIndex !== null && (() => {
+                const activeRoom = roomLayouts[selectedRoomIndex];
+                const riskProfile = getRoomHazardDetails(activeRoom.label);
+                return (
+                  <div className="fade-in" style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', background: 'var(--bg-surface)', padding: '1.2rem', borderRadius: '16px', border: `2px solid ${riskProfile.color}`, boxShadow: `0 12px 30px ${riskProfile.bg}`, width: '340px', maxHeight: '90%', overflowY: 'auto', zIndex: 10 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                      <div>
+                        <div className="section-label" style={{ margin: 0, color: riskProfile.color }}>▶ AREA DETAILS</div>
+                        <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', color: 'var(--text-primary)', lineHeight: 1.1 }}>{activeRoom.label}</div>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '.4rem', background: riskProfile.bg, color: riskProfile.color, padding: '.3rem .6rem', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontSize: '.65rem', fontWeight: 700, marginTop: '.5rem', letterSpacing: '.05em', border: `1px solid ${riskProfile.color}40` }}>
+                          <span style={{ width: 6, height: 6, borderRadius: '50%', background: riskProfile.color, display: 'inline-block', boxShadow: `0 0 6px ${riskProfile.color}` }}></span> {riskProfile.status}
+                        </div>
+                      </div>
+                      <button onClick={() => setSelectedRoomIndex(null)} style={{ background: 'var(--bg-base)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-muted)', cursor: 'pointer', padding: '6px' }}><Icon name="x" size={16} /></button>
+                    </div>
+
+                    <div style={{ marginBottom: '1rem' }}>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 700 }}>⚠ KNOWN HAZARDS</div>
+                      <ul style={{ paddingLeft: '1.2rem', color: 'var(--text-primary)', fontSize: '.9rem', lineHeight: 1.5, margin: 0 }}>
+                        {riskProfile.hazards.map((h, idx) => <li key={idx} style={{ marginBottom: '2px' }}>{h}</li>)}
+                      </ul>
+                    </div>
+                    <div>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 700 }}>🛡️ EMERGENCY EQUIPMENT</div>
+                      <ul style={{ paddingLeft: '1.2rem', color: 'var(--text-primary)', fontSize: '.9rem', lineHeight: 1.5, margin: 0 }}>
+                        {riskProfile.eq.map((e, idx) => <li key={idx} style={{ marginBottom: '2px' }}>{e}</li>)}
+                      </ul>
+                    </div>
+
+                    <div style={{ marginTop: '1.2rem', paddingTop: '1.2rem', borderTop: '1px solid var(--border)' }}>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--red-600)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 700 }}>✨ AI ACTIVITY ASSESSOR</div>
+                      <div style={{ display: 'flex', gap: '.5rem', marginBottom: '.8rem' }}>
+                        <input type="text" value={roomAiQuery} onChange={e => setRoomAiQuery(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') askRoomAI(activeRoom.label, riskProfile) }} placeholder="e.g., Can I plug in a heater?" style={{ padding: '.6rem', fontSize: '.85rem' }} />
+                        <button onClick={() => askRoomAI(activeRoom.label, riskProfile)} disabled={roomAiLoading || !roomAiQuery.trim()} className="btn btn-primary" style={{ background: 'var(--red-600)', padding: '.6rem .8rem', fontSize: '.8rem' }}>
+                          {roomAiLoading ? '...' : 'ASK'}
+                        </button>
+                      </div>
+                      {roomAiResponse && (
+                        <div className="fade-in" style={{ background: 'rgba(220,38,38,0.05)', padding: '.8rem', borderRadius: '8px', fontSize: '.85rem', color: 'var(--text-primary)', border: '1px solid rgba(220,38,38,0.2)', lineHeight: 1.5 }}>
+                          {roomAiResponse}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              <div style={{ position: 'absolute', bottom: '1.2rem', right: '1.2rem', background: 'var(--bg-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)' }}>
+                <div className="section-label" style={{ marginBottom: '.8rem', fontSize: '.55rem' }}>FLOOR LEGEND</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '.6rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}>
+                    <div style={{ width: 20, height: 14, border: '1.5px solid var(--green-500)', borderRadius: 3, background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 7, color: 'var(--green-500)', fontWeight: 'bold' }}>EX</div>
+                    <span style={{ fontSize: '.8rem', color: 'var(--text-primary)', fontWeight: 600 }}>Exit / Stairs</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}>
+                    <div style={{ width: 14, height: 14, border: '1.5px solid var(--red-500)', borderRadius: '50%', background: 'rgba(239,68,68,0.1)' }}></div>
+                    <span style={{ fontSize: '.8rem', color: 'var(--text-primary)', fontWeight: 600 }}>Fire Extinguisher</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}>
+                    <div style={{ width: 14, height: 14, border: '1.5px dashed var(--orange-500)', borderRadius: 3, background: 'rgba(249,115,22,0.1)' }}></div>
+                    <span style={{ fontSize: '.8rem', color: 'var(--text-primary)', fontWeight: 600 }}>Safety Hazard Area</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const renderCampusMap = () => (
+        <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', height: '100%' }}>
+          <div>
+            <div className="section-label">▶ CAMPUS SAFETY</div>
+            <h1 className="section-title">INTERACTIVE EVACUATION MAP</h1>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '1.5rem', alignItems: 'stretch', flex: 1 }}>
+
+            <div className="card pop-in" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', minHeight: 380 }}>
+              <div style={{ padding: '1.2rem 1.4rem', borderBottom: '1px solid var(--border)', background: 'var(--bg-surface)', zIndex: 2 }}>
+                <div className="section-label" style={{ margin: 0, color: 'var(--text-primary)' }}>▶ SELECT A BUILDING TO VIEW FLOORS</div>
+              </div>
+              <div style={{ background: 'var(--bg-elevated)', flex: 1, position: 'relative', minHeight: 350 }}>
+                <svg viewBox="0 0 800 450" style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} preserveAspectRatio="xMidYMid slice">
+                  <defs>
+                    <pattern id="c-dash" width="40" height="40" patternUnits="userSpaceOnUse">
+                      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,0,0,.03)" strokeWidth="1" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#c-dash)" />
+
+                  <path d="M 40 210 Q 280 200 760 230" fill="none" stroke="rgba(0,0,0,.05)" strokeWidth="24" strokeLinecap="round" />
+                  <path d="M 270 40 Q 290 200 280 410" fill="none" stroke="rgba(0,0,0,.05)" strokeWidth="24" strokeLinecap="round" />
+                  <path d="M 500 220 Q 520 150 540 80" fill="none" stroke="rgba(0,0,0,.05)" strokeWidth="20" strokeLinecap="round" />
+
+                  <g transform="translate(540, 50)">
+                    <rect width="180" height="130" rx="12" fill="#dcfce7" stroke="#34d399" strokeWidth="2" />
+                    <rect x="10" y="10" width="160" height="110" rx="4" fill="none" stroke="#34d399" strokeWidth="2" />
+                    <line x1="90" y1="10" x2="90" y2="120" stroke="#34d399" strokeWidth="2" />
+                    <circle cx="90" cy="65" r="22" fill="none" stroke="#34d399" strokeWidth="2" />
+                    <circle cx="90" cy="65" r="3" fill="#34d399" />
+                    <rect x="10" y="40" width="20" height="50" fill="none" stroke="#34d399" strokeWidth="2" />
+                    <rect x="150" y="40" width="20" height="50" fill="none" stroke="#34d399" strokeWidth="2" />
+                    <text x="90" y="150" textAnchor="middle" fill="var(--text-secondary)" fontSize="10" fontFamily="var(--font-mono)" fontWeight="700">SPORTS FIELD</text>
+                  </g>
+
+                  {buildings.map(b => {
+                    const isHovered = hoveredBuilding === b.id;
+                    return (
+                      <g key={b.id}
+                        onClick={() => handleBuildingClick(b)}
+                        onMouseEnter={() => setHoveredBuilding(b.id)}
+                        onMouseLeave={() => setHoveredBuilding(null)}
+                        style={{ cursor: 'pointer', transition: 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}
+                        transform={isHovered ? `translate(0, -6)` : `translate(0, 0)`}>
+
+                        {isHovered && <rect x={b.x + 3} y={b.y + 6} width={b.w} height={b.h} rx="12" fill="rgba(0,0,0,0.06)" />}
+
+                        <rect x={b.x} y={b.y} width={b.w} height={b.h} rx="12"
+                          fill="var(--bg-surface)"
+                          stroke={isHovered ? 'var(--red-500)' : 'var(--border)'}
+                          strokeWidth={isHovered ? "3" : "2"}
+                          style={{ transition: 'all 0.2s' }} />
+
+                        <text x={b.x + b.w / 2} y={b.y + b.h / 2 - 10} textAnchor="middle" fill={isHovered ? 'var(--red-600)' : 'var(--text-primary)'} fontSize="17" fontWeight="bold" fontFamily="var(--font-display)" style={{ transition: 'fill 0.2s' }}>{b.label}</text>
+                        <text x={b.x + b.w / 2} y={b.y + b.h / 2 + 8} textAnchor="middle" fill="var(--text-secondary)" fontSize="10" fontFamily="var(--font-mono)">{b.sub}</text>
+
+                        <g transform={`translate(${b.x + b.w / 2 - 35}, ${b.y + b.h - 26})`}>
+                          <rect width="70" height="18" rx="9"
+                            fill={isHovered ? 'var(--bg-base)' : 'var(--bg-base)'}
+                            stroke={isHovered ? 'var(--border)' : 'var(--border)'}
+                            strokeWidth="1"
+                            style={{ transition: 'all 0.2s' }} />
+                          <text x="35" y="12" textAnchor="middle"
+                            fill={isHovered ? 'var(--text-primary)' : 'var(--text-muted)'}
+                            fontSize="8.5" fontWeight="bold" fontFamily="var(--font-mono)" letterSpacing="0.05em"
+                            style={{ transition: 'fill 0.2s' }}>
+                            {b.floors} FLOORS
+                          </text>
+                        </g>
+                      </g>
+                    )
+                  })}
+                </svg>
+              </div>
+            </div>
+
+            <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div className="section-label">▶ INSTRUCTIONS</div>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '.95rem', lineHeight: 1.6 }}>
+                Welcome to the Interactive Campus Map. This tool is designed to familiarize you with the safety infrastructure across all university facilities.
+              </p>
+              <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--bg-elevated)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontWeight: 'bold', color: 'var(--red-600)' }}>1</div>
+                  <div>
+                    <strong style={{ display: 'block', color: 'var(--text-primary)', marginBottom: '.2rem' }}>Select a Building</strong>
+                    <span style={{ fontSize: '.85rem', color: 'var(--text-secondary)' }}>Click on any structure on the map to enter the detailed blueprint view.</span>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--bg-elevated)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontWeight: 'bold', color: 'var(--red-600)' }}>2</div>
+                  <div>
+                    <strong style={{ display: 'block', color: 'var(--text-primary)', marginBottom: '.2rem' }}>Navigate Floors</strong>
+                    <span style={{ fontSize: '.85rem', color: 'var(--text-secondary)' }}>Use the floor selector to inspect Ground through 3rd floor layouts.</span>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--bg-elevated)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontWeight: 'bold', color: 'var(--red-600)' }}>3</div>
+                  <div>
+                    <strong style={{ display: 'block', color: 'var(--text-primary)', marginBottom: '.2rem' }}>Identify Hazards & Equipment</strong>
+                    <span style={{ fontSize: '.85rem', color: 'var(--text-secondary)' }}>Locate fire extinguishers, emergency exits, and specific hazard zones like chemical labs or high-voltage areas.</span>
+                  </div>
+                </div>
+              </div>
+              <div style={{ marginTop: 'auto', padding: '1rem', background: 'var(--bg-elevated)', borderRadius: 12, borderLeft: '4px solid var(--text-primary)' }}>
+                <strong style={{ color: 'var(--text-primary)' }}>Note:</strong> Floor plans are schematic representations. Always follow physical exit signs during a real emergency.
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      return view === 'campus' ? renderCampusMap() : renderFloorPlan();
+    }
+
+    function Leaderboard() {
+      const { fbUser } = useAuth();
+      const [leaders, setLeaders] = useState([]);
+
+      useEffect(() => {
+        if (!fbUser) return;
+        const unsub = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'users'), (snap) => {
+          const arr = [];
+          snap.forEach(d => {
+            const data = d.data();
+            if (data.role === 'student') arr.push({ ...data, pts: (data.completedModules?.length || 0) * 200 });
+          });
+          arr.sort((a, b) => b.pts - a.pts);
+          setLeaders(arr);
+        }, err => console.error(err));
+        return () => unsub();
+      }, [fbUser]);
+
+      return (
+        <div className="fade-in" style={{ maxWidth: 640, margin: '0 auto' }}>
+          <div className="section-label">▶ LIVE RANKINGS</div>
+          <h1 className="section-title" style={{ marginBottom: '1.5rem' }}>STUDENT LEADERBOARD</h1>
+          <div className="card" style={{ padding: '2rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {leaders.length === 0 ? <div style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No students yet.</div> : null}
+              {leaders.map((l, i) => (
+                <div key={l.id} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1rem', background: i < 3 ? 'var(--bg-elevated)' : 'var(--bg-surface)', borderRadius: 16, border: i === 0 ? '1px solid var(--yellow-400)' : i === 1 ? '1px solid var(--border)' : '1px solid transparent' }}>
+                  <div style={{ fontSize: '2.2rem', fontWeight: 700, color: i === 0 ? 'var(--yellow-400)' : i === 1 ? '#a37575' : i === 2 ? '#b45309' : 'var(--text-muted)', width: 40, textAlign: 'center' }}>
+                    {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--text-primary)' }}>{l.name}</div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.75rem', color: 'var(--text-secondary)' }}>{l.rollNo || 'N/A'}</div>
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: '1.2rem', color: 'var(--red-600)' }}>{l.pts} <span style={{ fontSize: '.7rem', color: 'var(--text-muted)' }}>PTS</span></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function AIChatbot() {
+      const [open, setOpen] = useState(false);
+      const [input, setInput] = useState('');
+      const [msgs, setMsgs] = useState([{ role: 'ai', text: 'Hi! I am the DPRES Safety Assistant. Ask me anything about campus safety protocols.' }]);
+      const [loading, setLoading] = useState(false);
+      const { generate } = useGemini();
+      const msgsEndRef = useRef(null);
+
+      useEffect(() => {
+        msgsEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, [msgs, open]);
+
+      const send = async (e) => {
+        e.preventDefault();
+        if (!input.trim() || loading) return;
+        const userTxt = input;
+        setMsgs(p => [...p, { role: 'user', text: userTxt }]);
+        setInput('');
+        setLoading(true);
+        try {
+          const history = msgs.map(m => `${m.role === 'ai' ? 'Assistant' : 'User'}: ${m.text}`).join('\n');
+          const prompt = `Chat History:\n${history}\nUser: ${userTxt}\nAnswer concisely as a campus safety AI assistant for a university. Keep responses short and helpful.`;
+          const reply = await generate(prompt, "You are a concise, helpful campus safety AI assistant.");
+          setMsgs(p => [...p, { role: 'ai', text: reply }]);
+        } catch (e) {
+          setMsgs(p => [...p, { role: 'ai', text: "Sorry, I am having trouble connecting to the network right now." }]);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      return (
+        <>
+          <div className="chatbot-toggle" onClick={() => setOpen(!open)}>
+            <Icon name={open ? 'x' : 'shield'} size={24} />
+          </div>
+
+          {open && (
+            <div className="chatbot-window">
+              <div className="chatbot-header">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '.5rem' }}>
+                  <span style={{ fontSize: '1.2rem' }}>🤖</span> Safety Assistant
+                </div>
+              </div>
+              <div className="chatbot-msgs">
+                {msgs.map((m, i) => (
+                  <div key={i} className={`chatbot-msg ${m.role}`}>
+                    {m.text}
+                  </div>
+                ))}
+                {loading && (
+                  <div className="chatbot-msg ai" style={{ display: 'flex', gap: '4px', alignItems: 'center', width: 'fit-content' }}>
+                    <div style={{ width: 6, height: 6, background: 'var(--text-muted)', borderRadius: '50%', animation: 'pulse 1s infinite' }} />
+                    <div style={{ width: 6, height: 6, background: 'var(--text-muted)', borderRadius: '50%', animation: 'pulse 1s infinite .2s' }} />
+                    <div style={{ width: 6, height: 6, background: 'var(--text-muted)', borderRadius: '50%', animation: 'pulse 1s infinite .4s' }} />
+                  </div>
+                )}
+                <div ref={msgsEndRef} />
+              </div>
+              <form className="chatbot-input" onSubmit={send}>
+                <input
+                  type="text"
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  placeholder="Ask a safety question..."
+                  style={{ padding: '.6rem 1rem', borderRadius: '20px' }}
+                />
+                <button type="submit" disabled={!input.trim() || loading} style={{ background: 'var(--red-600)', color: '#fff', border: 'none', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icon name="send" size={16} />
+                </button>
+              </form>
+            </div>
+          )}
+        </>
+      );
+    }
+
+    function App() {
+      const { user, ready, updateUser, fbUser } = useAuth();
+      const hash = useRoute();
+      const [toast, setToast] = useState(null);
+      const onToast = (msg, type = 'info') => setToast({ msg, type });
+
+      if (!ready) return <div style={{ padding: '3rem', textAlign: 'center', fontFamily: 'var(--font-mono)' }}>ESTABLISHING CLOUD CONNECTION...</div>;
+      if (!user && hash !== '#/login') { setTimeout(() => navigate('#/login'), 0); return null; }
+      if (user && hash === '#/login') { setTimeout(() => navigate(user.role === 'admin' ? '#/admin' : '#/portal'), 0); return null; }
+
+      if (hash === '#/login' || !user) return <Login onToast={onToast} />;
+
+      const content = () => {
+        if (hash === '#/admin') return <AdminDashboard onToast={onToast} />;
+        if (hash === '#/admin/students') return <StudentDatabase onToast={onToast} />;
+        if (hash === '#/admin/drills') return <DrillManager onToast={onToast} />;
+        if (hash === '#/portal') return <StudentPortal />;
+        if (hash === '#/portal/simulator') return <AISimulator />;
+        if (hash.startsWith('#/portal/quiz')) return <Quiz />;
+        if (hash === '#/portal/map') return <EvacuationMap />;
+        if (hash === '#/portal/leaderboard') return <Leaderboard />;
+
+        if (hash === '#/portal/contacts') {
+          const contacts = [
+            { r: 'Campus Security', p: '9842410036', icon: 'shield', color: 'var(--red-500)', bg: 'rgba(239,68,68,0.1)' },
+            { r: 'Medical Center', p: '9875463120', icon: 'alert', color: 'var(--green-500)', bg: 'rgba(16,185,129,0.1)' },
+            { r: 'Local Police', p: '100', icon: 'shield', color: 'var(--orange-500)', bg: 'rgba(249,115,22,0.1)' },
+            { r: 'Fire Department', p: '101', icon: 'fire', color: 'var(--red-600)', bg: 'rgba(220,38,38,0.1)' }
+          ];
+
+          return (
+            <div className="fade-in" style={{ maxWidth: 700, margin: '0 auto' }}>
+              <div className="section-label">▶ DIRECTORY</div>
+              <h1 className="section-title" style={{ marginBottom: '1.5rem' }}>EMERGENCY CONTACTS</h1>
+
+              <div className="card" style={{ padding: '1.5rem', borderTop: '4px solid var(--text-primary)' }}>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                  In case of a life-threatening emergency, always contact the relevant authorities immediately. Tap the numbers below to initiate a call from a mobile device.
+                </p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  {contacts.map(c => (
+                    <div key={c.r} style={{
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      padding: '1rem 1.2rem',
+                      background: 'var(--bg-elevated)',
+                      borderRadius: '14px',
+                      border: '1px solid var(--border)',
+                      transition: 'all 0.2s ease',
+                      cursor: 'pointer'
+                    }}
+                      onMouseEnter={(e) => { e.currentTarget.style.borderColor = c.color; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = `0 6px 16px ${c.bg}`; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+                      onClick={() => window.location.href = `tel:${c.p}`}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <div style={{ width: 48, height: 48, borderRadius: '12px', background: c.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Icon name={c.icon} size={24} color={c.color} />
+                        </div>
+                        <div>
+                          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', color: 'var(--text-primary)', letterSpacing: '0.02em', lineHeight: 1.2 }}>{c.r}</div>
+                          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>Available 24/7</div>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: '1.05rem', color: c.color, letterSpacing: '0.02em' }}>{c.p}</span>
+                        <div style={{ background: c.bg, color: c.color, padding: '0.4rem 0.8rem', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.05em' }}>
+                          CALL
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        if (hash === '#/portal/settings') {
+          const handleSave = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            try {
+              await updateUser({
+                name: formData.get('name'),
+                dept: formData.get('dept'),
+                bloodGroup: formData.get('bloodGroup'),
+                medicalNotes: formData.get('medicalNotes')
+              });
+              onToast('Profile settings saved successfully!', 'success');
+            } catch (err) {
+              onToast('Error saving profile.', 'error');
+            }
+          };
+
+          return (
+            <div className="fade-in" style={{ maxWidth: 640, margin: '0 auto' }}>
+              <div className="section-label">▶ PREFERENCES</div>
+              <h1 className="section-title" style={{ marginBottom: '1.5rem' }}>PROFILE SETTINGS</h1>
+
+              <div className="card" style={{ marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border)' }}>
+                  <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon name="users" size={32} color="var(--red-600)" />
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '1.4rem', color: 'var(--text-primary)' }}>{user?.name}</div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.85rem', color: 'var(--text-muted)' }}>{user?.rollNo || 'N/A'} • {user?.email}</div>
+                  </div>
+                </div>
+
+                <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  <div>
+                    <div className="section-label" style={{ marginBottom: '1rem' }}>▶ PERSONAL INFORMATION</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
+                      <div>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 700 }}>FULL NAME</div>
+                        <input type="text" name="name" defaultValue={user?.name} />
+                      </div>
+                      <div>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 700 }}>ROLL NUMBER</div>
+                        <input type="text" defaultValue={user?.rollNo || ''} readOnly style={{ opacity: 0.6, cursor: 'not-allowed' }} />
+                      </div>
+                      <div style={{ gridColumn: '1 / -1' }}>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 700 }}>DEPARTMENT</div>
+                        <select name="dept" defaultValue={user?.dept || "Computer Science"}>
+                          <option>Computer Science</option>
+                          <option>Electronics</option>
+                          <option>Mechanical</option>
+                          <option>Faculty</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
+                    <div className="section-label" style={{ marginBottom: '1rem' }}>▶ EMERGENCY MEDICAL INFO</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                      <div>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 700 }}>BLOOD GROUP</div>
+                        <select name="bloodGroup" defaultValue={user?.bloodGroup || ""}>
+                          <option value="">Select Blood Group...</option>
+                          <option value="A+">A+</option><option value="A-">A-</option>
+                          <option value="B+">B+</option><option value="B-">B-</option>
+                          <option value="O+">O+</option><option value="O-">O-</option>
+                          <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                        </select>
+                      </div>
+                      <div>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', color: 'var(--text-secondary)', letterSpacing: '.1em', marginBottom: '.4rem', fontWeight: 700 }}>MEDICAL NOTES (ALLERGIES, CONDITIONS)</div>
+                        <textarea name="medicalNotes" rows={3} defaultValue={user?.medicalNotes || ""} placeholder="e.g. Peanut allergy, Asthma..." style={{ resize: 'vertical' }}></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
+                    <div className="section-label" style={{ marginBottom: '1rem' }}>▶ NOTIFICATION PREFERENCES</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '.8rem' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer' }}>
+                        <input type="checkbox" defaultChecked style={{ width: 'auto' }} />
+                        <span style={{ fontSize: '.95rem', color: 'var(--text-primary)', fontWeight: 500 }}>SMS Alerts for Active Drills</span>
+                      </label>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer' }}>
+                        <input type="checkbox" defaultChecked style={{ width: 'auto' }} />
+                        <span style={{ fontSize: '.95rem', color: 'var(--text-primary)', fontWeight: 500 }}>Email Weekly Digest</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+                    <button type="submit" className="btn btn-primary">
+                      SAVE CHANGES
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          );
+        }
+
+        return <div style={{ padding: '2rem' }}>NOT FOUND</div>;
+      };
+
+      return (
+        <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-deep)' }}>
+          <Sidebar role={user.role} />
+          <main style={{ flex: 1, padding: '2.5rem', overflowY: 'auto', minWidth: 0, position: 'relative' }}>
+            {content()}
+          </main>
+          <AIChatbot />
+          {toast && <Toast msg={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<AuthProvider><App /></AuthProvider>);
+  </script>
+</body>
+
+</html>
