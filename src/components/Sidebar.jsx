@@ -5,18 +5,16 @@ import {
   Users,
   Bell,
   Map,
-  Shield,
   Trophy,
   Phone,
   Settings,
   LogOut,
   ChevronLeft,
   ChevronRight,
-  ShieldAlert,
-  CloudLightning,
-  User
+  Bot
 } from 'lucide-react';
 import { navigate, useRoute } from '../hooks/useRoute';
+import Logo from './Logo';
 
 export default function Sidebar({ user, onLogout }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -32,7 +30,7 @@ export default function Sidebar({ user, onLogout }) {
       ]
     : [
         { hash: '#/portal', icon: LayoutDashboard, label: 'Overview' },
-        { hash: '#/portal/simulator', icon: Shield, label: 'AI Simulator ✨' },
+        { hash: '#/portal/simulator', icon: Bot, label: 'AI Disaster Assistant 🤖' },
         { hash: '#/portal/map', icon: Map, label: 'Evacuation Map' },
         { hash: '#/portal/leaderboard', icon: Trophy, label: 'Leaderboard' },
         { hash: '#/portal/contacts', icon: Phone, label: 'Emergency Contacts' },
@@ -47,17 +45,11 @@ export default function Sidebar({ user, onLogout }) {
     >
       {/* Sidebar Header */}
       <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-        {isOpen && (
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('#/home')}>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600 shadow-md shadow-red-600/20">
-              <ShieldAlert className="h-4.5 w-4.5 text-white" />
-            </div>
-            <span className="font-sans text-lg font-black tracking-wider bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">DPRES</span>
-          </div>
-        )}
-        {!isOpen && (
-          <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-lg bg-red-600 shadow-md shadow-red-600/20 cursor-pointer" onClick={() => navigate('#/home')}>
-            <ShieldAlert className="h-4.5 w-4.5 text-white" />
+        {isOpen ? (
+          <Logo size="sm" forceDark onClick={() => navigate('#/home')} />
+        ) : (
+          <div className="mx-auto">
+            <Logo size="sm" showText={false} forceDark onClick={() => navigate('#/home')} />
           </div>
         )}
         <button

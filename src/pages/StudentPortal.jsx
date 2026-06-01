@@ -60,30 +60,30 @@ export default function StudentPortal({ user }) {
 
       {/* Action Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Gemini AI Simulator Panel Card */}
+        {/* AI Disaster Assistant Panel Card */}
         <div
           onClick={() => navigate('#/portal/simulator')}
-          className="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent p-6 backdrop-blur-sm hover:border-blue-500/50 cursor-pointer shadow-lg transition-all group flex flex-col justify-between relative overflow-hidden"
+          className="rounded-2xl border border-red-500/30 bg-gradient-to-br from-red-500/10 via-transparent to-transparent p-6 backdrop-blur-sm hover:border-red-500/50 cursor-pointer shadow-lg transition-all group flex flex-col justify-between relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-blue-500/5 blur-xl pointer-events-none" />
+          <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-red-500/5 blur-xl pointer-events-none" />
           <div>
             <div className="flex justify-between items-start mb-6">
-              <div className="h-10 w-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30 group-hover:scale-105 transition-transform">
+              <div className="h-10 w-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center border border-red-500/30 group-hover:scale-105 transition-transform">
                 <Sparkles className="h-5 w-5 animate-pulse" />
               </div>
-              <span className="inline-flex items-center rounded-full bg-blue-500/10 border border-blue-500/20 px-2.5 py-0.5 text-[9px] font-extrabold tracking-widest text-blue-400 uppercase">
+              <span className="inline-flex items-center rounded-full bg-red-500/10 border border-red-500/20 px-2.5 py-0.5 text-[9px] font-extrabold tracking-widest text-red-400 uppercase">
                 AI Powered
               </span>
             </div>
-            <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">
-              AI Crisis Simulator
+            <h3 className="text-lg font-bold text-white group-hover:text-red-400 transition-colors">
+              AI Disaster Assistant 🤖
             </h3>
             <p className="mt-3 text-xs text-slate-400 leading-relaxed">
-              Test your reflexes in dynamically generated emergency scenarios (lab fires, threat lockdowns, flash floods). Receive immediate compliance ratings.
+              Chat with the DPRES AI for instant disaster preparedness guidance, first-aid steps, CPR help, and emergency safety information.
             </p>
           </div>
-          <div className="mt-8 flex items-center gap-1.5 text-xs font-bold text-blue-400 tracking-wider font-mono">
-            Start Simulation <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          <div className="mt-8 flex items-center gap-1.5 text-xs font-bold text-red-400 tracking-wider font-mono">
+            Open Assistant <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </div>
         </div>
 

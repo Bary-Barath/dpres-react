@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Environment variables (contain secrets like API keys)
+.env
+.env.*
+!.env.example
+
 # Claude Code local settings
 .claude/
 

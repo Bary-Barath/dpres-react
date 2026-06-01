@@ -3,11 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, X, ShieldAlert } from 'lucide-react';
 import { useRoute, navigate } from './hooks/useRoute';
 import { useAppData } from './hooks/useAppData';
+import { useTheme } from './hooks/useTheme';
+import ShortcutsHelp from './components/ShortcutsHelp';
 
 // Landing Page Components
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Features from './components/Features';
+import HowItWorks from './components/HowItWorks';
 import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import Contact from './components/Contact';
@@ -22,20 +25,27 @@ import DrillManager from './pages/DrillManager';
 import StudentPortal from './pages/StudentPortal';
 import Quiz from './pages/Quiz';
 import EvacuationMap from './pages/EvacuationMap';
-import AISimulator from './pages/AISimulator';
+import AIDisasterAssistant from './pages/AIDisasterAssistant';
 import Leaderboard from './pages/Leaderboard';
 import Contacts from './pages/Contacts';
 import Settings from './pages/Settings';
 
 const AuthContext = createContext(null);
+const ThemeContext = createContext({ theme: 'dark', toggleTheme: () => {}, setTheme: () => {} });
 
 export function useAuth() {
   return useContext(AuthContext);
 }
 
+export function useThemeContext() {
+  return useContext(ThemeContext);
+}
+
 export default function App() {
   const hash = useRoute();
   const { data, updateUsers, updateDrills } = useAppData();
+  const { theme, toggleTheme, setTheme } = useTheme();
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [activeUser, setActiveUser] = useState(() => {
     try {
       const u = sessionStorage.getItem('dpres_active_user');
@@ -130,10 +140,11 @@ export default function App() {
     // 1. Landing Page
     if (hash === '#/home' || hash === '#/' || !hash) {
       return (
-        <div className="bg-slate-950 min-h-screen text-white">
-          <Navbar activeUser={activeUser} onLogout={logout} />
+        <div className="bg-slate-50 dark:bg-slate-950 min-h-screen text-slate-900 dark:text-white transition-colors">
+          <Navbar activeUser={activeUser} onLogout={logout} onOpenShortcuts={() => setShortcutsOpen(true)} />
           <Hero />
           <Features />
+          <HowItWorks />
           <Testimonials />
           <FAQ />
           <Contact onToast={showToast} />
@@ -173,7 +184,7 @@ export default function App() {
     } else {
       if (hash === '#/portal') pageComponent = <StudentPortal user={activeUser} />;
       else if (hash.startsWith('#/portal/quiz/')) pageComponent = <Quiz />;
-      else if (hash === '#/portal/simulator') pageComponent = <AISimulator onToast={showToast} />;
+      else if (hash === '#/portal/simulator') pageComponent = <AIDisasterAssistant onToast={showToast} />;
       else if (hash === '#/portal/map') pageComponent = <EvacuationMap />;
       else if (hash === '#/portal/leaderboard') pageComponent = <Leaderboard />;
       else if (hash === '#/portal/contacts') pageComponent = <Contacts />;
@@ -194,9 +205,39 @@ export default function App() {
     );
   };
 
+  // Global keyboard shortcuts (landing only — avoid stealing keys in forms/portal)
+  useEffect(() => {
+    const isLanding = hash === '#/home' || hash === '#/' || !hash;
+    if (!isLanding) return;
+    const onKey = (e) => {
+      const tag = (e.target && e.target.tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target?.isContentEditable) return;
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        e.preventDefault();
+        setShortcutsOpen((s) => !s);
+      } else if (e.key === 'Escape') {
+        setShortcutsOpen(false);
+      } else if (e.key === 'g') {
+        e.preventDefault();
+        const next = (ev) => {
+          window.removeEventListener('keydown', next);
+          const map = { h: '#/home', f: '#features', q: '#faq', c: '#contacts', l: '#/login' };
+          if (map[ev.key]) window.location.hash = map[ev.key];
+        };
+        window.addEventListener('keydown', next, { once: true });
+      } else if (e.key === 't') {
+        toggleTheme();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [hash, toggleTheme]);
+
   return (
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
     <AuthContext.Provider value={{ user: activeUser, login, logout, updateUser }}>
       {renderContent()}
+      <ShortcutsHelp open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
 
       {/* Floating Active Emergency warning overlay (for Students only) */}
       {isAlertVisible && activeUser && activeUser.role === 'student' && (
@@ -241,5 +282,6 @@ export default function App() {
         )}
       </AnimatePresence>
     </AuthContext.Provider>
+    </ThemeContext.Provider>
   );
 }

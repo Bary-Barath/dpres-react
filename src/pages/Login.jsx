@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldAlert, Mail, Lock, Eye, EyeOff, User, ArrowLeft, Shield } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User, ArrowLeft, Shield } from 'lucide-react';
 import { useAuth } from '../App';
 import { navigate } from '../hooks/useRoute';
+import Logo from '../components/Logo';
 
 export default function Login({ onToast }) {
   const { login } = useAuth();
@@ -69,14 +70,8 @@ export default function Login({ onToast }) {
         </div>
 
         {/* Top Header */}
-        <div className="relative z-10 flex items-center gap-2 cursor-pointer" onClick={() => navigate('#/home')}>
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 to-red-800 shadow-lg shadow-red-500/20">
-            <ShieldAlert className="h-5 w-5 text-white" />
-          </div>
-          <div>
-            <span className="font-sans text-xl font-extrabold tracking-wider bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">DPRES</span>
-            <span className="block font-mono text-[8px] tracking-widest text-red-500 font-bold uppercase">Campus Safety</span>
-          </div>
+        <div className="relative z-10">
+          <Logo size="md" forceDark onClick={() => navigate('#/home')} />
         </div>
 
         {/* Middle Safety Showcase */}
@@ -88,7 +83,7 @@ export default function Login({ onToast }) {
             Secure, live connected <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">crisis modules</span>
           </h1>
           <p className="mt-6 text-sm leading-relaxed text-slate-400">
-            Welcome to the DPRES environment. Real-time drills, safety progress logs, rankings, and AI-powered simulator reflex testing are synchronized across your academic safety network.
+            Welcome to the DPRES environment. Real-time drills, safety progress logs, rankings, and an AI-powered disaster assistant are synchronized across your academic safety network.
           </p>
         </div>
 
@@ -102,11 +97,8 @@ export default function Login({ onToast }) {
       {/* Authentication Form Panel */}
       <div className="flex items-center justify-center p-6 md:p-12 relative">
         {/* Mobile top logo */}
-        <div className="absolute top-6 left-6 flex lg:hidden items-center gap-2" onClick={() => navigate('#/home')}>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600 shadow-md">
-            <ShieldAlert className="h-4 w-4 text-white" />
-          </div>
-          <span className="font-sans text-base font-extrabold tracking-wider">DPRES</span>
+        <div className="absolute top-6 left-6 lg:hidden">
+          <Logo size="sm" forceDark onClick={() => navigate('#/home')} />
         </div>
 
         <div className="w-full max-w-md">
@@ -127,22 +119,20 @@ export default function Login({ onToast }) {
                 <button
                   type="button"
                   onClick={() => handleRoleToggle('student')}
-                  className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all ${
-                    selectedRole === 'student'
+                  className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all ${selectedRole === 'student'
                       ? 'bg-red-600 text-white shadow-md shadow-red-500/10'
                       : 'text-slate-400 hover:text-white'
-                  }`}
+                    }`}
                 >
                   Student
                 </button>
                 <button
                   type="button"
                   onClick={() => handleRoleToggle('admin')}
-                  className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all ${
-                    selectedRole === 'admin'
+                  className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all ${selectedRole === 'admin'
                       ? 'bg-red-600 text-white shadow-md shadow-red-500/10'
                       : 'text-slate-400 hover:text-white'
-                  }`}
+                    }`}
                 >
                   Administrator
                 </button>
@@ -247,27 +237,27 @@ export default function Login({ onToast }) {
                   <ArrowLeft className="h-4 w-4" /> Back to Sign In
                 </button>
               ) : view === 'signup' ? (
-                <span>
-                  Already have a profile?{' '}
-                  <button
-                    type="button"
-                    onClick={() => setView('signin')}
-                    className="text-red-500 font-bold hover:text-red-400 focus:outline-none"
-                  >
-                    Sign In
-                  </button>
-                </span>
+              <span>
+                Already have a profile?{' '}
+                <button
+                  type="button"
+                  onClick={() => setView('signin')}
+                  className="text-red-500 font-bold hover:text-red-400 focus:outline-none"
+                >
+                  Sign In
+                </button>
+              </span>
               ) : (
-                <span>
-                  Don't have safety logs?{' '}
-                  <button
-                    type="button"
-                    onClick={() => setView('signup')}
-                    className="text-red-500 font-bold hover:text-red-400 focus:outline-none"
-                  >
-                    Register here
-                  </button>
-                </span>
+              <span>
+                Don't have safety logs?{' '}
+                <button
+                  type="button"
+                  onClick={() => setView('signup')}
+                  className="text-red-500 font-bold hover:text-red-400 focus:outline-none"
+                >
+                  Register here
+                </button>
+              </span>
               )}
             </div>
           </form>
