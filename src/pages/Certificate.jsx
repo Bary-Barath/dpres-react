@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Award, Download, Shield, CheckCircle2, BookOpen, FileText, Info, Share2 } from 'lucide-react';
+import { Award, Download, CheckCircle2, BookOpen, FileText, Info, Share2 } from 'lucide-react';
 import { useAuth } from '../App';
 import { useThemeContext } from '../App';
 import BackToHomeButton from '../components/common/BackToHomeButton';
+import Logo from '../components/Logo';
 import { navigate } from '../hooks/useRoute';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -42,8 +43,8 @@ function CertificatePreview({ userName, institution, date, certId, score, isDark
           isDark ? 'border-amber-500/10 bg-slate-950/60' : 'border-amber-300/20 bg-white/80'
         }`}>
           <div className="text-center mb-5">
-            <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 shadow-lg shadow-amber-500/25 mb-3">
-              <Shield className="h-8 w-8 text-white" />
+            <div className="flex justify-center mb-3">
+              <Logo size="lg" showText={false} forceDark={isDark} />
             </div>
           </div>
 
