@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { askGemini, isGeminiConfigured } from '../utilities/geminiService';
 import { useThemeContext } from '../App';
+import BackToHomeButton from '../components/common/BackToHomeButton';
 
 const STORAGE_KEY = 'dpres_disaster_assistant_chat_v1';
 const WELCOME_MESSAGE = {
@@ -157,6 +158,7 @@ export default function AIDisasterAssistant({ onToast }) {
 
   return (
     <div className={`space-y-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+      <BackToHomeButton />
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>

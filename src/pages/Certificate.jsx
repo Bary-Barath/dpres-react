@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Award, Download, Shield, CheckCircle2, BookOpen, FileText, Info, Share2 } from 'lucide-react';
 import { useAuth } from '../App';
 import { useThemeContext } from '../App';
+import BackToHomeButton from '../components/common/BackToHomeButton';
 import { navigate } from '../hooks/useRoute';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -129,6 +130,7 @@ export default function Certificate() {
 
   return (
     <div className="space-y-8">
+      <BackToHomeButton />
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
         <span className="section-label">Certification</span>
         <h1 className={`text-2xl font-extrabold tracking-tight mt-1 flex items-center gap-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>

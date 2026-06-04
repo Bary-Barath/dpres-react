@@ -5,6 +5,7 @@ import {
   Flame, Heart, Activity, Shield, CheckCircle2, Clock, Zap, BarChart2
 } from 'lucide-react';
 import { useThemeContext } from '../App';
+import BackToHomeButton from '../components/common/BackToHomeButton';
 
 const MODULES = [
   {
@@ -203,6 +204,7 @@ export default function LearningHub() {
 
   return (
     <div className="space-y-8">
+      <BackToHomeButton />
       {/* ── Header ── */}
       <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
         <span className="section-label">Knowledge Center</span>

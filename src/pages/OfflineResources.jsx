@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wifi, WifiOff, Download, CheckCircle2, BookOpen, Droplets, Wind, Flame, Heart, Shield, ChevronDown } from 'lucide-react';
 import { useThemeContext } from '../App';
+import BackToHomeButton from '../components/common/BackToHomeButton';
 
 const OFFLINE_GUIDES = [
   {
@@ -127,6 +128,7 @@ export default function OfflineResources() {
 
   return (
     <div className="space-y-6">
+      <BackToHomeButton />
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
         <span className="section-label">Offline Mode</span>
         <h1 className={`text-2xl font-extrabold tracking-tight mt-1 flex items-center gap-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>

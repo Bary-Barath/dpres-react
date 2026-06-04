@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Trophy, Medal, Star, TrendingUp } from 'lucide-react';
 import { useAppData } from '../hooks/useAppData';
 import { useThemeContext } from '../App';
+import BackToHomeButton from '../components/common/BackToHomeButton';
 
 export default function Leaderboard() {
   const { data } = useAppData();
@@ -25,6 +26,7 @@ export default function Leaderboard() {
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
+      <BackToHomeButton />
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-2 mb-1">
           <Trophy className="h-4 w-4 text-amber-500 animate-bounce" />

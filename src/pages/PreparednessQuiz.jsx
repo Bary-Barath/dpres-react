@@ -4,6 +4,7 @@ import { Clock, AlertCircle, CheckCircle2, XCircle, Award, BookOpen, RotateCcw, 
 import { navigate } from '../hooks/useRoute';
 import { useAuth } from '../App';
 import { useThemeContext } from '../App';
+import BackToHomeButton from '../components/common/BackToHomeButton';
 
 const QUESTIONS = [
   { id: 1, q: 'What is the correct action during an earthquake?', options: ['Run outside immediately', 'Hide under sturdy furniture', 'Use elevator', 'Stand near windows'], answer: 1, explanation: 'During an earthquake, Drop, Cover, and Hold On under sturdy furniture protects you from falling debris.' },
@@ -228,6 +229,7 @@ export default function PreparednessQuiz() {
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
+      <BackToHomeButton />
       <div className="flex items-center justify-between">
         <div>
           <span className="section-label">Preparedness Assessment</span>

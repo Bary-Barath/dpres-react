@@ -10,6 +10,7 @@ import {
   DoorOpen, MapPin, Heart, Bell, Activity, TrendingUp, Building2, Zap
 } from 'lucide-react';
 import { useThemeContext } from '../App';
+import BackToHomeButton from '../components/common/BackToHomeButton';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Filler);
 
@@ -109,6 +110,7 @@ export default function PreparednessDashboard() {
 
   return (
     <div className="space-y-7">
+      <BackToHomeButton />
       {/* ── Header ── */}
       <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
         <span className="section-label">Institution Dashboard</span>

@@ -4,6 +4,7 @@ import { Info, ChevronRight, Compass, Flame, HeartPulse, ZoomIn, ZoomOut } from 
 import { AnimatePresence } from 'framer-motion';
 import { CAMPUS_BUILDINGS, getFloorDetails, getRoomLabels, getRoomHazardDetails } from '../data/campusData';
 import { useThemeContext } from '../App';
+import BackToHomeButton from '../components/common/BackToHomeButton';
 
 export default function EvacuationMap() {
   const { theme } = useThemeContext();
@@ -43,6 +44,7 @@ export default function EvacuationMap() {
       {/* ── Building Sidebar ── */}
       <div className="xl:col-span-1 space-y-4">
         <div>
+          <BackToHomeButton />
           <span className="section-label">Campus Layouts</span>
           <h1 className={`text-2xl font-extrabold tracking-tight mt-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>Evacuation Map</h1>
         </div>

@@ -4,6 +4,7 @@ import { MapPin, Info, X, Navigation, Shield, ExternalLink } from 'lucide-react'
 import { MapContainer, TileLayer, Circle, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { useThemeContext } from '../App';
+import BackToHomeButton from '../components/common/BackToHomeButton';
 import { DISASTER_ZONES, MAP_CENTER, MAP_ZOOM, LEGEND_ITEMS, PREVENTION_TIPS } from '../data/disasterZones';
 
 // Fix Leaflet default marker icon
@@ -117,6 +118,7 @@ export default function DisasterRiskMap() {
 
   return (
     <div className="space-y-6">
+      <BackToHomeButton />
       {/* Header */}
       <div>
         <span className="font-mono text-xs font-bold uppercase tracking-widest text-red-400">▶ Interactive Risk Assessment</span>

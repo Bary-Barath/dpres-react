@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { navigate } from '../hooks/useRoute';
 import { useThemeContext } from '../App';
+import BackToHomeButton from '../components/common/BackToHomeButton';
 
 const EMERGENCY_CONTACTS = [
   { name: 'Ambulance', number: '108', icon: Ambulance, color: '#EF4444', bg: 'from-red-500/10 to-red-500/5', border: 'border-red-500/20', shadow: 'rgba(239,68,68,0.2)' },
@@ -73,6 +74,7 @@ export default function SOSDashboard() {
 
   return (
     <div className="space-y-7">
+      <BackToHomeButton />
       {/* ── Header ── */}
       <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
         <span className="section-label">Emergency Response</span>

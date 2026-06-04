@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Save, User, Mail, Bell, Shield } from 'lucide-react';
 import { useAuth } from '../App';
 import { useThemeContext } from '../App';
+import BackToHomeButton from '../components/common/BackToHomeButton';
 import { motion } from 'framer-motion';
 
 export default function Settings({ onToast }) {
@@ -37,6 +38,7 @@ export default function Settings({ onToast }) {
 
   return (
     <div className="space-y-6 max-w-xl mx-auto">
+      <BackToHomeButton />
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
         <span className="section-label">Registry Configurations</span>
         <h1 className={`text-2xl font-extrabold tracking-tight mt-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>
