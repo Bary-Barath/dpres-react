@@ -1,38 +1,27 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Info, MapPin, ShieldAlert, Award, FileText, ChevronRight, Compass, Maximize2, ShieldCheck, Flame, HeartPulse, HelpCircle, ZoomIn, ZoomOut } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Info, ChevronRight, Compass, Flame, HeartPulse, ZoomIn, ZoomOut } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 import { CAMPUS_BUILDINGS, getFloorDetails, getRoomLabels, getRoomHazardDetails } from '../data/campusData';
+import { useThemeContext } from '../App';
 
 export default function EvacuationMap() {
-  const [bld, setBld] = useState(CAMPUS_BUILDINGS[0]); // Current building
-  const [floor, setFloor] = useState(0); // Current floor (0 to 3)
-  const [selectedRoom, setSelectedRoom] = useState(null); // Clicked room label
+  const { theme } = useThemeContext();
+  const isDark = theme === 'dark';
+
+  const [bld, setBld] = useState(CAMPUS_BUILDINGS[0]);
+  const [floor, setFloor] = useState(0);
+  const [selectedRoom, setSelectedRoom] = useState(null);
   const [activeLegend, setActiveLegend] = useState({ exit: true, ext: true, hazard: true, firstaid: true });
   const [zoomScale, setZoomScale] = useState(1);
 
-  const toggleLegend = (type) => {
-    setActiveLegend(prev => ({ ...prev, [type]: !prev[type] }));
-  };
-
-  const handleBuildingChange = (b) => {
-    setBld(b);
-    setFloor(0);
-    setSelectedRoom(null);
-  };
-
-  const handleFloorChange = (fIdx) => {
-    if (fIdx >= bld.floors) return;
-    setFloor(fIdx);
-    setSelectedRoom(null);
-  };
+  const toggleLegend = (type) => setActiveLegend(prev => ({ ...prev, [type]: !prev[type] }));
+  const handleBuildingChange = (b) => { setBld(b); setFloor(0); setSelectedRoom(null); };
+  const handleFloorChange = (fIdx) => { if (fIdx >= bld.floors) return; setFloor(fIdx); setSelectedRoom(null); };
 
   const items = getFloorDetails(bld.id, floor);
   const rooms = getRoomLabels(bld.id, floor);
-  
-  // Coordinates for 6 rooms in a grid inside the blueprint map (width 800, height 500)
-  // Grid layout coordinates for rooms:
-  // Top row: Room 0, 1, 2
-  // Bottom row: Room 3, 4, 5
+
   const roomLayouts = [
     { x: 50, y: 50, w: 220, h: 140 },
     { x: 290, y: 50, w: 220, h: 140 },
@@ -42,224 +31,224 @@ export default function EvacuationMap() {
     { x: 530, y: 270, w: 220, h: 140 }
   ];
 
+  const card = isDark
+    ? 'bg-[#0f172a] border border-white/[0.06]'
+    : 'bg-white border border-slate-100';
+  const cardShadow = isDark
+    ? { boxShadow: '0 4px 24px rgba(0,0,0,0.35)' }
+    : { boxShadow: '0 4px 24px rgba(0,0,0,0.06)' };
+
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 items-stretch max-w-7xl mx-auto text-white">
-      {/* Building Sidebar */}
+    <div className={`grid grid-cols-1 xl:grid-cols-4 gap-5 items-stretch max-w-7xl mx-auto ${isDark ? 'text-white' : 'text-slate-900'}`}>
+      {/* ── Building Sidebar ── */}
       <div className="xl:col-span-1 space-y-4">
         <div>
-          <span className="font-mono text-xs font-bold uppercase tracking-widest text-red-500">▶ Campus Layouts</span>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-100 mt-1 font-sans">Evacuation Map</h1>
+          <span className="section-label">Campus Layouts</span>
+          <h1 className={`text-2xl font-extrabold tracking-tight mt-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>Evacuation Map</h1>
         </div>
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-4 backdrop-blur-sm space-y-2.5">
+        <div className={`rounded-2xl p-3 space-y-2 ${card}`} style={cardShadow}>
           {CAMPUS_BUILDINGS.map((b) => (
             <button
               key={b.id}
               onClick={() => handleBuildingChange(b)}
               className={`w-full text-left p-3.5 rounded-xl border transition-all duration-200 flex items-center justify-between group ${
                 bld.id === b.id
-                  ? 'bg-red-500/10 border-red-500 text-red-400 font-bold'
-                  : 'bg-slate-950/20 border-slate-800 hover:border-slate-700/80 text-slate-400 hover:text-slate-200'
+                  ? isDark
+                    ? 'bg-blue-500/10 border-blue-500/40 text-blue-400'
+                    : 'border-transparent text-white'
+                  : isDark
+                    ? 'bg-white/[0.02] border-white/[0.06] text-slate-400 hover:border-white/[0.12] hover:text-white'
+                    : 'bg-white border-slate-100 text-slate-500 hover:border-blue-200 hover:text-slate-800 shadow-sm'
               }`}
+              style={bld.id === b.id && !isDark ? {
+                background: 'linear-gradient(90deg, #2563EB, #3B82F6)',
+                boxShadow: '0 4px 14px rgba(37,99,235,0.3)'
+              } : {}}
             >
               <div>
                 <h4 className="text-sm font-bold truncate">{b.label}</h4>
-                <span className="text-[10px] text-slate-500 font-medium block mt-0.5">{b.sub}</span>
+                <span className={`text-[10px] font-medium block mt-0.5 ${
+                  bld.id === b.id
+                    ? isDark ? 'text-blue-300/60' : 'text-white/70'
+                    : isDark ? 'text-slate-600' : 'text-slate-400'
+                }`}>{b.sub}</span>
               </div>
-              <ChevronRight className={`h-4 w-4 transition-transform ${bld.id === b.id ? 'translate-x-0.5 text-red-400' : 'text-slate-600 group-hover:text-slate-400'}`} />
+              <ChevronRight className={`h-4 w-4 transition-transform flex-shrink-0 ${
+                bld.id === b.id
+                  ? isDark ? 'text-blue-400 translate-x-0.5' : 'text-white/70'
+                  : isDark ? 'text-slate-700 group-hover:text-slate-400' : 'text-slate-300 group-hover:text-slate-500'
+              }`} />
             </button>
           ))}
         </div>
       </div>
 
-      {/* Main Map Canvas */}
-      <div className="xl:col-span-3 space-y-6 flex flex-col justify-between">
-        {/* Top controls: Floor selection */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-          <div className="flex bg-slate-900 border border-slate-800 p-1 rounded-xl">
+      {/* ── Main Map Area ── */}
+      <div className="xl:col-span-3 space-y-5 flex flex-col">
+        {/* Floor + Zoom Controls */}
+        <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b ${isDark ? 'border-white/[0.06]' : 'border-slate-100'}`}>
+          <div className={`flex p-1 rounded-xl ${isDark ? 'bg-slate-900 border border-white/[0.06]' : 'bg-slate-100 border border-slate-200'}`}>
             {Array.from({ length: bld.floors }).map((_, fIdx) => (
               <button
                 key={fIdx}
                 onClick={() => handleFloorChange(fIdx)}
                 className={`px-4 py-2 rounded-lg text-xs font-bold uppercase transition-all ${
                   floor === fIdx
-                    ? 'bg-red-600 text-white shadow-md shadow-red-500/10'
-                    : 'text-slate-400 hover:text-white'
+                    ? isDark
+                      ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                      : 'bg-white text-blue-600 shadow-sm'
+                    : isDark ? 'text-slate-500 hover:text-white' : 'text-slate-500 hover:text-slate-700'
                 }`}
               >
                 {fIdx === 0 ? 'G' : `${fIdx}F`}
               </button>
             ))}
           </div>
-
-          {/* Zoom controls */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => setZoomScale(Math.max(0.75, zoomScale - 0.25))}
-              className="p-2 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white focus:outline-none"
-              title="Zoom Out"
+              className={`p-2 rounded-lg border transition-all ${isDark ? 'border-white/[0.08] bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white' : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-700 shadow-sm'}`}
             >
               <ZoomOut className="h-4 w-4" />
             </button>
-            <span className="font-mono text-xs text-slate-500 px-1 font-bold">{Math.round(zoomScale * 100)}%</span>
+            <span className={`font-mono text-xs px-1 font-bold ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{Math.round(zoomScale * 100)}%</span>
             <button
               onClick={() => setZoomScale(Math.min(1.75, zoomScale + 0.25))}
-              className="p-2 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white focus:outline-none"
-              title="Zoom In"
+              className={`p-2 rounded-lg border transition-all ${isDark ? 'border-white/[0.08] bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white' : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-700 shadow-sm'}`}
             >
               <ZoomIn className="h-4 w-4" />
             </button>
           </div>
         </div>
 
-        {/* Blueprint display */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-          {/* SVG Map container */}
-          <div className="lg:col-span-2 rounded-2xl border border-slate-800/80 bg-slate-950 p-4 relative overflow-hidden min-h-[380px] flex items-center justify-center">
+        {/* Blueprint + Right Panel */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch flex-1">
+          {/* SVG Blueprint */}
+          <div
+            className={`lg:col-span-2 rounded-2xl overflow-hidden relative flex items-center justify-center min-h-[360px] ${card}`}
+            style={{ ...cardShadow, background: isDark ? '#020617' : '#F8FAFC' }}
+          >
             <motion.div
               animate={{ scale: zoomScale }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="w-full h-full flex items-center justify-center"
+              className="w-full h-full flex items-center justify-center p-4"
             >
-              <svg viewBox="0 0 800 500" className="w-full max-h-[380px]">
+              <svg viewBox="0 0 800 500" className="w-full max-h-[360px]">
                 <defs>
-                  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.01)" strokeWidth="1" />
+                  <pattern id="evacGrid" width="24" height="24" patternUnits="userSpaceOnUse">
+                    <path d="M 24 0 L 0 0 0 24" fill="none"
+                      stroke={isDark ? 'rgba(255,255,255,0.025)' : 'rgba(37,99,235,0.06)'}
+                      strokeWidth="1" />
                   </pattern>
                 </defs>
-                <rect width="100%" height="100%" fill="url(#grid)" />
+                <rect width="100%" height="100%" fill="url(#evacGrid)" />
+                {/* Corridor */}
+                <rect x="40" y="210" width="720" height="40"
+                  fill={isDark ? 'rgba(255,255,255,0.02)' : 'rgba(37,99,235,0.04)'}
+                  stroke={isDark ? 'rgba(255,255,255,0.06)' : 'rgba(37,99,235,0.12)'}
+                  strokeDasharray="6 4" className="pointer-events-none" />
 
-                {/* Building Main Hallway/Corridor */}
-                <rect x="40" y="210" width="720" height="40" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.08)" strokeDasharray="4 4" className="pointer-events-none" />
-
-                {/* Render Rooms */}
                 {roomLayouts.map((r, idx) => {
                   const label = rooms[idx] || `Room ${idx + 1}`;
                   const isSelected = selectedRoom === label;
                   const profile = getRoomHazardDetails(label);
-
                   return (
-                    <g
-                      key={idx}
-                      className="cursor-pointer group"
-                      onClick={() => setSelectedRoom(label)}
-                    >
+                    <g key={idx} className="cursor-pointer group" onClick={() => setSelectedRoom(label)}>
                       <rect
-                        x={r.x}
-                        y={r.y}
-                        width={r.w}
-                        height={r.h}
-                        rx="8"
-                        fill={isSelected ? `${profile.bg}` : 'rgba(30, 41, 59, 0.4)'}
-                        stroke={isSelected ? profile.color : '#334155'}
+                        x={r.x} y={r.y} width={r.w} height={r.h} rx="10"
+                        fill={isSelected
+                          ? isDark ? `${profile.bg}` : `${profile.bg}`
+                          : isDark ? 'rgba(15,23,42,0.8)' : 'rgba(255,255,255,0.9)'}
+                        stroke={isSelected ? profile.color : isDark ? '#334155' : '#CBD5E1'}
                         strokeWidth={isSelected ? '2.5' : '1.5'}
-                        className="transition-all duration-200 group-hover:fill-slate-800/30 group-hover:stroke-slate-500"
+                        style={{ transition: 'all 0.2s' }}
                       />
-                      <text
-                        x={r.x + r.w / 2}
-                        y={r.y + r.h / 2}
+                      <text x={r.x + r.w / 2} y={r.y + r.h / 2}
                         textAnchor="middle"
-                        fill={isSelected ? '#ffffff' : '#cbd5e1'}
-                        fontSize="12"
-                        fontWeight="bold"
-                        className="select-none pointer-events-none transition-colors"
-                      >
+                        fill={isSelected ? '#ffffff' : isDark ? '#94a3b8' : '#475569'}
+                        fontSize="12" fontWeight="bold" className="select-none pointer-events-none">
                         {label}
                       </text>
-                      <text
-                        x={r.x + r.w / 2}
-                        y={r.y + r.h / 2 + 18}
+                      <text x={r.x + r.w / 2} y={r.y + r.h / 2 + 18}
                         textAnchor="middle"
-                        fill={profile.textColor.split(' ')[0]} // extract tailwind color class prefix
-                        fontSize="8"
-                        fontWeight="extrabold"
-                        letterSpacing="1"
-                        className="select-none pointer-events-none uppercase opacity-80"
-                      >
+                        fill={profile.color || '#64748b'}
+                        fontSize="8" fontWeight="800" letterSpacing="1"
+                        className="select-none pointer-events-none uppercase opacity-80">
                         {profile.status}
                       </text>
                     </g>
                   );
                 })}
 
-                {/* Legend item markers */}
                 {activeLegend.exit && items.filter(i => i.type === 'exit').map((item, idx) => (
                   <g key={`exit-${idx}`} className="animate-pulse">
-                    <rect x={item.x - 25} y={item.y - 12} width="50" height="24" rx="4" fill="#10b981" />
-                    <text x={item.x} y={item.y + 4} textAnchor="middle" fill="#ffffff" fontSize="9" fontWeight="extrabold">{item.label}</text>
+                    <rect x={item.x - 25} y={item.y - 12} width="50" height="24" rx="6" fill="#10b981" />
+                    <text x={item.x} y={item.y + 4} textAnchor="middle" fill="#ffffff" fontSize="9" fontWeight="800">{item.label}</text>
                   </g>
                 ))}
-
                 {activeLegend.ext && items.filter(i => i.type === 'ext').map((item, idx) => (
                   <g key={`ext-${idx}`}>
-                    <circle cx={item.x} cy={item.y} r="16" fill="#ef4444" stroke="#ffffff" strokeWidth="1.5" />
-                    <Flame className="h-4 w-4 text-white" style={{ transform: `translate(${item.x - 8}px, ${item.y - 8}px)` }} />
+                    <circle cx={item.x} cy={item.y} r="16" fill="#ef4444" stroke="white" strokeWidth="2" />
+                    <text x={item.x} y={item.y + 5} textAnchor="middle" fill="white" fontSize="14">🔥</text>
                   </g>
                 ))}
-
                 {activeLegend.firstaid && items.filter(i => i.type === 'firstaid').map((item, idx) => (
                   <g key={`fa-${idx}`}>
-                    <circle cx={item.x} cy={item.y} r="16" fill="#10b981" stroke="#ffffff" strokeWidth="1.5" />
-                    <HeartPulse className="h-4 w-4 text-white" style={{ transform: `translate(${item.x - 8}px, ${item.y - 8}px)` }} />
+                    <circle cx={item.x} cy={item.y} r="16" fill="#10b981" stroke="white" strokeWidth="2" />
+                    <text x={item.x} y={item.y + 5} textAnchor="middle" fill="white" fontSize="14">➕</text>
                   </g>
                 ))}
-
                 {activeLegend.hazard && items.filter(i => i.type === 'hazard').map((item, idx) => (
                   <g key={`hazard-${idx}`} className="animate-pulse">
-                    <polygon points={`${item.x},${item.y-18} ${item.x-18},${item.y+14} ${item.x+18},${item.y+14}`} fill="#f59e0b" stroke="#ffffff" strokeWidth="1" />
-                    <text x={item.x} y={item.y + 10} textAnchor="middle" fill="#000000" fontSize="9" fontWeight="black">!</text>
+                    <polygon points={`${item.x},${item.y - 18} ${item.x - 18},${item.y + 14} ${item.x + 18},${item.y + 14}`} fill="#f59e0b" stroke="white" strokeWidth="1.5" />
+                    <text x={item.x} y={item.y + 10} textAnchor="middle" fill="#000" fontSize="9" fontWeight="900">!</text>
                   </g>
                 ))}
               </svg>
             </motion.div>
 
-            <div className="absolute bottom-4 left-4 bg-slate-900/80 border border-slate-800 rounded-full px-3 py-1 text-[9px] font-bold tracking-widest text-slate-500 uppercase flex items-center gap-1.5 font-mono">
-              <Compass className="h-3.5 w-3.5 text-red-500 animate-spin" style={{ animationDuration: '6s' }} /> NORTH COMPASS ACTIVE
+            <div className={`absolute bottom-4 left-4 flex gap-1.5 items-center rounded-full px-3 py-1.5 text-[9px] font-bold tracking-widest uppercase font-mono ${
+              isDark ? 'bg-slate-900/90 border border-white/[0.08] text-slate-500' : 'bg-white border border-slate-200 text-slate-400 shadow-sm'
+            }`}>
+              <Compass className="h-3.5 w-3.5 text-blue-500 animate-spin" style={{ animationDuration: '8s' }} /> North Active
             </div>
           </div>
 
-          {/* Right side Detail panel / Legend switches */}
-          <div className="space-y-6 flex flex-col justify-between">
-            {/* Interactive Room Details */}
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-5 backdrop-blur-sm flex-1 flex flex-col justify-between min-h-[220px]">
+          {/* Right Panel: Room Info + Legend */}
+          <div className="space-y-4 flex flex-col">
+            {/* Room Info */}
+            <div className={`rounded-2xl p-5 flex-1 flex flex-col justify-between min-h-[200px] ${card}`} style={cardShadow}>
               <AnimatePresence mode="wait">
                 {selectedRoom ? (
-                  <motion.div
-                    key={selectedRoom}
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 5 }}
-                    transition={{ duration: 0.15 }}
-                    className="space-y-4"
-                  >
+                  <motion.div key={selectedRoom} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }} className="space-y-3">
                     <div>
-                      <span className="font-mono text-[9px] font-extrabold tracking-widest text-slate-500 uppercase">Room Profile</span>
-                      <h4 className="text-lg font-extrabold text-slate-100 mt-0.5">{selectedRoom}</h4>
+                      <span className={`text-[9px] font-bold tracking-widest uppercase ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Room Profile</span>
+                      <h4 className={`text-base font-extrabold mt-0.5 ${isDark ? 'text-white' : 'text-slate-800'}`}>{selectedRoom}</h4>
                     </div>
-
-                    {/* Hazard Category Badge */}
-                    <div>
-                      <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-extrabold tracking-wider border uppercase ${
-                        getRoomHazardDetails(selectedRoom).textColor
-                      }`}>
-                        {getRoomHazardDetails(selectedRoom).status}
-                      </span>
-                    </div>
-
-                    <div className="space-y-3">
+                    <span className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider border ${
+                      getRoomHazardDetails(selectedRoom).textColor
+                    }`}>
+                      {getRoomHazardDetails(selectedRoom).status}
+                    </span>
+                    <div className="space-y-2.5">
                       <div>
-                        <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Identified Hazards</span>
-                        <ul className="mt-1 space-y-1 list-disc list-inside text-xs text-slate-400">
-                          {getRoomRoomHazards(selectedRoom).map((hz, idx) => (
-                            <li key={idx} className="truncate">{hz}</li>
+                        <span className={`text-[10px] font-bold uppercase tracking-wider block mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Identified Hazards</span>
+                        <ul className="space-y-1">
+                          {getRoomHazardDetails(selectedRoom).hazards?.map((hz, i) => (
+                            <li key={i} className={`text-xs flex items-start gap-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                              <span className="text-amber-500 mt-0.5">•</span>{hz}
+                            </li>
                           ))}
                         </ul>
                       </div>
                       <div>
-                        <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Emergency Equipment</span>
-                        <ul className="mt-1 space-y-1 list-disc list-inside text-xs text-slate-400">
-                          {getRoomSafetyEq(selectedRoom).map((eq, idx) => (
-                            <li key={idx} className="truncate">{eq}</li>
+                        <span className={`text-[10px] font-bold uppercase tracking-wider block mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Emergency Equipment</span>
+                        <ul className="space-y-1">
+                          {getRoomHazardDetails(selectedRoom).eq?.map((eq, i) => (
+                            <li key={i} className={`text-xs flex items-start gap-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                              <span className="text-emerald-500 mt-0.5">✓</span>{eq}
+                            </li>
                           ))}
                         </ul>
                       </div>
@@ -267,33 +256,36 @@ export default function EvacuationMap() {
                   </motion.div>
                 ) : (
                   <div className="my-auto text-center space-y-2">
-                    <Info className="h-8 w-8 text-slate-600 mx-auto" />
-                    <p className="text-xs text-slate-500 font-bold">Select any room on the blueprint to review hazards & equipment profile.</p>
+                    <div className={`h-12 w-12 rounded-2xl flex items-center justify-center mx-auto ${isDark ? 'bg-slate-800' : 'bg-slate-100'}`}>
+                      <Info className={`h-6 w-6 ${isDark ? 'text-slate-600' : 'text-slate-400'}`} />
+                    </div>
+                    <p className={`text-xs font-medium ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                      Select any room to view its hazards &amp; equipment profile.
+                    </p>
                   </div>
                 )}
               </AnimatePresence>
             </div>
 
             {/* Legend Toggles */}
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-5 backdrop-blur-sm space-y-3">
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-slate-500 block">▶ Safety Overlay Layers</span>
-              
+            <div className={`rounded-2xl p-4 ${card}`} style={cardShadow}>
+              <span className={`text-[10px] font-bold uppercase tracking-wider block mb-3 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Safety Overlay Layers</span>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { key: 'exit', label: 'Stairs / Exits', color: 'border-emerald-500/20 bg-emerald-500/10 text-emerald-400' },
-                  { key: 'ext', label: 'Extinguisher', color: 'border-red-500/20 bg-red-500/10 text-red-400' },
-                  { key: 'firstaid', label: 'First Aid Kit', color: 'border-green-500/20 bg-green-500/10 text-green-400' },
-                  { key: 'hazard', label: 'Hazard Zone', color: 'border-amber-500/20 bg-amber-500/10 text-amber-400' }
+                  { key: 'exit', label: 'Stairs / Exits', color: '#10b981', activeCls: 'bg-emerald-50 border-emerald-200 text-emerald-700', darkActiveCls: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' },
+                  { key: 'ext', label: 'Extinguisher', color: '#ef4444', activeCls: 'bg-red-50 border-red-200 text-red-700', darkActiveCls: 'bg-red-500/10 border-red-500/30 text-red-400' },
+                  { key: 'firstaid', label: 'First Aid', color: '#10b981', activeCls: 'bg-green-50 border-green-200 text-green-700', darkActiveCls: 'bg-green-500/10 border-green-500/30 text-green-400' },
+                  { key: 'hazard', label: 'Hazard Zone', color: '#f59e0b', activeCls: 'bg-amber-50 border-amber-200 text-amber-700', darkActiveCls: 'bg-amber-500/10 border-amber-500/30 text-amber-400' }
                 ].map((leg) => {
                   const active = activeLegend[leg.key];
                   return (
                     <button
                       key={leg.key}
                       onClick={() => toggleLegend(leg.key)}
-                      className={`px-3 py-2 rounded-xl text-center text-xs font-bold border transition-all ${
+                      className={`px-3 py-2.5 rounded-xl text-center text-[11px] font-bold border transition-all ${
                         active
-                          ? `${leg.color} font-extrabold border`
-                          : 'bg-slate-950/20 border-slate-800/80 text-slate-600'
+                          ? isDark ? leg.darkActiveCls : leg.activeCls
+                          : isDark ? 'bg-white/[0.03] border-white/[0.06] text-slate-600' : 'bg-slate-50 border-slate-200 text-slate-400'
                       }`}
                     >
                       {leg.label}
@@ -307,13 +299,4 @@ export default function EvacuationMap() {
       </div>
     </div>
   );
-}
-
-// Helpers for detail strings
-function getRoomRoomHazards(label) {
-  return getRoomHazardDetails(label).hazards;
-}
-
-function getRoomSafetyEq(label) {
-  return getRoomHazardDetails(label).eq;
 }

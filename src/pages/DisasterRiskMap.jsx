@@ -140,14 +140,14 @@ export default function DisasterRiskMap() {
               onClick={() => toggleFilter(item.type)}
               className={`group relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all border ${
                 isActive
-                  ? 'bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white shadow-lg'
-                  : 'bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600 hover:text-slate-800 dark:hover:text-slate-200 shadow-sm'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-500 border-transparent text-white shadow-lg shadow-blue-500/25'
+                  : 'bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-blue-300 dark:hover:border-slate-600 hover:text-blue-600 dark:hover:text-slate-200 shadow-sm'
               }`}
             >
               <span className="text-lg">{item.icon}</span>
               <span>{item.label}</span>
               <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
-                isActive ? 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-500'
+                isActive ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-500'
               }`}>
                 {count}
               </span>

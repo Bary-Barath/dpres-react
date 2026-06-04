@@ -306,8 +306,8 @@ export default function App() {
 /** Standalone layout for public pages (theme-aware, centered content, no sidebar) */
 function StandaloneLayout({ children }) {
   return (
-    <div className="min-h-screen page-bg text-slate-900 dark:text-white smooth-theme">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen smooth-theme" style={{ background: 'var(--bg-page)', color: 'var(--text-primary)' }}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 text-slate-900 dark:text-white">
         {children}
       </div>
     </div>
