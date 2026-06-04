@@ -89,7 +89,7 @@ export default function AdminDashboard({ onToast }) {
             placeholder="Search student or roll no..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full rounded-full border border-slate-800 bg-slate-900 px-11 py-2.5 text-sm text-white placeholder-slate-500 focus:border-red-500 focus:outline-none transition-colors pr-20"
+            className="w-full rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-11 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:border-red-500 focus:outline-none transition-colors pr-20 shadow-sm"
           />
           <button
             type="submit"
@@ -110,7 +110,7 @@ export default function AdminDashboard({ onToast }) {
         ].map((s, idx) => {
           const IconComp = s.icon;
           return (
-            <div key={idx} className="rounded-2xl border border-slate-800/80 bg-slate-900/40 p-6 backdrop-blur-sm relative overflow-hidden group hover:border-slate-700/80 transition-colors">
+            <div key={idx} className="premium-card p-6 relative overflow-hidden group">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-slate-500">{s.label}</p>
@@ -127,8 +127,8 @@ export default function AdminDashboard({ onToast }) {
       </div>
 
       {/* Broadcast Alert */}
-      <div className="rounded-2xl border-l-4 border-l-red-500 border-y border-r border-slate-800 bg-slate-900/20 p-6 backdrop-blur-sm">
-        <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-4">
+      <div className="rounded-2xl border-l-4 border-l-red-500 border-y border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/20 p-6 shadow-sm">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
           <ShieldAlert className="h-5 w-5 text-red-500 animate-pulse" /> Broadcast Emergency Drill Alert
         </h3>
         <form onSubmit={broadcastAlert} className="flex flex-col md:flex-row gap-4 items-end">
@@ -140,7 +140,7 @@ export default function AdminDashboard({ onToast }) {
               value={drillMsg}
               onChange={e => setDrillMsg(e.target.value)}
               placeholder="e.g. FIRE DRILL — Evacuate via East exit doors immediately"
-              className="w-full rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-3 text-sm text-white placeholder-slate-600 focus:border-red-500 focus:outline-none transition-colors"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-600 focus:border-red-500 focus:outline-none transition-colors"
             />
           </div>
           <div className="w-full md:w-48">
@@ -148,7 +148,7 @@ export default function AdminDashboard({ onToast }) {
             <select
               value={drillType}
               onChange={e => setDrillType(e.target.value)}
-              className="w-full rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-3 text-sm text-white focus:border-red-500 focus:outline-none transition-colors cursor-pointer"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-red-500 focus:outline-none transition-colors cursor-pointer"
             >
               <option value="general">General Warning</option>
               <option value="fire">Fire Protocol</option>
@@ -170,7 +170,7 @@ export default function AdminDashboard({ onToast }) {
       {/* Map, Completion Chart & Recents */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
         {/* Live campus status map */}
-        <div className="lg:col-span-2 rounded-2xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-sm overflow-hidden flex flex-col justify-between">
+        <div className="lg:col-span-2 premium-card-static overflow-hidden flex flex-col justify-between">
           <div className="p-4 border-b border-slate-800/60 flex justify-between items-center bg-slate-950/20">
             <span className="font-mono text-xs font-bold uppercase tracking-widest text-red-500">▶ Live Campus status</span>
             <button
@@ -223,7 +223,7 @@ export default function AdminDashboard({ onToast }) {
         {/* Completion Charts & Recent activity */}
         <div className="space-y-6 flex flex-col">
           {/* Completion Chart */}
-          <div className="rounded-2xl border border-slate-800/80 bg-slate-900/40 p-6 backdrop-blur-sm flex-1 flex flex-col justify-between">
+          <div className="premium-card-static p-6 flex-1 flex flex-col justify-between">
             <span className="font-mono text-xs font-bold uppercase tracking-widest text-red-500 mb-6 block">▶ Module Completion Rate</span>
             
             <div className="space-y-4">
@@ -247,7 +247,7 @@ export default function AdminDashboard({ onToast }) {
           </div>
 
           {/* Drill Activity Log */}
-          <div className="rounded-2xl border border-slate-800/80 bg-slate-900/40 p-6 backdrop-blur-sm flex-1 flex flex-col justify-between">
+          <div className="premium-card-static p-6 flex-1 flex flex-col justify-between">
             <span className="font-mono text-xs font-bold uppercase tracking-widest text-red-500 mb-4 block">▶ Recent Safety Drills</span>
             
             <div className="divide-y divide-slate-800 flex-1 flex flex-col justify-center">

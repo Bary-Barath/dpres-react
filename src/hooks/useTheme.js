@@ -16,8 +16,16 @@ function readStoredTheme() {
 
 function applyTheme(theme) {
   const root = document.documentElement;
+  // Disable transitions briefly to avoid theme flash
+  root.classList.add('theme-transitioning');
   if (theme === 'dark') root.classList.add('dark');
   else root.classList.remove('dark');
+  // Re-enable transitions on next frame
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      root.classList.remove('theme-transitioning');
+    });
+  });
 }
 
 export function useTheme() {
@@ -36,5 +44,7 @@ export function useTheme() {
     setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
   }, []);
 
-  return { theme, setTheme, toggleTheme };
+  const isDark = theme === 'dark';
+
+  return { theme, setTheme, toggleTheme, isDark };
 }

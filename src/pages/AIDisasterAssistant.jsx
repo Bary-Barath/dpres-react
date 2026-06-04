@@ -68,9 +68,9 @@ function renderInline(text) {
     if (match.index > last) parts.push(text.slice(last, match.index));
     const token = match[0];
     if (token.startsWith('**')) {
-      parts.push(<strong key={`b${key++}`} className="text-white">{token.slice(2, -2)}</strong>);
+      parts.push(<strong key={`b${key++}`} className="text-slate-900 dark:text-white">{token.slice(2, -2)}</strong>);
     } else {
-      parts.push(<em key={`i${key++}`} className="text-slate-200">{token.slice(1, -1)}</em>);
+      parts.push(<em key={`i${key++}`} className="text-slate-800 dark:text-slate-200">{token.slice(1, -1)}</em>);
     }
     last = match.index + token.length;
   }
@@ -101,7 +101,7 @@ function MessageBubble({ message }) {
             ? 'bg-gradient-to-br from-red-600 to-red-500 text-white rounded-tr-sm shadow-red-600/20'
             : message.error
             ? 'bg-red-500/10 border border-red-500/30 text-red-200 rounded-tl-sm'
-            : 'bg-slate-900/80 border border-slate-800 text-slate-100 rounded-tl-sm'
+            : 'bg-slate-100/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 rounded-tl-sm'
         }`}
       >
         {lines.map((line, idx) => (
@@ -112,8 +112,8 @@ function MessageBubble({ message }) {
       </div>
 
       {isUser && (
-        <div className="h-8 w-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0">
-          <UserIcon className="h-4 w-4 text-slate-300" />
+        <div className="h-8 w-8 rounded-xl bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 flex items-center justify-center flex-shrink-0">
+          <UserIcon className="h-4 w-4 text-slate-700 dark:text-slate-300" />
         </div>
       )}
     </motion.div>
@@ -131,7 +131,7 @@ function TypingIndicator() {
       <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-red-500/20">
         <Bot className="h-4 w-4 text-white" />
       </div>
-      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1.5">
+      <div className="bg-slate-100/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1.5">
         <span className="h-2 w-2 rounded-full bg-red-400 animate-bounce" style={{ animationDelay: '0ms' }} />
         <span className="h-2 w-2 rounded-full bg-red-400 animate-bounce" style={{ animationDelay: '150ms' }} />
         <span className="h-2 w-2 rounded-full bg-red-400 animate-bounce" style={{ animationDelay: '300ms' }} />
@@ -200,22 +200,22 @@ export default function AIDisasterAssistant({ onToast }) {
   };
 
   return (
-    <div className="space-y-6 text-white">
+    <div className="space-y-6 text-slate-900 dark:text-white">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
           <span className="font-mono text-xs font-bold uppercase tracking-widest text-red-500">▶ DPRES Intelligence</span>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-100 mt-1 flex items-center gap-2 font-sans">
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 mt-1 flex items-center gap-2 font-sans">
             <Bot className="h-7 w-7 text-red-500" /> AI Disaster Assistant 🤖
           </h1>
-          <p className="text-sm text-slate-400 mt-1.5 max-w-2xl">
+          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1.5 max-w-2xl">
             Get instant disaster preparedness guidance, first-aid assistance, and emergency safety information powered by AI.
           </p>
         </div>
 
         <button
           onClick={handleClear}
-          className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-300 hover:bg-slate-800 hover:text-red-400 transition-all flex items-center gap-1.5 self-start sm:self-auto"
+          className="rounded-xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-red-400 transition-all flex items-center gap-1.5 self-start sm:self-auto"
         >
           <Trash2 className="h-3.5 w-3.5" /> Clear chat
         </button>
@@ -226,7 +226,7 @@ export default function AIDisasterAssistant({ onToast }) {
           <AlertTriangle className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5" />
           <div className="text-sm text-amber-200">
             <strong className="text-amber-300">Gemini API key not configured.</strong>{' '}
-            Add <code className="px-1.5 py-0.5 rounded bg-slate-900 text-amber-300 font-mono text-xs">VITE_GEMINI_API_KEY</code> to a <code className="px-1.5 py-0.5 rounded bg-slate-900 text-amber-300 font-mono text-xs">.env</code> file in the project root, then restart the dev server.
+            Add <code className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-900 text-amber-700 dark:text-amber-300 font-mono text-xs">VITE_GEMINI_API_KEY</code> to a <code className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-900 text-amber-700 dark:text-amber-300 font-mono text-xs">.env</code> file in the project root, then restart the dev server.
           </div>
         </div>
       )}
@@ -235,12 +235,12 @@ export default function AIDisasterAssistant({ onToast }) {
         {/* Chat column */}
         <div className="lg:col-span-2 space-y-4">
           {/* Chat panel */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-sm overflow-hidden flex flex-col h-[560px]">
-            <div className="px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+          <div className="premium-card-static overflow-hidden flex flex-col h-[560px]">
+            <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
               <span className="font-mono text-[9px] font-extrabold tracking-widest text-red-400 uppercase flex items-center gap-1.5">
                 <Sparkles className="h-3 w-3 text-red-400 animate-pulse" /> Live conversation
               </span>
-              <span className="font-mono text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+              <span className="font-mono text-[9px] font-bold text-slate-600 dark:text-slate-500 uppercase tracking-widest">
                 {messages.filter((m) => m.role !== 'assistant' || m.ts !== WELCOME_MESSAGE.ts).length} messages
               </span>
             </div>
@@ -256,7 +256,7 @@ export default function AIDisasterAssistant({ onToast }) {
 
             <form
               onSubmit={handleSubmit}
-              className="border-t border-slate-800 p-3 bg-slate-950/40 flex items-center gap-2"
+              className="border-t border-slate-200 dark:border-slate-800 p-3 bg-white dark:bg-slate-950/40 flex items-center gap-2"
             >
               <input
                 ref={inputRef}
@@ -265,7 +265,7 @@ export default function AIDisasterAssistant({ onToast }) {
                 onChange={(e) => setInput(e.target.value)}
                 disabled={loading}
                 placeholder="Ask about floods, CPR, emergency kits, earthquakes, fire safety..."
-                className="flex-1 rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-600 focus:border-red-500 focus:outline-none transition-colors disabled:opacity-50"
+                className="flex-1 rounded-xl border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-600 focus:border-red-500 focus:outline-none transition-colors disabled:opacity-50"
               />
               <button
                 type="submit"
@@ -278,8 +278,8 @@ export default function AIDisasterAssistant({ onToast }) {
           </div>
 
           {/* Quick actions */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-5 backdrop-blur-sm">
-            <span className="font-mono text-[9px] font-extrabold tracking-widest text-slate-400 uppercase">
+          <div className="premium-card-static p-5">
+            <span className="font-mono text-[9px] font-extrabold tracking-widest text-slate-600 dark:text-slate-400 uppercase">
               Quick starters
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3">
@@ -288,7 +288,7 @@ export default function AIDisasterAssistant({ onToast }) {
                   key={q.label}
                   onClick={() => sendMessage(q.label)}
                   disabled={loading}
-                  className="text-left rounded-xl border border-slate-800 bg-slate-950/60 hover:border-red-500/40 hover:bg-red-500/5 px-4 py-3 text-sm font-semibold text-slate-200 hover:text-white transition-all flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="text-left rounded-xl border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-950/60 hover:border-red-500/40 hover:bg-red-500/5 px-4 py-3 text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-all flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="text-lg">{q.emoji}</span>
                   <span className="flex-1">{q.label}</span>
@@ -300,11 +300,11 @@ export default function AIDisasterAssistant({ onToast }) {
 
         {/* Right info panel */}
         <aside className="space-y-4">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-5 backdrop-blur-sm">
+          <div className="premium-card-static p-5">
             <span className="font-mono text-[9px] font-extrabold tracking-widest text-red-400 uppercase flex items-center gap-1.5">
               <Siren className="h-3 w-3" /> Emergency Resources
             </span>
-            <h3 className="text-lg font-bold text-white mt-1.5">National helplines (India)</h3>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mt-1.5">National helplines (India)</h3>
             <div className="mt-4 space-y-2.5">
               {EMERGENCY_CONTACTS.map((c) => {
                 const Icon = c.icon;
@@ -313,7 +313,7 @@ export default function AIDisasterAssistant({ onToast }) {
                     key={c.label}
                     className={`rounded-xl border p-3 flex items-center gap-3 ${colorMap[c.color]}`}
                   >
-                    <div className="h-10 w-10 rounded-lg bg-slate-950/40 flex items-center justify-center flex-shrink-0">
+                    <div className="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-950/40 flex items-center justify-center flex-shrink-0">
                       <Icon className="h-5 w-5" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -322,7 +322,7 @@ export default function AIDisasterAssistant({ onToast }) {
                     </div>
                     <a
                       href={`tel:${c.number.split('/')[0].trim()}`}
-                      className="rounded-lg bg-slate-950/60 hover:bg-slate-950 border border-slate-800 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-white flex items-center gap-1.5 transition-colors"
+                      className="rounded-lg bg-white/60 dark:bg-slate-950/60 hover:bg-slate-100 dark:hover:bg-slate-950 border-slate-200 dark:border-slate-800 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-900 dark:text-white flex items-center gap-1.5 transition-colors"
                     >
                       <Phone className="h-3 w-3" /> Call
                     </a>
@@ -332,9 +332,9 @@ export default function AIDisasterAssistant({ onToast }) {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-800 bg-gradient-to-br from-red-500/5 via-slate-900/40 to-transparent p-5 backdrop-blur-sm">
+          <div className="rounded-2xl border-slate-200 dark:border-slate-800 bg-gradient-to-br from-red-500/5 via-slate-50 dark:via-slate-900/40 to-transparent p-5 backdrop-blur-sm">
             <span className="font-mono text-[9px] font-extrabold tracking-widest text-red-400 uppercase">Safety note</span>
-            <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+            <p className="text-xs text-slate-700 dark:text-slate-300 mt-2 leading-relaxed">
               The AI Disaster Assistant provides educational guidance only. For any life-threatening emergency, call local emergency services immediately.
             </p>
           </div>
