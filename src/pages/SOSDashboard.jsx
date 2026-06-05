@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Phone, AlertTriangle, MapPin, Hospital, Navigation, X,
+  Phone, AlertTriangle, Hospital, Navigation, X,
   Heart, Shield, Droplets, Flame, Ambulance, Zap, ArrowRight
 } from 'lucide-react';
 import { navigate } from '../hooks/useRoute';
@@ -30,7 +30,6 @@ const NEARBY_HOSPITALS = [
 
 const QUICK_ACTIONS = [
   { label: 'All Contacts', icon: Phone, color: '#2563EB', href: '#/portal/contacts' },
-  { label: 'Risk Map', icon: MapPin, color: '#F97316', href: '#/risk-map' },
   { label: 'First Aid', icon: Heart, color: '#10B981', href: '#/learning-hub' },
   { label: 'AI Assistant', icon: Shield, color: '#8B5CF6', href: '#/portal/simulator' }
 ];

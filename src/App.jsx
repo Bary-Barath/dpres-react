@@ -32,12 +32,10 @@ import Contacts from './pages/Contacts';
 import Settings from './pages/Settings';
 
 // NEW Feature Pages
-import DisasterRiskMap from './pages/DisasterRiskMap';
 import LearningHub from './pages/LearningHub';
 import SOSDashboard from './pages/SOSDashboard';
 import PreparednessQuiz from './pages/PreparednessQuiz';
 import PreparednessDashboard from './pages/PreparednessDashboard';
-import Certificate from './pages/Certificate';
 import OfflineResources from './pages/OfflineResources';
 
 const AuthContext = createContext(null);
@@ -137,7 +135,7 @@ export default function App() {
 
   /** Routes that use no sidebar (login, public pages, standalone pages) */
   const isPublicRoute = isLandingRoute || hash === '#/login' ||
-    hash === '#/risk-map' || hash === '#/learning-hub' ||
+    hash === '#/learning-hub' ||
     hash === '#/sos' || hash === '#/preparedness-dashboard' ||
     hash === '#/preparedness-quiz' || hash === '#/offline-resources';
 
@@ -164,7 +162,6 @@ export default function App() {
     }
 
     // Public standalone pages (no sidebar needed, but visible to visitors)
-    if (hash === '#/risk-map') return <StandaloneLayout><DisasterRiskMap /></StandaloneLayout>;
     if (hash === '#/learning-hub') return <StandaloneLayout><LearningHub /></StandaloneLayout>;
     if (hash === '#/sos') return <StandaloneLayout><SOSDashboard /></StandaloneLayout>;
     if (hash === '#/preparedness-quiz') return <StandaloneLayout><PreparednessQuiz /></StandaloneLayout>;
@@ -179,11 +176,6 @@ export default function App() {
           Redirecting to authentication portal...
         </div>
       );
-    }
-
-    // Certificate (standalone, no sidebar)
-    if (hash === '#/certificate') {
-      return <StandaloneLayout><Certificate /></StandaloneLayout>;
     }
 
     // Admin routes

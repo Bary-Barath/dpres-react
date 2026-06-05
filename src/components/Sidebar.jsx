@@ -13,11 +13,9 @@ import {
   ChevronRight,
   Bot,
   BookOpen,
-  MapPin,
   AlertTriangle,
   Shield,
   FileText,
-  Award,
   Wifi,
   BarChart2,
   Sun,
@@ -40,20 +38,17 @@ export default function Sidebar({ user, onLogout }) {
     { hash: '#/admin/students', icon: Users, label: 'Students DB' },
     { hash: '#/admin/drills', icon: Bell, label: 'Drill Manager' },
     { hash: '#/portal/map', icon: Map, label: 'Campus Map' },
-    { hash: '#/preparedness-dashboard', icon: BarChart2, label: 'School Dashboard' },
-    { hash: '#/risk-map', icon: MapPin, label: 'Risk Map' }
+    { hash: '#/preparedness-dashboard', icon: BarChart2, label: 'School Dashboard' }
   ];
 
   const studentLinks = [
     { hash: '#/portal', icon: LayoutDashboard, label: 'Overview' },
     { hash: '#/portal/simulator', icon: Bot, label: 'AI Assistant' },
     { hash: '#/portal/map', icon: Map, label: 'Evacuation Map' },
-    { hash: '#/risk-map', icon: MapPin, label: 'Risk Map' },
     { hash: '#/learning-hub', icon: BookOpen, label: 'Learning Hub' },
     { hash: '#/sos', icon: AlertTriangle, label: 'SOS Dashboard' },
     { hash: '#/preparedness-quiz', icon: FileText, label: 'Preparedness Quiz' },
     { hash: '#/preparedness-dashboard', icon: BarChart2, label: 'School Dashboard' },
-    { hash: '#/certificate', icon: Award, label: 'Certificate' },
     { hash: '#/offline-resources', icon: Wifi, label: 'Offline Resources' },
     { hash: '#/portal/leaderboard', icon: Trophy, label: 'Leaderboard' },
     { hash: '#/portal/contacts', icon: Phone, label: 'Contacts' },
