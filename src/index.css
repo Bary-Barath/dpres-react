@@ -17,48 +17,89 @@ html.dark {
 
 /* ── CSS Variables ── */
 :root {
+  /* Chart */
   --chart-grid: #f1f5f9;
   --chart-text: #64748b;
   --chart-bg: #ffffff;
+  /* Map */
   --leaflet-tiles: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  /* Backgrounds */
   --bg-page: #F8FAFC;
   --bg-card: #FFFFFF;
+  --bg-subtle: #F1F5F9;
+  /* Sidebar */
   --sidebar-bg: #FFFFFF;
   --sidebar-active: linear-gradient(90deg, #2563EB, #3B82F6);
   --sidebar-active-border: #2563eb;
-  --sidebar-hover: #F8FAFC;
+  --sidebar-hover: #F1F5F9;
+  /* Shadows */
   --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
   --shadow-elevated: 0 8px 24px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
   --shadow-float: 0 20px 60px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.06);
   --shadow-dropdown: 0 12px 40px rgba(0,0,0,0.12);
+  /* Glass */
   --glass-bg: rgba(255,255,255,0.82);
   --glass-border: rgba(255,255,255,0.6);
-  --primary-blue: #EF1B31;
-  --primary-blue-dark: #B0003A;
-  --accent-cyan: #D4002E;
+  /* Brand */
+  --primary: #2563EB;
+  --primary-hover: #1d4ed8;
+  --primary-shadow: rgba(37,99,235,0.3);
+  --accent: #06B6D4;
+  /* Text */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  /* Borders */
   --border-subtle: rgba(15,23,42,0.06);
   --border-medium: rgba(15,23,42,0.10);
+  /* Inputs */
+  --input-bg: #FFFFFF;
+  --input-border: #E2E8F0;
+  --input-text: #0F172A;
+  --input-placeholder: #94A3B8;
 }
 
 .dark {
+  /* Chart */
   --chart-grid: #1e293b;
   --chart-text: #94a3b8;
   --chart-bg: #0f172a;
+  /* Map */
   --leaflet-tiles: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+  /* Backgrounds */
   --bg-page: #020617;
   --bg-card: #0f172a;
+  --bg-subtle: #0f172a;
+  /* Sidebar */
   --sidebar-bg: #080f1e;
   --sidebar-active: rgba(239, 246, 255, 0.08);
   --sidebar-active-border: #3b82f6;
   --sidebar-hover: rgba(243, 244, 246, 0.04);
+  /* Shadows */
   --shadow-card: 0 1px 3px rgba(0,0,0,0.4), 0 10px 25px rgba(0,0,0,0.35);
   --shadow-elevated: 0 4px 6px rgba(0,0,0,0.4), 0 20px 40px rgba(0,0,0,0.5);
   --shadow-float: 0 20px 60px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.4);
   --shadow-dropdown: 0 10px 30px rgba(0,0,0,0.5);
+  /* Glass */
   --glass-bg: rgba(15, 23, 42, 0.82);
   --glass-border: rgba(255,255,255,0.06);
+  /* Brand */
+  --primary: #3B82F6;
+  --primary-hover: #60a5fa;
+  --primary-shadow: rgba(59,130,246,0.3);
+  --accent: #22d3ee;
+  /* Text */
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #475569;
+  /* Borders */
   --border-subtle: rgba(255,255,255,0.05);
   --border-medium: rgba(255,255,255,0.08);
+  /* Inputs */
+  --input-bg: #0f172a;
+  --input-border: rgba(255,255,255,0.08);
+  --input-text: #F1F5F9;
+  --input-placeholder: #475569;
 }
 
 /* ── Smooth theme transitions ── */

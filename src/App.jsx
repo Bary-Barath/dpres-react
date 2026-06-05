@@ -172,7 +172,8 @@ export default function App() {
     if (!activeUser) {
       setTimeout(() => navigate('#/login'), 50);
       return (
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-500">
+        <div className="min-h-screen page-bg smooth-theme flex items-center justify-center"
+          style={{ color: 'var(--text-muted)' }}>
           Redirecting to authentication portal...
         </div>
       );
