@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import BRAND from '../config/branding';
 
 const sizeMap = {
-  sm: { box: 'h-8 w-8',   text: 'text-base', tag: 'text-[7px]' },
-  md: { box: 'h-10 w-10', text: 'text-xl',   tag: 'text-[8px]' },
-  lg: { box: 'h-14 w-14', text: 'text-2xl',  tag: 'text-[9px]' },
+  sm: { px: 40,  text: 'text-lg',   tag: 'text-[8px]'  },
+  md: { px: 52,  text: 'text-2xl',  tag: 'text-[9px]'  },
+  lg: { px: 72,  text: 'text-3xl',  tag: 'text-[11px]' },
 };
 
 /** Inline SVG that exactly reproduces the hexagon+cross mark — shown when PNG fails to load */
@@ -43,11 +43,11 @@ export default function Logo({
 
   return (
     <span
-      className={`inline-flex items-center gap-2 ${onClick ? 'cursor-pointer select-none' : ''} ${className}`}
+      className={`inline-flex items-center gap-2.5 ${onClick ? 'cursor-pointer select-none' : ''} ${className}`}
       onClick={onClick}
     >
       {/* Logo mark */}
-      <span className={`relative flex-shrink-0 ${dims.box}`}>
+      <span className="relative flex-shrink-0" style={{ width: dims.px, height: dims.px }}>
         {!imgFailed ? (
           <img
             src={BRAND.logo.png}
@@ -55,7 +55,7 @@ export default function Logo({
             className="w-full h-full object-contain"
             onError={() => setImgFailed(true)}
             draggable={false}
-            style={{ filter: 'drop-shadow(0 2px 6px rgba(239,27,49,0.3))' }}
+            style={{ filter: 'drop-shadow(0 2px 8px rgba(220,38,38,0.35))' }}
           />
         ) : (
           <HexCrossIcon className="w-full h-full" />
