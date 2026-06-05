@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Chart as ChartJS, ArcElement, Tooltip, Legend,
@@ -11,19 +11,27 @@ import {
 } from 'lucide-react';
 import { useThemeContext } from '../App';
 import BackToHomeButton from '../components/common/BackToHomeButton';
+import ResourceCard from '../components/ResourceCard';
+import ResourceLocationModal from '../components/ResourceLocationModal';
+import { RESOURCE_LOCATIONS } from '../data/resourceLocations';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Filler);
 
-const SAFETY_RESOURCES = [
-  { name: 'Fire Extinguishers', count: 48, icon: FireExtinguisher, color: '#EF4444', status: 'Adequate' },
-  { name: 'Emergency Exits', count: 36, icon: DoorOpen, color: '#3B82F6', status: 'Adequate' },
-  { name: 'Assembly Points', count: 12, icon: MapPin, color: '#F97316', status: 'Adequate' },
-  { name: 'First Aid Kits', count: 72, icon: Heart, color: '#10B981', status: 'Well Stocked' },
-  { name: 'Emergency Alarms', count: 24, icon: Bell, color: '#8B5CF6', status: 'Functional' },
-  { name: 'Spare Extinguishers', count: 24, icon: FireExtinguisher, color: '#EAB308', status: 'Spare Units' }
-];
+const ICON_MAP = {
+  'fire-extinguisher': FireExtinguisher,
+  'emergency-exit': DoorOpen,
+  'assembly-point': MapPin,
+  'first-aid-kit': Heart,
+  'emergency-alarm': Bell,
+  'spare-extinguisher': FireExtinguisher
+};
 
-const POPULATION_DATA = { Students: 2450, Faculty: 180, Visitors: 120, Staff: 85 };
+const SAFETY_RESOURCES = RESOURCE_LOCATIONS.map((r) => ({
+  ...r,
+  icon: ICON_MAP[r.id] ?? Shield
+}));
+
+const POPULATION_DATA = { Students: 850, Faculty: 65, Visitors: 25, Staff: 35 };
 const POPULATION_COLORS = { Students: '#2563EB', Faculty: '#10B981', Visitors: '#F59E0B', Staff: '#8B5CF6' };
 
 const PREPAREDNESS_METRICS = [
@@ -35,8 +43,8 @@ const PREPAREDNESS_METRICS = [
 
 const MONTHLY_DATA = {
   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-  drills: [3, 2, 4, 1, 5, 3, 2, 4, 3, 5, 2, 4],
-  participants: [180, 150, 240, 90, 310, 200, 140, 260, 190, 290, 130, 250],
+  drills: [2, 1, 3, 1, 4, 2, 1, 3, 2, 3, 1, 2],
+  participants: [62, 48, 85, 30, 110, 72, 45, 92, 68, 98, 41, 87],
   incidents: [1, 0, 2, 0, 1, 0, 3, 1, 0, 1, 0, 0]
 };
 
@@ -51,6 +59,7 @@ export default function PreparednessDashboard() {
   const isDark = theme === 'dark';
   const gridColor = isDark ? '#1e293b' : '#f1f5f9';
   const textColor = isDark ? '#94a3b8' : '#64748b';
+  const [activeResource, setActiveResource] = useState(null);
 
   const chartOptions = useMemo(() => ({
     responsive: true, maintainAspectRatio: false,
@@ -119,7 +128,7 @@ export default function PreparednessDashboard() {
             style={{ boxShadow: '0 6px 20px rgba(16,185,129,0.3)' }}>
             <Shield className="h-5 w-5 text-white" />
           </div>
-          School & College Preparedness Dashboard
+          Campus Preparedness Dashboard
         </h1>
         <p className={`text-sm mt-2 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
           Real-time institution safety metrics, resource tracking, and preparedness analytics.
@@ -201,35 +210,24 @@ export default function PreparednessDashboard() {
 
       {/* ── Safety Resources ── */}
       <div>
-        <h2 className={`text-base font-bold mb-4 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
+        <h2 className={`text-base font-bold mb-1.5 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
           <Building2 className="h-4.5 w-4.5 text-red-500" />
           Safety Resources
         </h2>
+        <p className={`text-xs mb-4 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+          Click any card to view exact locations across campus.
+        </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {SAFETY_RESOURCES.map((r, idx) => {
-            const Icon = r.icon;
-            return (
-              <motion.div
-                key={r.name}
-                initial={{ opacity: 0, scale: 0.94 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: idx * 0.05 }}
-                className={`p-4 rounded-2xl border text-center ${cardBase}`}
-                style={{ boxShadow: isDark ? '0 2px 10px rgba(0,0,0,0.25)' : `0 2px 10px ${r.color}15` }}
-              >
-                <div className="h-8 w-8 rounded-xl flex items-center justify-center mx-auto mb-2.5"
-                  style={{ background: `${r.color}15` }}>
-                  <Icon className="h-4 w-4" style={{ color: r.color }} />
-                </div>
-                <div className={`text-2xl font-extrabold`} style={{ color: r.color }}>{r.count}</div>
-                <div className={`text-[10px] font-medium mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{r.name}</div>
-                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full mt-1.5 inline-block`}
-                  style={{ background: `${r.color}12`, color: r.color }}>
-                  {r.status}
-                </span>
-              </motion.div>
-            );
-          })}
+          {SAFETY_RESOURCES.map((r, idx) => (
+            <ResourceCard
+              key={r.id}
+              resource={r}
+              isDark={isDark}
+              cardBase={cardBase}
+              idx={idx}
+              onViewLocations={setActiveResource}
+            />
+          ))}
         </div>
       </div>
 
@@ -315,6 +313,14 @@ export default function PreparednessDashboard() {
           </motion.div>
         ))}
       </div>
+
+      {/* ── Resource Location Modal ── */}
+      {activeResource && (
+        <ResourceLocationModal
+          resource={activeResource}
+          onClose={() => setActiveResource(null)}
+        />
+      )}
     </div>
   );
 }

@@ -38,7 +38,7 @@ export default function Sidebar({ user, onLogout }) {
     { hash: '#/admin/students', icon: Users, label: 'Students DB' },
     { hash: '#/admin/drills', icon: Bell, label: 'Drill Manager' },
     { hash: '#/portal/map', icon: Map, label: 'Campus Map' },
-    { hash: '#/preparedness-dashboard', icon: BarChart2, label: 'School Dashboard' }
+    { hash: '#/preparedness-dashboard', icon: BarChart2, label: 'Campus Dashboard' }
   ];
 
   const studentLinks = [
@@ -48,7 +48,7 @@ export default function Sidebar({ user, onLogout }) {
     { hash: '#/learning-hub', icon: BookOpen, label: 'Learning Hub' },
     { hash: '#/sos', icon: AlertTriangle, label: 'SOS Dashboard' },
     { hash: '#/preparedness-quiz', icon: FileText, label: 'Preparedness Quiz' },
-    { hash: '#/preparedness-dashboard', icon: BarChart2, label: 'School Dashboard' },
+    { hash: '#/preparedness-dashboard', icon: BarChart2, label: 'Campus Dashboard' },
     { hash: '#/offline-resources', icon: Wifi, label: 'Offline Resources' },
     { hash: '#/portal/leaderboard', icon: Trophy, label: 'Leaderboard' },
     { hash: '#/portal/contacts', icon: Phone, label: 'Contacts' },
