@@ -4,7 +4,7 @@ import {
   Bot, Send, Sparkles, Trash2, Phone, Siren, Flame,
   Shield, LifeBuoy, User as UserIcon, AlertTriangle, Zap
 } from 'lucide-react';
-import { askGemini, isGeminiConfigured } from '../utilities/geminiService';
+import { askAI, isAIConfigured } from '../utilities/aiService';
 import { useThemeContext } from '../App';
 import BackToHomeButton from '../components/common/BackToHomeButton';
 
@@ -118,7 +118,7 @@ export default function AIDisasterAssistant({ onToast }) {
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
-  const configured = useMemo(() => isGeminiConfigured(), []);
+  const configured = useMemo(() => isAIConfigured(), []);
 
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)); } catch (_) {}
@@ -138,7 +138,7 @@ export default function AIDisasterAssistant({ onToast }) {
     setLoading(true);
     try {
       const apiHistory = nextHistory.filter(m => !m.error).map(({ role, content }) => ({ role, content }));
-      const reply = await askGemini(apiHistory);
+      const reply = await askAI(apiHistory);
       setMessages(prev => [...prev, { role: 'assistant', content: reply, ts: Date.now() }]);
     } catch (err) {
       const msg = err?.message || 'Something went wrong contacting the AI service.';
@@ -188,8 +188,8 @@ export default function AIDisasterAssistant({ onToast }) {
         <div className={`rounded-2xl border p-4 flex items-start gap-3 ${isDark ? 'border-amber-500/25 bg-amber-500/5' : 'border-amber-200 bg-amber-50'}`}>
           <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
           <div className={`text-sm ${isDark ? 'text-amber-200' : 'text-amber-800'}`}>
-            <strong>Gemini API key not configured.</strong>{' '}
-            Add <code className={`px-1.5 py-0.5 rounded font-mono text-xs ${isDark ? 'bg-slate-900 text-amber-300' : 'bg-white border border-amber-200 text-amber-700'}`}>VITE_GEMINI_API_KEY</code> to a <code className={`px-1.5 py-0.5 rounded font-mono text-xs ${isDark ? 'bg-slate-900 text-amber-300' : 'bg-white border border-amber-200 text-amber-700'}`}>.env</code> file.
+            <strong>OpenRouter API key not configured.</strong>{' '}
+            Add <code className={`px-1.5 py-0.5 rounded font-mono text-xs ${isDark ? 'bg-slate-900 text-amber-300' : 'bg-white border border-amber-200 text-amber-700'}`}>VITE_OPENROUTER_API_KEY</code> to a <code className={`px-1.5 py-0.5 rounded font-mono text-xs ${isDark ? 'bg-slate-900 text-amber-300' : 'bg-white border border-amber-200 text-amber-700'}`}>.env</code> file.
           </div>
         </div>
       )}

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bot, Send, X, Sparkles, Trash2, MessageSquare } from 'lucide-react';
-import { askGemini, isGeminiConfigured } from '../utilities/geminiService';
+import { askAI, isAIConfigured } from '../utilities/aiService';
 
 const STORAGE_KEY = 'dpres_floating_ai_chat_v1';
 const WELCOME = { role: 'assistant', content: 'Hello! I am DPRES AI Disaster Assistant. Ask me anything about emergency preparedness!', ts: Date.now() };
@@ -27,7 +27,7 @@ export default function FloatingAIButton() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
-  const configured = useMemo(() => isGeminiConfigured(), []);
+  const configured = useMemo(() => isAIConfigured(), []);
 
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)); } catch (_) {}
@@ -47,7 +47,7 @@ export default function FloatingAIButton() {
     setLoading(true);
     try {
       const apiHistory = nextHistory.filter(m => !m.error).map(({ role, content }) => ({ role, content }));
-      const reply = configured ? await askGemini(apiHistory) : 'I am running in offline mode. For full AI features, configure the Gemini API key. For emergencies, please call your local emergency services.';
+      const reply = configured ? await askAI(apiHistory) : 'I am running in offline mode. For full AI features, configure the OpenRouter API key. For emergencies, please call your local emergency services.';
       setMessages(prev => [...prev, { role: 'assistant', content: reply, ts: Date.now() }]);
     } catch (err) {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, I encountered an error. Please try again.', ts: Date.now(), error: true }]);

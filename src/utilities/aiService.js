@@ -29,14 +29,14 @@ const API_KEY = import.meta.env?.VITE_OPENROUTER_API_KEY || '';
 const MODEL = 'openai/gpt-4o-mini';
 const ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
 
-export const isGeminiConfigured = () => Boolean(API_KEY);
+export const isAIConfigured = () => Boolean(API_KEY);
 
 /**
  * Send a chat history to OpenRouter and receive the assistant reply.
  * @param {Array<{role: 'user'|'assistant', content: string}>} history
  * @returns {Promise<string>}
  */
-export async function askGemini(history) {
+export async function askAI(history) {
   if (!API_KEY) {
     throw new Error(
       'Missing API key. Set VITE_OPENROUTER_API_KEY in a .env file at the project root.'
