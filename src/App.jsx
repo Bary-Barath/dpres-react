@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, ShieldAlert } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
 import { useRoute, navigate } from './hooks/useRoute';
 import { useAppData } from './hooks/useAppData';
 import { useTheme } from './hooks/useTheme';
 import ShortcutsHelp from './components/ShortcutsHelp';
 import FloatingAIButton from './components/FloatingAIButton';
+import DrillAlertBanner from './components/DrillAlertBanner';
 
 // Landing Page Components
 import Navbar from './components/Navbar';
@@ -23,6 +24,7 @@ import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import StudentsDB from './pages/StudentsDB';
 import DrillManager from './pages/DrillManager';
+import DrillCenter from './pages/DrillCenter';
 import StudentPortal from './pages/StudentPortal';
 import Quiz from './pages/Quiz';
 import EvacuationMap from './pages/EvacuationMap';
@@ -64,7 +66,6 @@ export default function App() {
   });
 
   const [toast, setToast] = useState(null);
-  const [dismissedAlerts, setDismissedAlerts] = useState([]);
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
@@ -122,13 +123,7 @@ export default function App() {
     setActiveUser(updated);
   };
 
-  const activeDrill = data.drills.find(d => d.status === 'Active' && Date.now() - d.timestamp < 180000);
-  const isAlertVisible = activeDrill && !dismissedAlerts.includes(activeDrill.id);
-
-  const handleDismissAlert = (id) => {
-    setDismissedAlerts(prev => [...prev, id]);
-    showToast('Drill warning acknowledged.', 'info');
-  };
+  const activeDrill = null; // handled by DrillAlertBanner via drillService
 
   /** Routes that use landing page layout (navbar + hero + etc.) */
   const isLandingRoute = hash === '#/home' || hash === '#/' || !hash;
@@ -202,6 +197,7 @@ export default function App() {
     else if (hash === '#/portal/simulator') pageComponent = <AIDisasterAssistant onToast={showToast} />;
     else if (hash === '#/portal/map') pageComponent = <EvacuationMap />;
     else if (hash === '#/portal/leaderboard') pageComponent = <Leaderboard />;
+    else if (hash === '#/portal/drills') pageComponent = <DrillCenter />;
     else if (hash === '#/portal/contacts') pageComponent = <Contacts />;
     else if (hash === '#/portal/settings') pageComponent = <Settings onToast={showToast} />;
     else { setTimeout(() => navigate('#/portal'), 50); return null; }
@@ -250,26 +246,8 @@ export default function App() {
       <ShortcutsHelp open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
       {showFloatingAI && <FloatingAIButton />}
 
-      {/* Floating Active Emergency warning overlay */}
-      {isAlertVisible && activeUser && activeUser.role === 'student' && (
-        <div className="fixed inset-x-0 top-0 z-50 p-4 bg-red-600 text-white flex items-center justify-between shadow-2xl animate-bounce">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-red-800 text-white animate-pulse">
-              <Bell className="h-5 w-5" />
-            </div>
-            <div>
-              <span className="font-mono text-[9px] font-extrabold tracking-widest text-red-200 block uppercase">CRITICAL CAMPUS BROADCAST</span>
-              <strong className="text-sm md:text-base">{activeDrill.title}</strong>
-            </div>
-          </div>
-          <button
-            onClick={() => handleDismissAlert(activeDrill.id)}
-            className="p-1 rounded-lg hover:bg-red-700 text-white focus:outline-none"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-      )}
+      {/* Live drill alert banner — students only */}
+      {activeUser?.role === 'student' && <DrillAlertBanner user={activeUser} />}
 
       {/* Toast notifications */}
       <AnimatePresence>

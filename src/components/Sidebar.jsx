@@ -20,7 +20,7 @@ import {
   BarChart2,
   Sun,
   Moon,
-  GraduationCap
+  Radio
 } from 'lucide-react';
 import { navigate, useRoute } from '../hooks/useRoute';
 import { useThemeContext } from '../App';
@@ -42,17 +42,18 @@ export default function Sidebar({ user, onLogout }) {
   ];
 
   const studentLinks = [
-    { hash: '#/portal', icon: LayoutDashboard, label: 'Overview' },
-    { hash: '#/portal/simulator', icon: Bot, label: 'AI Assistant' },
-    { hash: '#/portal/map', icon: Map, label: 'Evacuation Map' },
-    { hash: '#/learning-hub', icon: BookOpen, label: 'Learning Hub' },
-    { hash: '#/sos', icon: AlertTriangle, label: 'SOS Dashboard' },
-    { hash: '#/preparedness-quiz', icon: FileText, label: 'Preparedness Quiz' },
-    { hash: '#/preparedness-dashboard', icon: BarChart2, label: 'Campus Dashboard' },
-    { hash: '#/offline-resources', icon: Wifi, label: 'Offline Resources' },
-    { hash: '#/portal/leaderboard', icon: Trophy, label: 'Leaderboard' },
-    { hash: '#/portal/contacts', icon: Phone, label: 'Contacts' },
-    { hash: '#/portal/settings', icon: Settings, label: 'Settings' }
+    { hash: '#/portal',             icon: LayoutDashboard, label: 'Overview'          },
+    { hash: '#/portal/drills',      icon: Radio,           label: 'Mock Drills'       },
+    { hash: '#/portal/simulator',   icon: Bot,             label: 'AI Assistant'      },
+    { hash: '#/portal/map',         icon: Map,             label: 'Evacuation Map'    },
+    { hash: '#/learning-hub',       icon: BookOpen,        label: 'Learning Hub'      },
+    { hash: '#/sos',                icon: AlertTriangle,   label: 'SOS Dashboard'     },
+    { hash: '#/preparedness-quiz',  icon: FileText,        label: 'Preparedness Quiz' },
+    { hash: '#/preparedness-dashboard', icon: BarChart2,   label: 'Campus Dashboard'  },
+    { hash: '#/offline-resources',  icon: Wifi,            label: 'Offline Resources' },
+    { hash: '#/portal/leaderboard', icon: Trophy,          label: 'Leaderboard'       },
+    { hash: '#/portal/contacts',    icon: Phone,           label: 'Contacts'          },
+    { hash: '#/portal/settings',    icon: Settings,        label: 'Settings'          }
   ];
 
   const links = role === 'admin' ? adminLinks : studentLinks;

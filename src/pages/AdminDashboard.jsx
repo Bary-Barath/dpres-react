@@ -1,25 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
   Search, ShieldAlert, Award, FileText, CheckCircle2,
   AlertTriangle, Send, ChevronRight, Users, TrendingUp,
-  Activity, ArrowUpRight, Bell, Layers, Shield
+  Activity, ArrowUpRight, Bell, Layers, Shield, Radio
 } from 'lucide-react';
 import { useAppData } from '../hooks/useAppData';
 import { navigate } from '../hooks/useRoute';
 import { useThemeContext } from '../App';
+import {
+  getDrills, getParticipationForDrill, subscribe,
+  broadcastDrill, getDrillMeta, getActiveDrill
+} from '../services/drillService';
 
 export default function AdminDashboard({ onToast }) {
-  const { data, updateDrills } = useAppData();
+  const { data } = useAppData();
   const { theme } = useThemeContext();
   const isDark = theme === 'dark';
-  const [drillMsg, setDrillMsg] = useState('');
-  const [drillType, setDrillType] = useState('general');
+  const [drillMsg, setDrillMsg]     = useState('');
+  const [drillType, setDrillType]   = useState('general');
   const [broadcasting, setBroadcasting] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery]   = useState('');
+  const [livedrills, setLiveDrills]     = useState(getDrills);
+
+  // Keep drill list fresh
+  const refreshDrills = useCallback(() => setLiveDrills(getDrills()), []);
+  useEffect(() => {
+    const unsub = subscribe(() => refreshDrills());
+    window.addEventListener('focus', refreshDrills);
+    return () => { unsub(); window.removeEventListener('focus', refreshDrills); };
+  }, [refreshDrills]);
 
   const students = data.users.filter(u => u.role === 'student');
-  const drills = data.drills;
 
   const modCounts = { fire: 0, flood: 0, quake: 0, cyclone: 0 };
   let trainedCount = 0;
@@ -30,25 +42,31 @@ export default function AdminDashboard({ onToast }) {
   });
 
   const maxStudents = students.length || 1;
+  const activeDrill = getActiveDrill();
+  const totalAcked = livedrills.reduce((sum, d) => {
+    const p = getParticipationForDrill(d.id);
+    return sum + p.filter(x => x.status === 'acknowledged' || x.status === 'completed').length;
+  }, 0);
+
   const stats = {
-    total: students.length,
+    total:   students.length,
     trained: trainedCount,
-    drills: drills.length,
+    drills:  livedrills.length,
     pending: students.length - trainedCount
   };
 
   const chartData = [
-    { label: 'Fire Safety', value: Math.round((modCounts.fire / maxStudents) * 100), color: '#EF4444', track: 'bg-red-500', light: 'from-red-50', accent: 'text-red-600' },
-    { label: 'Flood Safety', value: Math.round((modCounts.flood / maxStudents) * 100), color: '#3B82F6', track: 'bg-blue-500', light: 'from-blue-50', accent: 'text-blue-600' },
-    { label: 'Earthquake', value: Math.round((modCounts.quake / maxStudents) * 100), color: '#F59E0B', track: 'bg-amber-500', light: 'from-amber-50', accent: 'text-amber-600' },
-    { label: 'Cyclone Safety', value: Math.round((modCounts.cyclone / maxStudents) * 100), color: '#06B6D4', track: 'bg-cyan-500', light: 'from-cyan-50', accent: 'text-cyan-600' }
+    { label: 'Fire Safety',   value: Math.round((modCounts.fire    / maxStudents) * 100), color: '#EF4444', track: 'bg-red-500',   accent: 'text-red-600'   },
+    { label: 'Flood Safety',  value: Math.round((modCounts.flood   / maxStudents) * 100), color: '#3B82F6', track: 'bg-blue-500',  accent: 'text-blue-600'  },
+    { label: 'Earthquake',    value: Math.round((modCounts.quake   / maxStudents) * 100), color: '#F59E0B', track: 'bg-amber-500', accent: 'text-amber-600' },
+    { label: 'Cyclone Safety',value: Math.round((modCounts.cyclone / maxStudents) * 100), color: '#06B6D4', track: 'bg-cyan-500',  accent: 'text-cyan-600'  }
   ];
 
   const statCards = [
-    { label: 'Total Students', value: stats.total, icon: Users, accent: '#2563EB', bg: 'from-blue-50 to-indigo-50', shadow: 'rgba(37,99,235,0.12)', desc: 'Registered', trend: '+12%' },
-    { label: 'Fully Trained', value: stats.trained, icon: Award, accent: '#10B981', bg: 'from-emerald-50 to-teal-50', shadow: 'rgba(16,185,129,0.12)', desc: 'All 4 modules', trend: '+8%' },
-    { label: 'Drills Conducted', value: stats.drills, icon: Bell, accent: '#F59E0B', bg: 'from-amber-50 to-yellow-50', shadow: 'rgba(245,158,11,0.12)', desc: 'This semester', trend: '+3' },
-    { label: 'Pending Assessment', value: stats.pending, icon: AlertTriangle, accent: '#EF4444', bg: 'from-red-50 to-rose-50', shadow: 'rgba(239,68,68,0.12)', desc: 'Need completion', trend: '-5%' }
+    { label: 'Total Students',     value: stats.total,   icon: Users,         accent: '#2563EB', bg: 'from-blue-50 to-indigo-50',   shadow: 'rgba(37,99,235,0.12)',   desc: 'Registered',    trend: '+12%' },
+    { label: 'Fully Trained',      value: stats.trained, icon: Award,         accent: '#10B981', bg: 'from-emerald-50 to-teal-50',  shadow: 'rgba(16,185,129,0.12)',  desc: 'All 4 modules', trend: '+8%'  },
+    { label: 'Drills Conducted',   value: stats.drills,  icon: Bell,          accent: '#F59E0B', bg: 'from-amber-50 to-yellow-50',  shadow: 'rgba(245,158,11,0.12)',  desc: 'This semester', trend: '+3'   },
+    { label: 'Pending Assessment', value: stats.pending, icon: AlertTriangle, accent: '#EF4444', bg: 'from-red-50 to-rose-50',      shadow: 'rgba(239,68,68,0.12)',   desc: 'Need completion',trend: '-5%' }
   ];
 
   const broadcastAlert = (e) => {
@@ -56,14 +74,9 @@ export default function AdminDashboard({ onToast }) {
     if (!drillMsg.trim()) return;
     setBroadcasting(true);
     setTimeout(() => {
-      updateDrills(prev => [{
-        id: 'd-' + Date.now(),
-        title: drillMsg.trim(),
-        type: drillType,
-        timestamp: Date.now(),
-        status: 'Active'
-      }, ...prev]);
-      onToast('Drill alert broadcast to all connected devices!', 'success');
+      broadcastDrill({ title: drillMsg.trim(), type: drillType });
+      refreshDrills();
+      onToast('🚨 Drill broadcast to all student devices!', 'success');
       setDrillMsg('');
       setBroadcasting(false);
     }, 600);
@@ -214,8 +227,7 @@ export default function AdminDashboard({ onToast }) {
               <option value="fire">Fire Protocol</option>
               <option value="flood">Flood Warning</option>
               <option value="quake">Earthquake Warning</option>
-              <option value="cyclone">Cyclone Evacuation Drill</option>
-            </select>
+              <option value="cyclone">Cyclone Evacuation Drill</option>            </select>
           </div>
           <motion.button
             type="submit"
@@ -359,28 +371,42 @@ export default function AdminDashboard({ onToast }) {
             <div className="flex items-center gap-2 mb-4">
               <Shield className="h-4 w-4 text-amber-500" />
               <span className={`text-xs font-bold ${isDark ? 'text-white' : 'text-slate-700'}`}>Recent Safety Drills</span>
+              {activeDrill && (
+                <span className="ml-auto flex items-center gap-1 text-[9px] font-black px-2 py-0.5 rounded-full text-white bg-red-500 animate-pulse">
+                  <Radio className="h-2.5 w-2.5" /> LIVE
+                </span>
+              )}
             </div>
             <div className="flex-1 space-y-3">
-              {drills.length === 0 ? (
+              {livedrills.length === 0 ? (
                 <p className={`text-xs text-center py-6 ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>
                   No drills recorded yet.
                 </p>
               ) : (
-                drills.slice(0, 3).map((d) => (
-                  <div key={d.id} className="flex gap-3 items-start">
-                    <div className={`h-7 w-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                      d.status === 'Completed' ? 'bg-emerald-500/10' : 'bg-amber-500/10'
-                    }`}>
-                      <CheckCircle2 className={`h-3.5 w-3.5 ${d.status === 'Completed' ? 'text-emerald-500' : 'text-amber-500'}`} />
+                livedrills.slice(0, 3).map((d) => {
+                  const meta = getDrillMeta(d.type);
+                  return (
+                    <div key={d.id} className="flex gap-3 items-start">
+                      <div className="h-7 w-7 rounded-lg flex items-center justify-center flex-shrink-0 text-sm"
+                        style={{ background: `${meta.color}15` }}>
+                        {meta.emoji}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className={`text-xs font-semibold truncate ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>{d.title}</p>
+                        <span className={`text-[10px] font-mono ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>
+                          {new Date(d.timestamp).toLocaleString()} · {d.type.toUpperCase()}
+                        </span>
+                      </div>
+                      <span className={`text-[9px] font-extrabold flex-shrink-0 px-2 py-0.5 rounded-full ${
+                        d.status === 'Active'
+                          ? 'text-white bg-red-500'
+                          : d.status === 'Completed'
+                          ? isDark ? 'text-emerald-400 bg-emerald-500/10' : 'text-emerald-700 bg-emerald-50'
+                          : isDark ? 'text-slate-500 bg-slate-800' : 'text-slate-500 bg-slate-100'
+                      }`}>{d.status}</span>
                     </div>
-                    <div className="min-w-0">
-                      <p className={`text-xs font-semibold truncate ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>{d.title}</p>
-                      <span className={`text-[10px] font-mono ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>
-                        {new Date(d.timestamp).toLocaleString()} · {d.type.toUpperCase()}
-                      </span>
-                    </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
             <button
