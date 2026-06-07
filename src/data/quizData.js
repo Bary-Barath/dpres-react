@@ -45,19 +45,20 @@ export const QUIZ_DATA = {
       { id: 4, q: 'If outdoors during an earthquake, move away from:', options: ['Open fields', 'Buildings, streetlights, and power lines', 'Parks and trees', 'Other people'], answer: 1 }
     ]
   },
-  threat: {
-    title: 'Active Threat',
-    color: '#8b5cf6',
-    emoji: '🛡️',
-    textColor: 'text-violet-500',
-    borderColor: 'border-violet-500/20',
-    bgColor: 'bg-violet-500/10',
-    hoverBg: 'hover:bg-violet-500/5',
+  cyclone: {
+    title: 'Cyclone Safety',
+    color: '#06b6d4',
+    emoji: '🌀',
+    textColor: 'text-cyan-500',
+    borderColor: 'border-cyan-500/20',
+    bgColor: 'bg-cyan-500/10',
+    hoverBg: 'hover:bg-cyan-500/5',
     questions: [
-      { id: 1, q: 'The national protocol for active threat situations is:', options: ['Hide, Fight, Flee', 'Run, Hide, Fight', 'Alert, Shelter, Evacuate', 'Freeze, Report, Comply'], answer: 1 },
-      { id: 2, q: '"Run" is the first option. When should you run?', options: ['Only when instructed by police', 'When a safe path is available and evacuation is possible', 'After confirming the threat location', 'Only if you are near an exit'], answer: 1 },
-      { id: 3, q: 'When hiding from a threat, you should:', options: ['Turn on lights to see clearly', 'Unlock doors for police access', 'Silence phones and block doors', 'Group in hallways for faster escape'], answer: 2 },
-      { id: 4, q: 'As a last resort, fighting back means:', options: ['One person confronts the threat', 'Act aggressively as a group using any item as improvised weapon', 'Wait and observe before acting', 'Call for help loudly first'], answer: 1 }
+      { id: 1, q: 'Which warning signal indicates an imminent severe cyclone?', options: ['Yellow advisory — monitor the situation', 'Orange watch — prepare to evacuate', 'Red alert — move to cyclone shelter immediately', 'Green all-clear — no action needed'], answer: 2 },
+      { id: 2, q: 'The safest shelter during a cyclone is:', options: ['A room with large windows for visibility', 'An interior room on the lowest floor with no windows', 'An interior room away from windows, preferably reinforced', 'The rooftop to avoid storm surge flooding'], answer: 2 },
+      { id: 3, q: 'A complete emergency kit for a cyclone should include water supply of:', options: ['1 litre per person per day for 3 days', '4 litres per person per day for at least 7 days', '2 litres per person per day for 2 days', 'Bottled water for 1 day only'], answer: 1 },
+      { id: 4, q: 'During a cyclone evacuation order, you should:', options: ['Wait to see if the storm path changes', 'Follow designated evacuation routes to official shelters', 'Drive to the nearest shopping centre', 'Stay home if you live in a concrete building'], answer: 1 },
+      { id: 5, q: 'After a cyclone, which action is most important before re-entering your home?', options: ['Turn on all electrical appliances to check if they work', 'Check for structural damage and gas leaks before entering', 'Open windows immediately to air out the building', 'Resume normal activities as soon as the rain stops'], answer: 1 }
     ]
   }
 };

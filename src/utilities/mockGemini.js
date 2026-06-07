@@ -13,21 +13,22 @@ export const mockGemini = {
     // 1. Drill Alert Scenario Generator
     if (promptLower.includes("drill alert title") || promptLower.includes("emergency drill alert")) {
       const responses = [
-        "Campus Protocol — Active Threat Drill in Progress",
+        "Category 3 Cyclone Evacuation Drill — All blocks to designated shelters",
         "Evacuation Directive — Emergency Fire Drill at Block A",
-        "Weather Incident — Server Center Containment Protocol",
+        "Severe Cyclone Shelter Simulation — Proceed to interior rooms immediately",
         "Emergency Broadcast — Monsoon Flood Warning Exercise",
-        "Structural Emergency — Earthquake Evacuation Simulation"
+        "Structural Emergency — Earthquake Evacuation Simulation",
+        "Cyclone Watch Activated — Campus Preparedness Protocol Initiated"
       ];
       return responses[Math.floor(Math.random() * responses.length)];
     }
 
-    // 2. Dynamic Lab Fire, Flood, Active Threat scenario generator
+    // 2. Dynamic Lab Fire, Flood, Cyclone scenario generator
     if (promptLower.includes("scenario") && (promptLower.includes("emergency") || promptLower.includes("campus"))) {
       const scenarios = [
         "You are working in the chemical lab on the second floor when a beaker shatters and thick grey smoke starts billowing toward the doorway. The overhead fire alarm immediately sounds across the corridor.",
-        "You are studying in the main library library when water starts leaking rapidly from the ceiling panels and rising water pools in the corridors. Security announces a local flash flood warning on campus.",
-        "While attending a lecture in Block C, you hear three loud popping noises resembling gunshots in the courtyard below, followed by screams. The campus speakers announce an immediate active threat lockdown.",
+        "You are studying in the main library when water starts leaking rapidly from the ceiling panels and rising water pools in the corridors. Security announces a local flash flood warning on campus.",
+        "A cyclone red alert is issued while you are in Block B lecture hall. The wind speed outside is increasing rapidly, and the campus PA system instructs everyone to move to designated cyclone shelters immediately.",
         "You are in Block A computer laboratory when a violent tremor shakes the building, cracking wall plaster and knocking monitors off desks. Power goes out and a warning siren begins to wail."
       ];
       return scenarios[Math.floor(Math.random() * scenarios.length)];
@@ -70,16 +71,19 @@ export const mockGemini = {
           score = 5.5;
           review = "Response needs improvement. Protect your head and torso immediately by crawling under a desk or positioning yourself near an interior wall away from glass panels.";
         }
-      } else if (promptLower.includes("threat") || promptLower.includes("lockdown")) {
-        if (hasHide && hasHelp) {
-          score = 9.6;
-          review = "Strong defensive actions. Locking the doors, barricading with desks, silencing phones, and turning off lights are critical for active threat evasion. Contact campus security only when safe.";
+      } else if (promptLower.includes("cyclone") || promptLower.includes("storm") || promptLower.includes("wind")) {
+        if (hasHide && hasEvac) {
+          score = 9.7;
+          review = "Excellent cyclone response. Moving to an interior room away from windows and following evacuation orders is exactly correct. Staying low and away from glass dramatically reduces injury risk.";
         } else if (hasHide) {
-          score = 8.8;
-          review = "Proper lockdown procedure. Blocking visual entry points and keeping quiet is the safest path when evacuation isn't viable. Make sure your phone is fully silenced (not just on vibrate).";
+          score = 8.9;
+          review = "Good shelter response. Taking cover in an interior room is the right call. Ensure you have your emergency kit and a battery-powered radio to monitor official updates.";
+        } else if (hasEvac) {
+          score = 8.2;
+          review = "Evacuation is appropriate when ordered by authorities. Follow designated routes to official cyclone shelters. Do not attempt to drive once winds reach dangerous speeds.";
         } else {
-          score = 4.5;
-          review = "High risk option. Confronting the threat or crowding in hallways is highly dangerous. Prioritize running to safety if a clear path exists, otherwise hide, barricade, and prepare to defend.";
+          score = 4.0;
+          review = "High risk. Staying near windows or outdoors during a cyclone exposes you to flying debris and extreme winds. Move immediately to an interior room or the nearest cyclone shelter.";
         }
       } else {
         score = 9.0;

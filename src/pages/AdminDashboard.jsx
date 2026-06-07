@@ -21,7 +21,7 @@ export default function AdminDashboard({ onToast }) {
   const students = data.users.filter(u => u.role === 'student');
   const drills = data.drills;
 
-  const modCounts = { fire: 0, flood: 0, quake: 0, threat: 0 };
+  const modCounts = { fire: 0, flood: 0, quake: 0, cyclone: 0 };
   let trainedCount = 0;
   students.forEach(u => {
     const completed = u.completedModules || [];
@@ -41,7 +41,7 @@ export default function AdminDashboard({ onToast }) {
     { label: 'Fire Safety', value: Math.round((modCounts.fire / maxStudents) * 100), color: '#EF4444', track: 'bg-red-500', light: 'from-red-50', accent: 'text-red-600' },
     { label: 'Flood Safety', value: Math.round((modCounts.flood / maxStudents) * 100), color: '#3B82F6', track: 'bg-blue-500', light: 'from-blue-50', accent: 'text-blue-600' },
     { label: 'Earthquake', value: Math.round((modCounts.quake / maxStudents) * 100), color: '#F59E0B', track: 'bg-amber-500', light: 'from-amber-50', accent: 'text-amber-600' },
-    { label: 'Active Threat', value: Math.round((modCounts.threat / maxStudents) * 100), color: '#8B5CF6', track: 'bg-violet-500', light: 'from-violet-50', accent: 'text-violet-600' }
+    { label: 'Cyclone Safety', value: Math.round((modCounts.cyclone / maxStudents) * 100), color: '#06B6D4', track: 'bg-cyan-500', light: 'from-cyan-50', accent: 'text-cyan-600' }
   ];
 
   const statCards = [
@@ -214,7 +214,7 @@ export default function AdminDashboard({ onToast }) {
               <option value="fire">Fire Protocol</option>
               <option value="flood">Flood Warning</option>
               <option value="quake">Earthquake Warning</option>
-              <option value="threat">Active Threat Lockdown</option>
+              <option value="cyclone">Cyclone Evacuation Drill</option>
             </select>
           </div>
           <motion.button

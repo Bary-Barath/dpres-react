@@ -45,13 +45,14 @@ const MODULES = [
   },
   {
     id: 'cyclone', title: 'Cyclone Safety', emoji: '🌀', icon: Wind,
-    color: '#8B5CF6', bgColor: 'bg-violet-500/10', borderColor: 'border-violet-500/20',
-    textColor: 'text-violet-500', gradient: 'from-violet-600 to-purple-500',
-    lightBg: 'from-violet-50 to-purple-50', shadow: 'rgba(139,92,246,0.18)',
-    readTime: '13 min', difficulty: 'Advanced', tips: 13,
+    color: '#06B6D4', bgColor: 'bg-cyan-500/10', borderColor: 'border-cyan-500/20',
+    textColor: 'text-cyan-500', gradient: 'from-cyan-600 to-teal-500',
+    lightBg: 'from-cyan-50 to-teal-50', shadow: 'rgba(6,182,212,0.18)',
+    readTime: '13 min', difficulty: 'Advanced', tips: 20,
     sections: [
-      { title: 'Shelter Preparation', items: ['Identify the nearest cyclone shelter and multiple safe routes to it', 'Reinforce windows with cyclone shutters or wooden boards', 'Secure roof structures and remove loose objects from the yard', 'Trim tree branches that could fall on your house', 'Prepare a safe room in the strongest part of your home (interior room, no windows)', 'Know the community warning system and evacuation signals'] },
-      { title: 'Emergency Supplies', items: ['Store at least 7 days of non-perishable food and drinking water (4L/person/day)', 'Keep a fully stocked first aid kit and prescription medications', 'Battery-powered radio with extra batteries for emergency broadcasts', 'Flashlights, lanterns, and extra batteries — avoid candles due to gas leak risk', 'Cash, important documents in waterproof bags, and emergency contact list', 'Blankets, warm clothing, rain gear, and sturdy shoes', 'Whistle or horn to signal for help if trapped'] }
+      { title: 'Before a Cyclone', items: ['Monitor cyclone warnings and alerts from the meteorological department', 'Identify the nearest official cyclone shelter and multiple safe evacuation routes', 'Reinforce windows with cyclone shutters, plywood boards, or storm shutters', 'Secure roof structures and tie down or move loose outdoor objects inside', 'Trim tree branches that could fall on your house during high winds', 'Prepare a designated safe room — interior room on the lowest floor, away from windows', 'Know your community warning signals and when to evacuate', 'Create a family emergency plan with a pre-agreed meeting point'] },
+      { title: 'During a Cyclone', items: ['Stay indoors until official all-clear is given — do not go outside during the eye of the storm', 'Take shelter in your designated safe room — stay away from windows and glass doors', 'Do not use candles — gas leaks may be present; use battery-powered torches instead', 'Listen continuously to emergency broadcasts on a battery-powered radio', 'If storm surge or flooding occurs, move to the highest floor of a solid building', 'Do not enter floodwaters on foot or by vehicle — even shallow moving water is dangerous', 'Keep your emergency kit accessible and your phone charged', 'Do not try to outrun a cyclone by car — seek shelter immediately'] },
+      { title: 'After a Cyclone', items: ['Wait for official confirmation that the cyclone has passed before venturing outside', 'Check for structural damage, gas leaks, and downed power lines before re-entering your home', 'Photograph all damage for insurance and relief claims', 'Boil all drinking water or use bottled water until supplies are declared safe', 'Do not touch fallen power lines — treat all downed wires as live and deadly', 'Watch for snakes, insects, and debris displaced by floodwater', 'Assist neighbours — especially elderly, disabled, or injured persons nearby'] }
     ]
   },
   {

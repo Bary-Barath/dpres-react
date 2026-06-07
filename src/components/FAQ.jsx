@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: 'Which emergency scenarios are covered?',
-    a: 'Out-of-the-box DPRES ships with Fire safety, Monsoon flooding, Earthquake protocol, and Active Threat lockdown modules. Each module includes a quiz, an evacuation diagram, and an AI-driven simulator scenario.'
+    a: 'Out-of-the-box DPRES ships with Fire safety, Monsoon flooding, Earthquake protocol, and Cyclone safety modules. Each module includes a quiz, an evacuation diagram, and an AI-driven simulator scenario.'
   },
   {
     q: 'Do we need to install anything on student devices?',

@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  ShieldCheck, Flame, Waves, Globe, Shield, Sparkles,
+  ShieldCheck, Flame, Waves, Globe, Wind, Sparkles,
   Trophy, ArrowRight, Award, TrendingUp, Clock, CheckCircle,
-  Activity, BookOpen, AlertTriangle, Zap, Star, ChevronRight
+  Activity, BookOpen, Shield, Zap, Star, ChevronRight
 } from 'lucide-react';
 import { useThemeContext } from '../App';
 import { navigate } from '../hooks/useRoute';
@@ -35,11 +35,11 @@ export default function StudentPortal({ user }) {
       shadow: 'rgba(245,158,11,0.2)', time: '10 min', level: 'Essential'
     },
     {
-      key: 'threat', label: 'Active Threat', emoji: '🛡️',
-      icon: Shield, desc: 'Run Hide Fight guidance, barricade procedures, alert protocols.',
-      accent: '#8B5CF6', bg: 'from-violet-500/10 to-violet-500/5', border: 'border-violet-500/15',
-      badge: 'bg-violet-50 text-violet-600 border-violet-100', iconBg: 'from-violet-500 to-violet-600',
-      shadow: 'rgba(139,92,246,0.2)', time: '18 min', level: 'Advanced'
+      key: 'cyclone', label: 'Cyclone Safety', emoji: '🌀',
+      icon: Wind, desc: 'Storm preparedness, evacuation planning, shelter protection, emergency kits, and post-cyclone recovery.',
+      accent: '#06B6D4', bg: 'from-cyan-500/10 to-cyan-500/5', border: 'border-cyan-500/15',
+      badge: 'bg-cyan-50 text-cyan-600 border-cyan-100', iconBg: 'from-cyan-500 to-teal-500',
+      shadow: 'rgba(6,182,212,0.2)', time: '13 min', level: 'Advanced'
     }
   ];
 
@@ -338,7 +338,7 @@ export default function StudentPortal({ user }) {
                     <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${
                       m.level === 'Essential' ? 'text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-500/10' :
                       m.level === 'Intermediate' ? 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-500/10' :
-                      'text-violet-600 bg-violet-50 dark:text-violet-400 dark:bg-violet-500/10'
+                      'text-cyan-600 bg-cyan-50 dark:text-cyan-400 dark:bg-cyan-500/10'
                     }`}>{m.level}</span>
                   </div>
 

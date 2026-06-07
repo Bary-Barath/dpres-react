@@ -49,9 +49,9 @@ const MONTHLY_DATA = {
 };
 
 const COURSE_COMPLETION = {
-  labels: ['Fire Safety', 'Flood Protocol', 'Earthquake', 'Active Threat', 'First Aid', 'Cyclone'],
-  data: [85, 62, 73, 58, 44, 39],
-  colors: ['#EF4444', '#3B82F6', '#F97316', '#8B5CF6', '#10B981', '#A855F7']
+  labels: ['Fire Safety', 'Flood Protocol', 'Earthquake', 'Cyclone Safety', 'First Aid'],
+  data: [85, 62, 73, 58, 44],
+  colors: ['#EF4444', '#3B82F6', '#F97316', '#06B6D4', '#10B981']
 };
 
 export default function PreparednessDashboard() {

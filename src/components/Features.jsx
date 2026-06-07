@@ -33,7 +33,7 @@ export default function Features() {
     },
     {
       title: 'Safety Quiz Registry',
-      desc: 'Standardized assessment logs for Fire safety, Monsoon floods, Earthquakes, and Active Threat lockdowns with automatic grade sync.',
+      desc: 'Standardized assessment logs for Fire safety, Monsoon floods, Earthquakes, and Cyclone preparedness with automatic grade sync.',
       icon: ShieldCheck,
       color: 'text-green-500 dark:text-green-400',
       bgColor: 'bg-green-500/10',

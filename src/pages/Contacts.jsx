@@ -22,7 +22,7 @@ export default function Contacts() {
           Emergency Contacts
         </h1>
         <p className={`text-sm mt-2 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-          In an active crisis — fire, medical emergency, or security threat — call the central dispatcher immediately.
+          In an active crisis — fire, medical emergency, or natural disaster — call the central dispatcher immediately.
         </p>
       </motion.div>
 

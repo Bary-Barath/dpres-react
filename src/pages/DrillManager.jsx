@@ -111,7 +111,7 @@ export default function DrillManager({ onToast }) {
               <option>Fire</option>
               <option>Flood</option>
               <option>Quake</option>
-              <option>Threat</option>
+              <option>Cyclone</option>
             </select>
           </div>
           <motion.button
